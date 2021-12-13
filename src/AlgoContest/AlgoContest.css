@@ -6,7 +6,7 @@ html, body {
 }
 
 #algocontestheader {
-    background-color:rgba(46, 44, 44, 0.925);
+    background-color: #3b3b3b;
     margin-top: 0;
     margin-bottom: 0;
     padding-top :0;
@@ -25,26 +25,40 @@ html, body {
     text-decoration: none;
 }
 
-.menubutton {
-    background-color: #318fac;
+#algocontestheader #sortcontestbutton {
+    background-color: transparent;
     border: none;
+    float: right;
     color: white;
-    padding: 15px 32px;
+    padding: 5px 16px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 50px;
+    font-size: 22px;
     transition-duration: 0.7s;
     border-radius: 10px;
 
-    margin-left: 2.5%;
-    margin-right: 2.5%;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    height: 300px;
-    width: 95%;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 4px;
+    margin-bottom: 4px;
 }
 
-.menubutton:hover {
-    background-color: #2c2381;
+#algocontestheader #graphcontestbutton {
+    background-color: transparent;
+    border: none;
+    color: white;
+    float: right;
+    padding: 5px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 22px;
+    transition-duration: 0.7s;
+    border-radius: 10px;
+
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 4px;
+    margin-bottom: 4px;
 }
