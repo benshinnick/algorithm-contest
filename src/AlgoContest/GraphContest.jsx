@@ -13,8 +13,8 @@ export default class GraphContest extends React.Component {
     render() {
         return (
             <div id='graphcontest'>
-                <p id = "placeholdertext">Graph Contest</p>
-                <p id = "placeholdertext">Not Implemented Yet</p>
+                <p className="placeholdertext">Graph Contest</p>
+                <p className="placeholdertext">Not Implemented Yet</p>
             </div>
         );
     }
