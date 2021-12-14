@@ -24,7 +24,7 @@ export default class SortContest extends React.Component {
             <>
                 <button id="randomizebutton" onClick={() => this.randomizeArray()}>Generate Random Array</button>
                 <button id="randomizebutton" onClick={() => this.generateNearlySortedArray()}>Generate Nearly Sorted Array</button>
-                <button id="logconteststatebutton" onClick={() => console.log(this.state)}>Log Sort Contest State</button>
+                {/* <button id="logconteststatebutton" onClick={() => console.log(this.state)}>Log Sort Contest State</button> */}
                 <button id="startcontestbutton" onClick={() => this.startContest()}>Start</button>
             </>, document.getElementById('sortcontestheader'));
     }
