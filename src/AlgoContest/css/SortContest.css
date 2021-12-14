@@ -30,8 +30,32 @@
     background-color: black;
 }
 
-#logconteststatebutton {
+#startcontestbutton {
+    background-color: #1ea33b;
+    border: none;
+    color: white;
+    padding-left: 35px;
+    padding-right: 35px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    text-align: center;
+    text-decoration: none;
     float: right;
+    font-size: 15px;
+    transition-duration: 0.2s;
+    border-radius: 1px;
+    margin-right: 7px;
+    margin-top: 2px;
+    margin-left: 4px;
+    margin-bottom: 2px;
+}
+
+#startcontestbutton:hover {
+    background-color: #0e7424;
+}
+
+#logconteststatebutton {
+    display: inline-block;
     background-color: #e28d3d;
     border: none;
     color: white;
