@@ -1,6 +1,7 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import SortVisualizer from './SortVisualizer.jsx';
-import './SortContest.css';
+import './css/SortContest.css';
 
 export default class SortContest extends React.Component {
 
@@ -16,6 +17,11 @@ export default class SortContest extends React.Component {
 
     componentDidMount() {
         this.randomizeArray();
+        ReactDOM.render(
+            <>
+                <button id="randomizebutton" onClick={() => this.randomizeArray()}>Randomize Array</button>
+                <button id="logconteststatebutton" onClick={() => console.log(this.state)}>Log Sort Contest State</button>
+            </>, document.getElementById('sortcontestheader'));
     }
 
     randomizeArray() {
@@ -29,9 +35,7 @@ export default class SortContest extends React.Component {
     render() {
         return (
             <div id='sortcontest'>
-                Sort Contest:
-                <button id="logconteststatebutton" onClick={() => console.log(this.state)}>Log Sort Contest State</button>
-                <button id="randomizebutton" onClick={() => this.randomizeArray()}>Randomize Array</button>
+                <div id="sortcontestheader"></div>
                 <SortVisualizer array={this.state.array} />
                 <SortVisualizer array={this.state.array} />
                 <SortVisualizer array={this.state.array} />

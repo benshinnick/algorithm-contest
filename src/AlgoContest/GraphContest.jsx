@@ -1,5 +1,5 @@
 import React from 'react';
-import './GraphContest.css';
+import './css/GraphContest.css';
 
 export default class GraphContest extends React.Component {
     constructor(props) {

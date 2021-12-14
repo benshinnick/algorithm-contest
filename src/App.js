@@ -1,6 +1,5 @@
 import React from 'react';
 import AlgoContest from './AlgoContest/AlgoContest.jsx';
-import './App.css';
 
 function App() {
   return (

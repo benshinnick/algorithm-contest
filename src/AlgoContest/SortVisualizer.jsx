@@ -1,5 +1,5 @@
 import React from 'react';
-import './SortVisualizer.css';
+import './css/SortVisualizer.css';
 
 export default class SortVisualizer extends React.Component {
     constructor(props) {

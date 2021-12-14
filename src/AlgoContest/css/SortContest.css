@@ -1,0 +1,20 @@
+#sortcontestheader {
+    background-color: #e6e6e6;
+    margin-top: 0;
+    margin-bottom: 0;
+    border-style: solid hidden hidden hidden;
+    border-width: 2px;
+    border-color: white;
+    padding-top :5px;
+    padding-bottom: 5px;
+    padding-left: 5px;
+}
+
+
+#logconteststatebutton {
+    margin: 4px;
+}
+
+#randomizebutton {
+    margin: 4px;
+}
