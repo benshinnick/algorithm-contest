@@ -1,0 +1,10 @@
+#sortvisualizer {
+    background-color: #e6e6e6;
+    border-style: solid hidden hidden hidden;
+    border-width: 2px;
+    border-color: white;
+}
+
+#logvisualizerstatebutton {
+    margin: 10px;
+}

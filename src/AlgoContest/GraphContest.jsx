@@ -1,6 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import './GraphContest.css';
+import './css/GraphContest.css';
 
 export default class GraphContest extends React.Component {
     constructor(props) {
@@ -14,7 +13,8 @@ export default class GraphContest extends React.Component {
     render() {
         return (
             <div id='graphcontest'>
-                Graph Contest
+                <p className="placeholdertext">Graph Contest</p>
+                <p className="placeholdertext">Not Implemented Yet</p>
             </div>
         );
     }
