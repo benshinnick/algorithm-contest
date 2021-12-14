@@ -1,5 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import SortContest from './SortContest.jsx';
+import GraphContest from './GraphContest.jsx';
 import './AlgoContest.css';
 
 export default class AlgoContest extends React.Component {
@@ -21,7 +23,7 @@ export default class AlgoContest extends React.Component {
         document.querySelector('#sortcontestbutton').style.backgroundColor = '#318fac';
         document.querySelector('#graphcontestbutton').style.backgroundColor = 'transparent';
 
-        ReactDOM.render(<div>Sort</div>, document.getElementById('pagecontent'));
+        ReactDOM.render(<SortContest></SortContest>, document.getElementById('pagecontent'));
     }
 
     changePageContentToGraphContest() {
@@ -30,7 +32,7 @@ export default class AlgoContest extends React.Component {
         document.querySelector('#sortcontestbutton').style.backgroundColor = 'transparent';
         document.querySelector('#graphcontestbutton').style.backgroundColor = '#318fac';
         
-        ReactDOM.render(<div>Graph</div>, document.getElementById('pagecontent'));
+        ReactDOM.render(<GraphContest></GraphContest>, document.getElementById('pagecontent'));
     }
 
     render() {
