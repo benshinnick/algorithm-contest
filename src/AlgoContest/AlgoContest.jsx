@@ -23,7 +23,7 @@ export default class AlgoContest extends React.Component {
         document.querySelector('#sortcontestbutton').style.backgroundColor = '#318fac';
         document.querySelector('#graphcontestbutton').style.backgroundColor = 'transparent';
 
-        ReactDOM.render(<SortContest></SortContest>, document.getElementById('pagecontent'));
+        ReactDOM.render(<SortContest />, document.getElementById('pagecontent'));
     }
 
     changePageContentToGraphContest() {
@@ -32,7 +32,7 @@ export default class AlgoContest extends React.Component {
         document.querySelector('#sortcontestbutton').style.backgroundColor = 'transparent';
         document.querySelector('#graphcontestbutton').style.backgroundColor = '#318fac';
         
-        ReactDOM.render(<GraphContest></GraphContest>, document.getElementById('pagecontent'));
+        ReactDOM.render(<GraphContest />, document.getElementById('pagecontent'));
     }
 
     render() {
