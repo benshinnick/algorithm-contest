@@ -7,6 +7,8 @@
     margin-left: 2px;
 }
 
+/* Algorithm Selection Dropdown Styling */
+
 #algorithm-dropdown-label {
     display: inline-block;
     background-color: #3b3b3b;
@@ -63,6 +65,8 @@
 .dropdown:hover .dropdown-content {
     display: block;
 }
+
+/* End of Algorithm Selection Dropdown Styling */
 
 #logvisualizerstatebutton {
     margin-left: 15px;
