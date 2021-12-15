@@ -13,7 +13,7 @@ export default class SortContest extends React.Component {
 
         this.state = {
             array: [],
-            arraySize: 100
+            arraySize: 100,
         };
 
     }
@@ -56,16 +56,19 @@ export default class SortContest extends React.Component {
     }
 
     render() {
+        const algorithmTypes = ['merge', 'quick', 'shell', 'insertion',
+                                'heap', 'selection', 'bubble']
+
         return (
             <div id='sortcontest'>
                 <div id="sortcontestheader"></div>
-                <SortVisualizer array={this.state.array} algorithmType="merge" />
-                <SortVisualizer array={this.state.array} algorithmType="quick" />
-                <SortVisualizer array={this.state.array} algorithmType="shell" />
-                <SortVisualizer array={this.state.array} algorithmType="insertion" />
-                <SortVisualizer array={this.state.array} algorithmType="heap" />
-                <SortVisualizer array={this.state.array} algorithmType="selection" />
-                <SortVisualizer array={this.state.array} algorithmType="bubble" />
+                <SortVisualizer array={this.state.array} algorithmType="merge" algorithmTypes={algorithmTypes} />
+                <SortVisualizer array={this.state.array} algorithmType="quick" algorithmTypes={algorithmTypes} />
+                <SortVisualizer array={this.state.array} algorithmType="insertion" algorithmTypes={algorithmTypes}/>
+                {/* <SortVisualizer array={this.state.array} algorithmType="shell" algorithmTypes={algorithmTypes} />
+                <SortVisualizer array={this.state.array} algorithmType="heap" algorithmTypes={algorithmTypes}/>
+                <SortVisualizer array={this.state.array} algorithmType="selection" algorithmTypes={algorithmTypes}/>
+                <SortVisualizer array={this.state.array} algorithmType="bubble" algorithmTypes={algorithmTypes}/> */}
             </div>
         );
     }
@@ -79,5 +82,5 @@ function randomIntFromInterval(min, max) {
 function swap(array, index1, index2) {
     let temp = array[index1];
     array[index1] = array[index2];
-    array[index2] = temp
+    array[index2] = temp;
 }

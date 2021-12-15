@@ -82,17 +82,3 @@
 #startcontestbutton:hover {
     background-color: #0e7424;
 }
-
-#logconteststatebutton {
-    display: inline-block;
-    background-color: #e28d3d;
-    border: none;
-    color: white;
-    padding: 5px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 15px;
-    transition-duration: 0.2s;
-    border-radius: 1px;
-    margin: 4px;
-}
