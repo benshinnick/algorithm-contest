@@ -1,10 +1,73 @@
 #sortvisualizer {
-    background-color: #e6e6e6;
+    background-color: #f0f0f0;
     border-style: solid hidden hidden hidden;
     border-width: 2px;
     border-color: white;
+    height: 200px;
+    margin-left: 2px;
 }
 
+/* Algorithm Selection Dropdown Styling */
+
+#algorithm-dropdown-label {
+    display: inline-block;
+    background-color: #3b3b3b;
+    text-align: center;
+    color: white;
+    width: 70px;
+    font-size: 16px;
+    padding-left: 15px;
+    padding-top: 5px;
+    padding-right: 15px;
+    padding-bottom: 5px;
+    margin-left: 5px;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+  
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    width: 100px;
+    margin: 0px;
+    z-index: 1;
+  }
+  
+.dropdown-content button {
+    color: black;
+    text-align: center;
+    border: none;
+    width: 100px;
+    font-size: 16px;
+    padding-left: 15px;
+    padding-top: 5px;
+    padding-right: 15px;
+    padding-bottom: 5px;
+    margin-left: 5px;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    text-decoration: none;
+    display: block;
+  }
+  
+.dropdown-content button:hover {
+    background-color: #ddd;
+}
+  
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* End of Algorithm Selection Dropdown Styling */
+
 #logvisualizerstatebutton {
-    margin: 10px;
+    margin-left: 15px;
 }

@@ -13,7 +13,7 @@ export default class SortContest extends React.Component {
 
         this.state = {
             array: [],
-            arraySize: 100
+            arraySize: 100,
         };
 
     }
@@ -23,8 +23,8 @@ export default class SortContest extends React.Component {
         ReactDOM.render(
             <>
                 <button id="randomizebutton" onClick={() => this.randomizeArray()}>Generate Random Array</button>
-                <button id="randomizebutton" onClick={() => this.generateNearlySortedArray()}>Generate Nearly Sorted Array</button>
-                <button id="logconteststatebutton" onClick={() => console.log(this.state)}>Log Sort Contest State</button>
+                <button id="nearlysortedbutton" onClick={() => this.generateNearlySortedArray()}>Generate Nearly Sorted Array</button>
+                {/* <button id="logconteststatebutton" onClick={() => console.log(this.state)}>Log Sort Contest State</button> */}
                 <button id="startcontestbutton" onClick={() => this.startContest()}>Start</button>
             </>, document.getElementById('sortcontestheader'));
     }
@@ -56,12 +56,19 @@ export default class SortContest extends React.Component {
     }
 
     render() {
+        const algorithmTypes = ['merge', 'quick', 'shell', 'insertion',
+                                'heap', 'selection', 'bubble']
+
         return (
             <div id='sortcontest'>
                 <div id="sortcontestheader"></div>
-                <SortVisualizer array={this.state.array} />
-                <SortVisualizer array={this.state.array} />
-                <SortVisualizer array={this.state.array} />
+                <SortVisualizer array={this.state.array} algorithmType="merge" algorithmTypes={algorithmTypes} />
+                <SortVisualizer array={this.state.array} algorithmType="quick" algorithmTypes={algorithmTypes} />
+                <SortVisualizer array={this.state.array} algorithmType="insertion" algorithmTypes={algorithmTypes}/>
+                {/* <SortVisualizer array={this.state.array} algorithmType="shell" algorithmTypes={algorithmTypes} />
+                <SortVisualizer array={this.state.array} algorithmType="heap" algorithmTypes={algorithmTypes}/>
+                <SortVisualizer array={this.state.array} algorithmType="selection" algorithmTypes={algorithmTypes}/>
+                <SortVisualizer array={this.state.array} algorithmType="bubble" algorithmTypes={algorithmTypes}/> */}
             </div>
         );
     }
@@ -75,5 +82,5 @@ function randomIntFromInterval(min, max) {
 function swap(array, index1, index2) {
     let temp = array[index1];
     array[index1] = array[index2];
-    array[index2] = temp
+    array[index2] = temp;
 }

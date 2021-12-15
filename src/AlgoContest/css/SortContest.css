@@ -1,41 +1,72 @@
 #sortcontestheader {
     background-color: #e6e6e6;
-    margin-top: 0;
-    margin-bottom: 0;
-    border-style: hidden hidden hidden hidden;
-    border-width: 2px;
-    border-color: white;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+
     padding-top :5px;
     padding-bottom: 5px;
-    padding-left: 5px;
 }
 
 #randomizebutton {
     /* background-color: #0084ff; */
-    background-color: #3b3b3b;
+    /* background-color: #3b3b3b; */
+    background-color: #007bff;
     border: none;
     color: white;
-    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 7px;
+    padding-bottom: 7px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 15px;
     transition-duration: 0.2s;
     border-radius: 1px;
-    margin: 4px;
+    margin-right: 4px;
+    margin-top: 2px;
+    margin-left: 7px;
+    margin-bottom: 2px;
 }
 
 #randomizebutton:hover {
     /* background-color: #318fac; */
-    background-color: black;
+    /* background-color: black; */
+    background-color: #0069d9;
+}
+
+#nearlysortedbutton {
+    background-color: #007bff;
+    border: none;
+    color: white;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+    transition-duration: 0.2s;
+    border-radius: 1px;
+    margin-right: 4px;
+    margin-top: 2px;
+    margin-left: 7px;
+    margin-bottom: 2px;
+}
+
+#nearlysortedbutton:hover {
+    background-color: #0069d9;
 }
 
 #startcontestbutton {
     background-color: #1ea33b;
     border: none;
     color: white;
-    padding-left: 35px;
-    padding-right: 35px;
+    padding-left: 50px;
+    padding-right: 50px;
     padding-top: 7px;
     padding-bottom: 7px;
     text-align: center;
@@ -52,18 +83,4 @@
 
 #startcontestbutton:hover {
     background-color: #0e7424;
-}
-
-#logconteststatebutton {
-    display: inline-block;
-    background-color: #e28d3d;
-    border: none;
-    color: white;
-    padding: 5px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 15px;
-    transition-duration: 0.2s;
-    border-radius: 1px;
-    margin: 4px;
 }

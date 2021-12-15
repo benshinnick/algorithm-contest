@@ -20,7 +20,7 @@ export default class AlgoContest extends React.Component {
     changePageContentToSortContest() {
         this.setState({ algorithmType: 'sort' });
 
-        document.querySelector('#sortcontestbutton').style.backgroundColor = '#318fac';
+        document.querySelector('#sortcontestbutton').style.backgroundColor = '#6c757d';
         document.querySelector('#graphcontestbutton').style.backgroundColor = 'transparent';
 
         ReactDOM.render(<SortContest />, document.getElementById('maincontent'));
@@ -30,7 +30,7 @@ export default class AlgoContest extends React.Component {
         this.setState({ algorithmType: 'graph' });
 
         document.querySelector('#sortcontestbutton').style.backgroundColor = 'transparent';
-        document.querySelector('#graphcontestbutton').style.backgroundColor = '#318fac';
+        document.querySelector('#graphcontestbutton').style.backgroundColor = '#6c757d';
         
         ReactDOM.render(<GraphContest />, document.getElementById('maincontent'));
     }
