@@ -2,7 +2,7 @@ import React from 'react';
 import {getInsertionSortAnimations} from './sortAlgorithms/InsertionSort.js';
 import './css/SortVisualizer.css';
 
-const ANIMATION_SPEED_MS = 0.25;
+const ANIMATION_SPEED_MS = 1;
 // This is the main color of the array bars
 const PRIMARY_COLOR = '#292cff';
 // This is the color of array bars that are being compared throughout the animations
@@ -47,41 +47,26 @@ export default class SortVisualizer extends React.Component {
             const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
             const isComparison = animations.at(i).at(0) !== 's';
 
+            const barOneIndex = animations.at(i).at(1);
+            const barTwoIndex = animations.at(i).at(2);
+            const barOneStyle = arrayBars[barOneIndex].style;
+            const barTwoStyle = arrayBars[barTwoIndex].style;
+
             if (isComparison) {
                 if(animations.at(i).at(0) === 'c') {
                     setTimeout(() => {
-                        const barOneIndex = animations.at(i).at(1);
-                        const barTwoIndex = animations.at(i).at(2);
-        
-                        const barOneStyle = arrayBars[barOneIndex].style;
-                        const barTwoStyle = arrayBars[barTwoIndex].style;
-
                         barOneStyle.backgroundColor = SECONDARY_COLOR;
                         barTwoStyle.backgroundColor = SECONDARY_COLOR;
                     }, i * ANIMATION_SPEED_MS);
                 }
                 else if(animations.at(i).at(0) === 'cf') {
                     setTimeout(() => {
-                        const barOneIndex = animations.at(i).at(1);
-                        const barTwoIndex = animations.at(i).at(2);
-        
-                        const barOneStyle = arrayBars[barOneIndex].style;
-                        const barTwoStyle = arrayBars[barTwoIndex].style;
-
                         barOneStyle.backgroundColor = PRIMARY_COLOR;
                         barTwoStyle.backgroundColor = PRIMARY_COLOR;
                     }, i * ANIMATION_SPEED_MS);
                 }
-
             } else {
                 setTimeout(() => {
-                    // console.log('swap time out');
-                    const barOneIndex = animations.at(i).at(1);
-                    const barTwoIndex = animations.at(i).at(2);
-
-                    const barOneStyle = arrayBars[barOneIndex].style;
-                    const barTwoStyle = arrayBars[barTwoIndex].style;
-
                     barOneStyle.height = `${animations.at(i).at(4)}px`;
                     barTwoStyle.height = `${animations.at(i).at(3)}px`;
                 }, i * ANIMATION_SPEED_MS);
