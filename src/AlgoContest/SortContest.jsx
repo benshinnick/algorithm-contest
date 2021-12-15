@@ -5,7 +5,7 @@ import './css/SortContest.css';
 
 const ARRAY_MIN_VALUE = 5;
 const ARRAY_MAX_VALUE = 130;
-const INITIAL_ARRAY_SIZE = 295;
+const INITIAL_ARRAY_SIZE = 250;
 
 export default class SortContest extends React.Component {
 
@@ -77,13 +77,13 @@ export default class SortContest extends React.Component {
         return (
             <div id='sortcontest'>
                 <div id="sortcontestheader"></div>
-                <SortVisualizer array={this.state.array} algorithmType="merge" algorithmTypes={algorithmTypes} />
-                <SortVisualizer array={this.state.array} algorithmType="quick" algorithmTypes={algorithmTypes} />
-                <SortVisualizer array={this.state.array} algorithmType="insertion" algorithmTypes={algorithmTypes}/>
-                {/* <SortVisualizer array={this.state.array} algorithmType="shell" algorithmTypes={algorithmTypes} />
-                <SortVisualizer array={this.state.array} algorithmType="heap" algorithmTypes={algorithmTypes}/>
-                <SortVisualizer array={this.state.array} algorithmType="selection" algorithmTypes={algorithmTypes}/>
-                <SortVisualizer array={this.state.array} algorithmType="bubble" algorithmTypes={algorithmTypes}/> */}
+                <SortVisualizer array={this.state.array} algorithmType="merge" algorithmTypes={algorithmTypes} contestantNumber={1} />
+                <SortVisualizer array={this.state.array} algorithmType="quick" algorithmTypes={algorithmTypes} contestantNumber={2}/>
+                <SortVisualizer array={this.state.array} algorithmType="insertion" algorithmTypes={algorithmTypes} contestantNumber={3}/>
+                {/* <SortVisualizer array={this.state.array} algorithmType="shell" algorithmTypes={algorithmTypes} contestantNumber={4} />
+                <SortVisualizer array={this.state.array} algorithmType="heap" algorithmTypes={algorithmTypes} contestantNumber={5} />
+                <SortVisualizer array={this.state.array} algorithmType="selection" algorithmTypes={algorithmTypes} contestantNumber={6} />
+                <SortVisualizer array={this.state.array} algorithmType="bubble" algorithmTypes={algorithmTypes} contestantNumber={7} /> */}
             </div>
         );
     }
