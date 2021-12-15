@@ -1,4 +1,5 @@
-#sortvisualizer {
+#sort-visualizer-1, #sort-visualizer-2, #sort-visualizer-3, #sort-visualizer-4,
+#sort-visualizer-5, #sort-visualizer-6, #sort-visualizer-7 {
     background-color: #f7f7f7;
     border-style: solid hidden hidden hidden;
     border-width: 2px;
@@ -72,7 +73,10 @@
 
 .array-container {
     position: absolute;
-    padding: 30px 5px;
+    padding-top: 30px;
+    padding-right: 5px;
+    padding-left: 5px;
+    padding-bottom: 10px;
     /* margin: auto;
     width: 75%; */
     /* margin: auto;
@@ -87,7 +91,8 @@
     /* top: 100px; */
   }
   
-  .array-bar {
+  .array-bar-1, .array-bar-2, .array-bar-3, .array-bar-4,
+  .array-bar-5, .array-bar-6, .array-bar-7 {
     width: 2px;
     display: inline-block;
     margin: 0 1px;
