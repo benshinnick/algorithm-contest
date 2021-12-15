@@ -5,6 +5,22 @@
     border-color: white;
 }
 
+#algorithmlabel {
+    display: inline-block;
+    background-color: #3b3b3b;
+    color: white;
+    width: 70px;
+    font-size: 16px;
+    padding-left: 15px;
+    padding-top: 5px;
+    padding-right: 15px;
+    padding-bottom: 5px;
+    margin-top: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+}
+
 #logvisualizerstatebutton {
-    margin: 10px;
+    margin-left: 15px;
 }

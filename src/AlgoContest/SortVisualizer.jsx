@@ -6,7 +6,8 @@ export default class SortVisualizer extends React.Component {
         super(props);
 
         this.state = {
-            array: this.props.array
+            array: this.props.array,
+            algorithmType: this.props.algorithmType
         };
     }
 
@@ -22,7 +23,7 @@ export default class SortVisualizer extends React.Component {
     render() {
         return (
             <div id='sortvisualizer'>
-                Sort Visualizer: 
+                <p id="algorithmlabel">{this.state.algorithmType}</p>
                 <button id="logvisualizerstatebutton" onClick={() => console.log(this.state)}>Log Sort Visualizer State</button>
             </div>
         );

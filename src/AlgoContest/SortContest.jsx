@@ -59,9 +59,13 @@ export default class SortContest extends React.Component {
         return (
             <div id='sortcontest'>
                 <div id="sortcontestheader"></div>
-                <SortVisualizer array={this.state.array} />
-                <SortVisualizer array={this.state.array} />
-                <SortVisualizer array={this.state.array} />
+                <SortVisualizer array={this.state.array} algorithmType="merge" />
+                <SortVisualizer array={this.state.array} algorithmType="quick" />
+                <SortVisualizer array={this.state.array} algorithmType="shell" />
+                <SortVisualizer array={this.state.array} algorithmType="insertion" />
+                <SortVisualizer array={this.state.array} algorithmType="heap" />
+                <SortVisualizer array={this.state.array} algorithmType="selection" />
+                <SortVisualizer array={this.state.array} algorithmType="bubble" />
             </div>
         );
     }
