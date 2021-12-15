@@ -1,5 +1,5 @@
 #sortvisualizer {
-    background-color: #f0f0f0;
+    background-color: #f7f7f7;
     border-style: solid hidden hidden hidden;
     border-width: 2px;
     border-color: white;
@@ -67,6 +67,33 @@
 }
 
 /* End of Algorithm Selection Dropdown Styling */
+
+/* array styling  */
+
+.array-container {
+    position: absolute;
+    padding: 30px 5px;
+    /* margin: auto;
+    width: 75%; */
+    /* margin: auto;
+    width: 80%;
+    border: 3px solid green;
+    padding: 15px; */
+
+    /* display: flex;
+    justify-content: center; */
+    /* align-items: center; */
+
+    /* top: 100px; */
+  }
+  
+  .array-bar {
+    width: 2px;
+    display: inline-block;
+    margin: 0 1px;
+  }
+
+  /* end of array styling  */
 
 #logvisualizerstatebutton {
     margin-left: 15px;

@@ -2,6 +2,12 @@ import React from 'react';
 // import ReactDOM from 'react-dom';
 import './css/SortVisualizer.css';
 
+// This is the main color of the array bars.
+const PRIMARY_COLOR = '#292cff';
+
+// This is the color of array bars that are being compared throughout the animations.
+const SECONDARY_COLOR = 'red';
+
 export default class SortVisualizer extends React.Component {
     constructor(props) {
         super(props);
@@ -29,6 +35,7 @@ export default class SortVisualizer extends React.Component {
     render() {
         return (
             <div id='sortvisualizer'>
+
                 <div className="dropdown">
                     <p id='algorithm-dropdown-label'>{this.state.algorithmType}</p>
                     <div className="dropdown-content">
@@ -39,6 +46,18 @@ export default class SortVisualizer extends React.Component {
                         ))}
                     </div>
                 </div>
+
+                <div className="array-container">
+                    {this.state.array.map((value, index) => (
+                    <div className="array-bar"
+                        key={index}
+                        style={{
+                            backgroundColor: PRIMARY_COLOR,
+                            height: `${value}px`,
+                        }}></div>
+                    ))}
+                </div>
+
                 {/* <button id="logvisualizerstatebutton" onClick={() => console.log(this.state)}>Log Sort Visualizer State</button> */}
             </div>
         );
