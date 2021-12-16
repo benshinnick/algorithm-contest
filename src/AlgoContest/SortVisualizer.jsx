@@ -25,6 +25,7 @@ export default class SortVisualizer extends React.Component {
     componentDidUpdate(prevProps) {
         if (this.props.isContestStarted !== prevProps.isContestStarted) {
             if(this.props.isContestStarted === true) {
+                // console.log('starting sort')
                 this.doSort();
             }
         }
@@ -56,13 +57,6 @@ export default class SortVisualizer extends React.Component {
     doSort() {
         let arrayCopy = this.state.array.map((x) => x);
         let animations;
-        console.log(3);
-        setTimeout(() => {
-            console.log(2);
-        }, 1000);
-        setTimeout(() => {
-            console.log(1);
-        }, 2000);
 
         switch(this.state.algorithmType) {
             case 'merge':
@@ -75,10 +69,11 @@ export default class SortVisualizer extends React.Component {
                 this.shellSort();
                 break;
             case 'insertion':
-                animations = getInsertionSortAnimations(arrayCopy);
-                setTimeout(() => {
-                    this.insertionSort(animations);
-                }, 3000);
+                animations = Promise.resolve(getInsertionSortAnimations(arrayCopy));
+                animations.then(animationData => {
+                    console.log("Starting insertion sort");
+                    this.insertionSort(animationData);
+                });
                 break;
             case 'heap':
                 this.heapSort();
@@ -140,6 +135,7 @@ export default class SortVisualizer extends React.Component {
 
             }
         }
+        console.log("Finished Proccessing Insertion Sort");
         setTimeout(() => {
             document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = '#c4ffe9';
         }, animations.length * ANIMATION_SPEED_MS);
