@@ -2,7 +2,7 @@ import React from 'react';
 import {getInsertionSortAnimations} from './sortAlgorithms/InsertionSort.js';
 import './css/SortVisualizer.css';
 
-const ANIMATION_SPEED_MS = 1;
+const ANIMATION_SPEED_MS = 0.5;
 // main color of the array bars
 const PRIMARY_COLOR = '#292cff';
 // color of array bars that are being compared
@@ -17,16 +17,17 @@ export default class SortVisualizer extends React.Component {
             array: this.props.array,
             algorithmType: this.props.algorithmType,
             allAlgorithmTypes: this.props.algorithmTypes,
-            contestantNumber: this.props.contestantNumber,
-            isContestStarted: this.props.isContestStarted
+            contestantNumber: this.props.contestantNumber
         };
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.isContestStarted !== prevProps.isContestStarted) {
-            if(this.props.isContestStarted === true) {
-                // console.log('starting sort')
+        if (this.props.isContestStarting !== prevProps.isContestStarting) {
+            if(this.props.isContestStarting === true) {
                 this.doSort();
+            }
+            else {
+                document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = '#f7f7f7';
             }
         }
     }
