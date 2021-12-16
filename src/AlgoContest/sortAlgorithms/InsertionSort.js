@@ -24,9 +24,7 @@ function animationLoggingInsertionSort(array, animations) {
                 animations.push(['cf',j, j-1]);
             }
         }
-
     }
-    return array;
 }
 
 function swap(array, index1, index2) {

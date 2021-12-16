@@ -3,9 +3,9 @@ import {getInsertionSortAnimations} from './sortAlgorithms/InsertionSort.js';
 import './css/SortVisualizer.css';
 
 const ANIMATION_SPEED_MS = 1;
-// This is the main color of the array bars
+// main color of the array bars
 const PRIMARY_COLOR = '#292cff';
-// This is the color of array bars that are being compared throughout the animations
+// color of array bars that are being compared
 const SECONDARY_COLOR = 'red';
 
 export default class SortVisualizer extends React.Component {
@@ -17,8 +17,17 @@ export default class SortVisualizer extends React.Component {
             array: this.props.array,
             algorithmType: this.props.algorithmType,
             allAlgorithmTypes: this.props.algorithmTypes,
-            contestantNumber: this.props.contestantNumber
+            contestantNumber: this.props.contestantNumber,
+            isContestStarted: this.props.isContestStarted
         };
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.isContestStarted !== prevProps.isContestStarted) {
+            if(this.props.isContestStarted === true) {
+                this.doSort();
+            }
+        }
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -32,6 +41,11 @@ export default class SortVisualizer extends React.Component {
                 contestantNumber: props.contestantNumber
             }
         }
+        if(props.isContestStarted !== state.isContestStarted) {
+            return {
+                isContestStarted: props.isContestStarted
+            }
+        }
         return null;
     }
 
@@ -39,9 +53,62 @@ export default class SortVisualizer extends React.Component {
         this.setState({...this.state, algorithmType: algorithmType});
     }
 
-    insertionSort() {
+    doSort() {
         let arrayCopy = this.state.array.map((x) => x);
-        const animations = getInsertionSortAnimations(arrayCopy);
+        let animations;
+        console.log(3);
+        setTimeout(() => {
+            console.log(2);
+        }, 1000);
+        setTimeout(() => {
+            console.log(1);
+        }, 2000);
+
+        switch(this.state.algorithmType) {
+            case 'merge':
+                this.mergeSort();
+                break;
+            case 'quick':
+                this.quickSort();
+                break;
+            case 'shell':
+                this.shellSort();
+                break;
+            case 'insertion':
+                animations = getInsertionSortAnimations(arrayCopy);
+                setTimeout(() => {
+                    this.insertionSort(animations);
+                }, 3000);
+                break;
+            case 'heap':
+                this.heapSort();
+                break;
+            case 'selection':
+                this.selectionSort();
+                break;
+            case 'bubble':
+                this.bubbleSort();
+                break;
+            default:
+                console.log("Error: Unexpected Algorithm Type",);
+        }
+    }
+
+    //Sort Algorithm Animation Rendering Functions
+
+    mergeSort() {
+        // TODO
+    }
+
+    quickSort() {
+        // TODO
+    }
+
+    shellSort() {
+        // TODO
+    }
+
+    insertionSort(animations) {
 
         for(let i = 0; i < animations.length; ++i) {
             const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
@@ -73,6 +140,21 @@ export default class SortVisualizer extends React.Component {
 
             }
         }
+        setTimeout(() => {
+            document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = '#c4ffe9';
+        }, animations.length * ANIMATION_SPEED_MS);
+    }
+
+    heapSort() {
+        // TODO
+    }
+
+    selectionSort() {
+        // TODO
+    }
+
+    bubbleSort() {
+        // TODO
     }
 
     render() {
@@ -100,9 +182,8 @@ export default class SortVisualizer extends React.Component {
                         }}></div>
                     ))}
                 </div>
-
                 <button id="logvisualizerstatebutton" onClick={() => console.log(this.state)}>Log Sort Visualizer State</button>
-                <button onClick={() => this.insertionSort()}>Test Insertion Sort</button>
+                <button onClick={() => this.doSort()}>Test Sort</button>
             </div>
         );
     }

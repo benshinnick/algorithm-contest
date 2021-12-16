@@ -15,6 +15,8 @@ export default class SortContest extends React.Component {
         this.state = {
             array: [],
             arraySize: INITIAL_ARRAY_SIZE,
+            isContestStarted: false,
+            countdown: null
         };
 
     }
@@ -26,12 +28,13 @@ export default class SortContest extends React.Component {
                 <button id="randomizebutton" onClick={() => this.randomizeArray()}>Generate Random Array</button>
                 <button id="nearlysortedbutton" onClick={() => this.generateNearlySortedArray()}>Generate Nearly Sorted Array</button>
                 {/* <button id="logconteststatebutton" onClick={() => console.log(this.state)}>Log Sort Contest State</button> */}
+                {/* <button>{this.state.countdown}</button> */}
                 <button id="startcontestbutton" onClick={() => this.startContest()}>Start</button>
             </>, document.getElementById('sortcontestheader'));
     }
 
     startContest() {
-        console.log("Starting the contest");
+        this.setState({ ...this.state, isContestStarted: true });
     }
 
     randomizeArray() {
@@ -77,13 +80,21 @@ export default class SortContest extends React.Component {
         return (
             <div id='sortcontest'>
                 <div id="sortcontestheader"></div>
-                <SortVisualizer array={this.state.array} algorithmType="merge" algorithmTypes={algorithmTypes} contestantNumber={1} />
-                <SortVisualizer array={this.state.array} algorithmType="quick" algorithmTypes={algorithmTypes} contestantNumber={2}/>
-                <SortVisualizer array={this.state.array} algorithmType="insertion" algorithmTypes={algorithmTypes} contestantNumber={3}/>
-                {/* <SortVisualizer array={this.state.array} algorithmType="shell" algorithmTypes={algorithmTypes} contestantNumber={4} />
-                <SortVisualizer array={this.state.array} algorithmType="heap" algorithmTypes={algorithmTypes} contestantNumber={5} />
-                <SortVisualizer array={this.state.array} algorithmType="selection" algorithmTypes={algorithmTypes} contestantNumber={6} />
-                <SortVisualizer array={this.state.array} algorithmType="bubble" algorithmTypes={algorithmTypes} contestantNumber={7} /> */}
+                {/* <SortVisualizer array={this.state.array} isContestStarted={this.state.isContestStarted} algorithmType="merge" algorithmTypes={algorithmTypes} contestantNumber={1} />
+                <SortVisualizer array={this.state.array} isContestStarted={this.state.isContestStarted} algorithmType="quick" algorithmTypes={algorithmTypes} contestantNumber={2}/>
+                <SortVisualizer array={this.state.array} isContestStarted={this.state.isContestStarted} algorithmType="insertion" algorithmTypes={algorithmTypes} contestantNumber={3}/>
+                <SortVisualizer array={this.state.array} isContestStarted={this.state.isContestStarted} algorithmType="shell" algorithmTypes={algorithmTypes} contestantNumber={4} />
+                <SortVisualizer array={this.state.array} isContestStarted={this.state.isContestStarted} algorithmType="heap" algorithmTypes={algorithmTypes} contestantNumber={5} />
+                <SortVisualizer array={this.state.array} isContestStarted={this.state.isContestStarted} algorithmType="selection" algorithmTypes={algorithmTypes} contestantNumber={6} />
+                <SortVisualizer array={this.state.array} isContestStarted={this.state.isContestStarted} algorithmType="bubble" algorithmTypes={algorithmTypes} contestantNumber={7} /> */}
+
+                <SortVisualizer array={this.state.array} isContestStarted={this.state.isContestStarted} algorithmType="insertion" algorithmTypes={algorithmTypes} contestantNumber={1} />
+                <SortVisualizer array={this.state.array} isContestStarted={this.state.isContestStarted} algorithmType="insertion" algorithmTypes={algorithmTypes} contestantNumber={2}/>
+                <SortVisualizer array={this.state.array} isContestStarted={this.state.isContestStarted} algorithmType="insertion" algorithmTypes={algorithmTypes} contestantNumber={3}/>
+                <SortVisualizer array={this.state.array} isContestStarted={this.state.isContestStarted} algorithmType="insertion" algorithmTypes={algorithmTypes} contestantNumber={4} />
+                <SortVisualizer array={this.state.array} isContestStarted={this.state.isContestStarted} algorithmType="insertion" algorithmTypes={algorithmTypes} contestantNumber={5} />
+                <SortVisualizer array={this.state.array} isContestStarted={this.state.isContestStarted} algorithmType="insertion" algorithmTypes={algorithmTypes} contestantNumber={6} />
+                <SortVisualizer array={this.state.array} isContestStarted={this.state.isContestStarted} algorithmType="insertion" algorithmTypes={algorithmTypes} contestantNumber={7} />
             </div>
         );
     }
