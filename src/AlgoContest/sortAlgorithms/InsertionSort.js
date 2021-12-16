@@ -11,6 +11,9 @@ function animationLoggingInsertionSort(array, animations) {
     // 's' denotes a swap between two indexes,
     // 'cf' denotes that a comparison (or comparison and swap) is finished
     for(let i = 1; i < array.length; ++i) {
+        animations.push(['c',i, i-1]);
+        animations.push(['cf',i, i-1]);
+
         if(array[i] < array[i-1]) {
             let j = i;
             for(j; array[j] < array[j-1]; --j) {
@@ -24,9 +27,7 @@ function animationLoggingInsertionSort(array, animations) {
                 animations.push(['cf',j, j-1]);
             }
         }
-
     }
-    return array;
 }
 
 function swap(array, index1, index2) {
