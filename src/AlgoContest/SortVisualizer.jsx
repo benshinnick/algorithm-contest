@@ -65,7 +65,7 @@ export default class SortVisualizer extends React.Component {
                 animations = Promise.resolve(getMergeSortAnimations(arrayCopy));
                 animations.then(animationData => {
                     console.log("Starting merge sort");
-                    this.mergeSort(animationData);
+                    this.animateMergeSort(animationData);
                 });
                 break;
             case 'quick':
@@ -78,7 +78,7 @@ export default class SortVisualizer extends React.Component {
                 animations = Promise.resolve(getInsertionSortAnimations(arrayCopy));
                 animations.then(animationData => {
                     console.log("Starting insertion sort");
-                    this.doInsertionSortAnimations(animationData);
+                    this.animateInsertionSort(animationData);
                 });
                 break;
             case 'heap':
@@ -97,7 +97,7 @@ export default class SortVisualizer extends React.Component {
 
     //Sort Algorithm Animation Rendering Functions
 
-    async mergeSort(animations) {
+    async animateMergeSort(animations) {
 
         for(let i = 0; i < animations.length; ++i) {
             const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
@@ -143,7 +143,7 @@ export default class SortVisualizer extends React.Component {
         // TODO
     }
 
-    async doInsertionSortAnimations(animations) {
+    async animateInsertionSort(animations) {
         for(let i = 0; i < animations.length; ++i) {
             const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
             const isComparison = animations.at(i).at(0) !== 's';
