@@ -15,8 +15,9 @@ export default class SortContest extends React.Component {
         this.state = {
             array: [],
             arraySize: INITIAL_ARRAY_SIZE,
+            numOfContestants: 7,
             isContestStarting: false,
-            countdown: null
+            countdown: null,
         };
 
     }

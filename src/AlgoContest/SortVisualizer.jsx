@@ -2,7 +2,7 @@ import React from 'react';
 import {getInsertionSortAnimations} from './sortAlgorithms/InsertionSort.js';
 import './css/SortVisualizer.css';
 
-const ANIMATION_SPEED_MS = 0.5;
+const ANIMATION_SPEED_MS = 1;
 // main color of the array bars
 const PRIMARY_COLOR = '#292cff';
 // color of array bars that are being compared
@@ -104,8 +104,7 @@ export default class SortVisualizer extends React.Component {
         // TODO
     }
 
-    insertionSort(animations) {
-
+    async insertionSort(animations) {
         for(let i = 0; i < animations.length; ++i) {
             const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
             const isComparison = animations.at(i).at(0) !== 's';
@@ -117,19 +116,19 @@ export default class SortVisualizer extends React.Component {
 
             if (isComparison) {
                 if(animations.at(i).at(0) === 'c') {
-                    setTimeout(() => {
+                    await setTimeout(() => {
                         barOneStyle.backgroundColor = SECONDARY_COLOR;
                         barTwoStyle.backgroundColor = SECONDARY_COLOR;
                     }, i * ANIMATION_SPEED_MS);
                 }
                 else if(animations.at(i).at(0) === 'cf') {
-                    setTimeout(() => {
+                    await setTimeout(() => {
                         barOneStyle.backgroundColor = PRIMARY_COLOR;
                         barTwoStyle.backgroundColor = PRIMARY_COLOR;
                     }, i * ANIMATION_SPEED_MS);
                 }
             } else {
-                setTimeout(() => {
+                await setTimeout(() => {
                     barOneStyle.height = `${animations.at(i).at(4)}px`;
                     barTwoStyle.height = `${animations.at(i).at(3)}px`;
                 }, i * ANIMATION_SPEED_MS);
