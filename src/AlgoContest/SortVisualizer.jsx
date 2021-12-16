@@ -13,12 +13,11 @@ export default class SortVisualizer extends React.Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             array: this.props.array,
             algorithmType: this.props.algorithmType,
             allAlgorithmTypes: this.props.algorithmTypes,
-            contestantNumber: this.props.contestantNumber
+            contestantNumber: this.props.contestantNumber,
         };
     }
 
@@ -42,11 +41,6 @@ export default class SortVisualizer extends React.Component {
         if(props.contestantNumber !== state.contestantNumber) {
             return{
                 contestantNumber: props.contestantNumber
-            }
-        }
-        if(props.isContestStarted !== state.isContestStarted) {
-            return {
-                isContestStarted: props.isContestStarted
             }
         }
         return null;
@@ -111,19 +105,22 @@ export default class SortVisualizer extends React.Component {
                 const barTwoStyle = arrayBars[barTwoIndex].style;
 
                 if(animations.at(i).at(0) === 'c') {
-                    await setTimeout(() => {
+                    await this.props.algorithmsReady();
+                    setTimeout(() => {
                         barOneStyle.backgroundColor = SECONDARY_COLOR;
                         barTwoStyle.backgroundColor = SECONDARY_COLOR;
                     }, i * ANIMATION_SPEED_MS);
                 }
                 else if(animations.at(i).at(0) === 'cf') {
-                    await setTimeout(() => {
+                    await this.props.algorithmsReady();
+                    setTimeout(() => {
                         barOneStyle.backgroundColor = PRIMARY_COLOR;
                         barTwoStyle.backgroundColor = PRIMARY_COLOR;
                     }, i * ANIMATION_SPEED_MS);
                 }
             } else {
-                await setTimeout(() => {
+                await this.props.algorithmsReady();
+                setTimeout(() => {
                     barOneStyle.height = `${animations.at(i).at(2)}px`;
                 }, i * ANIMATION_SPEED_MS);
             }
@@ -133,6 +130,8 @@ export default class SortVisualizer extends React.Component {
         setTimeout(() => {
             document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = '#c4ffe9';
         }, animations.length * ANIMATION_SPEED_MS);
+
+        this.props.algorithmNowReady();
     }
 
     quickSort() {
@@ -155,19 +154,22 @@ export default class SortVisualizer extends React.Component {
 
             if (isComparison) {
                 if(animations.at(i).at(0) === 'c') {
-                    await setTimeout(() => {
+                    await this.props.algorithmsReady();
+                    setTimeout(() => {
                         barOneStyle.backgroundColor = SECONDARY_COLOR;
                         barTwoStyle.backgroundColor = SECONDARY_COLOR;
                     }, i * ANIMATION_SPEED_MS);
                 }
                 else if(animations.at(i).at(0) === 'cf') {
-                    await setTimeout(() => {
+                    await this.props.algorithmsReady();
+                    setTimeout(() => {
                         barOneStyle.backgroundColor = PRIMARY_COLOR;
                         barTwoStyle.backgroundColor = PRIMARY_COLOR;
                     }, i * ANIMATION_SPEED_MS);
                 }
             } else {
-                await setTimeout(() => {
+                await this.props.algorithmsReady();
+                setTimeout(() => {
                     barOneStyle.height = `${animations.at(i).at(4)}px`;
                     barTwoStyle.height = `${animations.at(i).at(3)}px`;
                 }, i * ANIMATION_SPEED_MS);
@@ -177,6 +179,8 @@ export default class SortVisualizer extends React.Component {
         setTimeout(() => {
             document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = '#c4ffe9';
         }, animations.length * ANIMATION_SPEED_MS);
+
+        this.props.algorithmNowReady();
     }
 
     heapSort() {
@@ -217,7 +221,7 @@ export default class SortVisualizer extends React.Component {
                     ))}
                 </div>
 
-                {/* <button id="logvisualizerstatebutton" onClick={() => console.log(this.state)}>Log Sort Visualizer State</button> */}
+                <button id="logvisualizerstatebutton" onClick={() => console.log(this.state)}>Log Sort Visualizer State</button>
                 <button onClick={() => this.doSort()}>Test Sort</button>
             </div>
         );
