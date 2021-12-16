@@ -1,10 +1,11 @@
 import React from 'react';
 import {getInsertionSortAnimations} from './sortAlgorithms/InsertionSort.js';
+import {getMergeSortAnimations} from './sortAlgorithms/MergeSort.js';
 import './css/SortVisualizer.css';
 
-const ANIMATION_SPEED_MS = 1;
-// main color of the array bars
-const PRIMARY_COLOR = '#292cff';
+const ANIMATION_SPEED_MS = 5;
+// main color of the array bars: dark blue
+const PRIMARY_COLOR = '#292cff'; 
 // color of array bars that are being compared
 const SECONDARY_COLOR = 'red';
 
@@ -57,11 +58,15 @@ export default class SortVisualizer extends React.Component {
 
     doSort() {
         let arrayCopy = this.state.array.map((x) => x);
-        let animations;
+        let animations = [];
 
         switch(this.state.algorithmType) {
             case 'merge':
-                this.mergeSort();
+                animations = Promise.resolve(getMergeSortAnimations(arrayCopy));
+                animations.then(animationData => {
+                    console.log("Starting merge sort");
+                    this.mergeSort(animationData);
+                });
                 break;
             case 'quick':
                 this.quickSort();
@@ -73,7 +78,7 @@ export default class SortVisualizer extends React.Component {
                 animations = Promise.resolve(getInsertionSortAnimations(arrayCopy));
                 animations.then(animationData => {
                     console.log("Starting insertion sort");
-                    this.insertionSort(animationData);
+                    this.doInsertionSortAnimations(animationData);
                 });
                 break;
             case 'heap':
@@ -92,8 +97,42 @@ export default class SortVisualizer extends React.Component {
 
     //Sort Algorithm Animation Rendering Functions
 
-    mergeSort() {
-        // TODO
+    async mergeSort(animations) {
+
+        for(let i = 0; i < animations.length; ++i) {
+            const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
+            const isComparison = animations.at(i).at(0) !== 'o';
+
+            const barOneIndex = animations.at(i).at(1);
+            const barOneStyle = arrayBars[barOneIndex].style;
+
+            if (isComparison) {
+                const barTwoIndex = animations.at(i).at(2);
+                const barTwoStyle = arrayBars[barTwoIndex].style;
+
+                if(animations.at(i).at(0) === 'c') {
+                    await setTimeout(() => {
+                        barOneStyle.backgroundColor = SECONDARY_COLOR;
+                        barTwoStyle.backgroundColor = SECONDARY_COLOR;
+                    }, i * ANIMATION_SPEED_MS);
+                }
+                else if(animations.at(i).at(0) === 'cf') {
+                    await setTimeout(() => {
+                        barOneStyle.backgroundColor = PRIMARY_COLOR;
+                        barTwoStyle.backgroundColor = PRIMARY_COLOR;
+                    }, i * ANIMATION_SPEED_MS);
+                }
+            } else {
+                await setTimeout(() => {
+                    barOneStyle.height = `${animations.at(i).at(2)}px`;
+                }, i * ANIMATION_SPEED_MS);
+            }
+        }  
+
+        console.log("Finished Proccessing Merge Sort");
+        setTimeout(() => {
+            document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = '#c4ffe9';
+        }, animations.length * ANIMATION_SPEED_MS);
     }
 
     quickSort() {
@@ -104,7 +143,7 @@ export default class SortVisualizer extends React.Component {
         // TODO
     }
 
-    async insertionSort(animations) {
+    async doInsertionSortAnimations(animations) {
         for(let i = 0; i < animations.length; ++i) {
             const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
             const isComparison = animations.at(i).at(0) !== 's';
@@ -132,7 +171,6 @@ export default class SortVisualizer extends React.Component {
                     barOneStyle.height = `${animations.at(i).at(4)}px`;
                     barTwoStyle.height = `${animations.at(i).at(3)}px`;
                 }, i * ANIMATION_SPEED_MS);
-
             }
         }
         console.log("Finished Proccessing Insertion Sort");
@@ -178,7 +216,8 @@ export default class SortVisualizer extends React.Component {
                         }}></div>
                     ))}
                 </div>
-                <button id="logvisualizerstatebutton" onClick={() => console.log(this.state)}>Log Sort Visualizer State</button>
+
+                {/* <button id="logvisualizerstatebutton" onClick={() => console.log(this.state)}>Log Sort Visualizer State</button> */}
                 <button onClick={() => this.doSort()}>Test Sort</button>
             </div>
         );
