@@ -1,5 +1,6 @@
 export function getInsertionSortAnimations(array) {
     const animations = [];
+    if (array.length <= 1) return array;
     animationLoggingInsertionSort(array, animations);
     return animations;
 }
