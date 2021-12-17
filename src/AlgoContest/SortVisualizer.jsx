@@ -5,10 +5,17 @@ import './css/SortVisualizer.css';
 
 const ANIMATION_SPEED_MS = 5;
 const ANIMATION_DELAY_MS = 3000;
+
 // main color of the array bars: dark blue
 const PRIMARY_COLOR = '#292cff'; 
 // color of array bars that are being compared
 const SECONDARY_COLOR = 'red';
+// color of all the array bars once sorting has finished
+const FINISHED_SORTING_COLOR = '#007bff';
+// color of the component background: light grey
+const DEFAULT_BACKGROUND_COLOR = '#f7f7f7';
+// color of the component backgound after finishing sorting: light green
+const FINISHED_SORTING_BACKGROUND_COLOR = '#edfff2';
 
 export default class SortVisualizer extends React.Component {
 
@@ -186,12 +193,22 @@ export default class SortVisualizer extends React.Component {
     }
 
     resetVisualizationStyling() {
-        document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = '#f7f7f7';
+        document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = DEFAULT_BACKGROUND_COLOR;
+        const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
+        if(arrayBars[0].style.backgroundColor !== PRIMARY_COLOR) {
+            for (var i = 0; i < arrayBars.length; i++) {
+                arrayBars[i].style.backgroundColor = PRIMARY_COLOR;
+            }
+        }
     }
 
     handleAlgorithmIsNowFinished(lastAnimationStepNumber) {
         setTimeout(() => {
-            document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = '#c4ffe9';
+            document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = FINISHED_SORTING_BACKGROUND_COLOR;
+            const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
+            for (var i = 0; i < arrayBars.length; i++) {
+                arrayBars[i].style.backgroundColor = FINISHED_SORTING_COLOR;
+            }
         }, lastAnimationStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
     }
 

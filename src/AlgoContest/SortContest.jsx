@@ -1,10 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import SortVisualizer from './SortVisualizer.jsx';
 import './css/SortContest.css';
 
 const ARRAY_MIN_VALUE = 5;
-const ARRAY_MAX_VALUE = 130;
+const ARRAY_MAX_VALUE = 145;
 const INITIAL_ARRAY_SIZE = 250;
 const INITIAL_NUM_OF_CONTESTANTS = 3;
 
