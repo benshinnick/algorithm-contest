@@ -89,8 +89,6 @@ export default class SortVisualizer extends React.Component {
         }
     }
 
-    //Sort Algorithm Animation Rendering Functions
-
     async animateMergeSort(animations) {
 
         for(let i = 0; i < animations.length; ++i) {
@@ -105,22 +103,19 @@ export default class SortVisualizer extends React.Component {
                 const barTwoStyle = arrayBars[barTwoIndex].style;
 
                 if(animations.at(i).at(0) === 'c') {
-                    await this.props.algorithmsReady();
-                    setTimeout(() => {
+                    await setTimeout(() => {
                         barOneStyle.backgroundColor = SECONDARY_COLOR;
                         barTwoStyle.backgroundColor = SECONDARY_COLOR;
                     }, i * ANIMATION_SPEED_MS);
                 }
                 else if(animations.at(i).at(0) === 'cf') {
-                    await this.props.algorithmsReady();
-                    setTimeout(() => {
+                    await setTimeout(() => {
                         barOneStyle.backgroundColor = PRIMARY_COLOR;
                         barTwoStyle.backgroundColor = PRIMARY_COLOR;
                     }, i * ANIMATION_SPEED_MS);
                 }
             } else {
-                await this.props.algorithmsReady();
-                setTimeout(() => {
+                await setTimeout(() => {
                     barOneStyle.height = `${animations.at(i).at(2)}px`;
                 }, i * ANIMATION_SPEED_MS);
             }
@@ -154,22 +149,20 @@ export default class SortVisualizer extends React.Component {
 
             if (isComparison) {
                 if(animations.at(i).at(0) === 'c') {
-                    await this.props.algorithmsReady();
-                    setTimeout(() => {
+                    await setTimeout(() => {
+                        // await this.props.algorithmsReady();
                         barOneStyle.backgroundColor = SECONDARY_COLOR;
                         barTwoStyle.backgroundColor = SECONDARY_COLOR;
                     }, i * ANIMATION_SPEED_MS);
                 }
                 else if(animations.at(i).at(0) === 'cf') {
-                    await this.props.algorithmsReady();
-                    setTimeout(() => {
+                    await setTimeout(() => {
                         barOneStyle.backgroundColor = PRIMARY_COLOR;
                         barTwoStyle.backgroundColor = PRIMARY_COLOR;
                     }, i * ANIMATION_SPEED_MS);
                 }
             } else {
-                await this.props.algorithmsReady();
-                setTimeout(() => {
+                await setTimeout(() => {
                     barOneStyle.height = `${animations.at(i).at(4)}px`;
                     barTwoStyle.height = `${animations.at(i).at(3)}px`;
                 }, i * ANIMATION_SPEED_MS);

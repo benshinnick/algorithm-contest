@@ -48,7 +48,7 @@ export default class SortContest extends React.Component {
     algorithmsReady() {
         return new Promise(resolve => {
             setInterval(() => {
-                console.log('hello');
+                console.log('promise pending');
                 if(this.state.numOfReadyContestants === this.state.numOfContestants) {
                     resolve(true);
                 }
@@ -125,7 +125,7 @@ export default class SortContest extends React.Component {
                     algorithmNowReady={this.algorithmNowReady}
                     algorithmsReady={this.algorithmsReady}
                 />
-                {/* <SortVisualizer 
+                <SortVisualizer 
                     array={this.state.array}
                     isContestStarting={this.state.isContestStarting}
                     algorithmType="insertion"
@@ -169,7 +169,7 @@ export default class SortContest extends React.Component {
                     contestantNumber={7}
                     algorithmNowReady={this.algorithmNowReady}
                     algorithmsReady={this.algorithmsReady}
-                /> */}
+                />
             </div>
         );
     }
