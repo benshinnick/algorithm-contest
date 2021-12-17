@@ -6,6 +6,17 @@ import './css/SortContest.css';
 const ARRAY_MIN_VALUE = 5;
 const ARRAY_MAX_VALUE = 130;
 const INITIAL_ARRAY_SIZE = 250;
+const INITIAL_NUM_OF_CONTESTANTS = 3;
+
+const ALGORITHM_TYPES = [
+    'merge',
+    'insertion',
+    'quick',
+    'shell',
+    'heap',
+    'selection',
+    'bubble'
+]
 
 export default class SortContest extends React.Component {
 
@@ -14,34 +25,14 @@ export default class SortContest extends React.Component {
         this.state = {
             array: [],
             arraySize: INITIAL_ARRAY_SIZE,
-            numOfContestants: 7,
-            isContestStarting: false,
-            numOfReadyContestants: 0,
-            countdown: null,
+            numOfContestants: INITIAL_NUM_OF_CONTESTANTS
         };
-
-        this.algorithmNowReady = this.algorithmNowReady.bind(this);
-        this.isAlgorithmsReady = this.isAlgorithmsReady.bind(this);
-
-        this.contestant1 = React.createRef();
-        this.contestant2 = React.createRef();
-        this.contestant3 = React.createRef();
-        this.contestant4 = React.createRef();
-        this.contestant5 = React.createRef();
-        this.contestant6 = React.createRef();
-        this.contestant7 = React.createRef();
+        this.algoContestantRefs = [];
     }
 
-    testReferences() {
-        console.log('testing referneces');
-        this.contestant1.current.doSort();
-        this.contestant2.current.doSort();
-        this.contestant3.current.doSort();
-        this.contestant4.current.doSort();
-        this.contestant5.current.doSort();
-        this.contestant6.current.doSort();
-        this.contestant7.current.doSort();
-    }
+    setRef = (ref) => {
+        this.algoContestantRefs.push(ref);
+    };
 
     componentDidMount() {
         this.randomizeArray();
@@ -50,52 +41,54 @@ export default class SortContest extends React.Component {
                 <button id="randomizebutton" onClick={() => this.randomizeArray()}>Generate Random Array</button>
                 <button id="nearlysortedbutton" onClick={() => this.generateNearlySortedArray()}>Generate Nearly Sorted Array</button>
                 <button id="logconteststatebutton" onClick={() => console.log(this.state)}>Log Sort Contest State</button>
-                {/* <button>{this.state.countdown}</button> */}
+                {/* some sort of countdown marker */}
                 <button onClick={() => this.testReferences()}>Test References</button>
                 <button id="startcontestbutton" onClick={() => this.startContest()}>Start</button>
             </>, document.getElementById('sortcontestheader'));
     }
 
     startContest() {
-        // this.setState({ ...this.state, isContestStarting: true }, () => this.setState({ ...this.state, isContestStarting: false }));
         console.log('starting contest');
-        let contestants = [
-            this.contestant1.current,
-            this.contestant2.current,
-            // this.contestant3.current,
-            // this.contestant4.current,
-            // this.contestant5.current,
-            // this.contestant6.current,
-            // this.contestant7.current
-        ]
 
-        let allContestantAnimationData = [];
-        for(let i = 0; i < contestants.length; ++i) {
-            allContestantAnimationData[i] = contestants[i].getSortAnimations();
+        //console countdown timer
+        let numOfCountdownSeconds = 3;
+        for(let i = 0; i < numOfCountdownSeconds; ++i) {
+            setTimeout(() => {
+                console.log(numOfCountdownSeconds - i);
+            }, i * 1000);
         }
 
-        let contestIsOver = false;
+        const allContestantAnimationData = [];
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            allContestantAnimationData[i] = this.algoContestantRefs[i].getSortAnimations();
+        }
+
+        console.log(allContestantAnimationData);
+
         let stepCounter = 0;
-        while(!contestIsOver) {
-            for(let i = 0; i < contestants.length; ++i) {
-                if(stepCounter >= allContestantAnimationData.at(i).length) {
-                    contestIsOver = true;
-                    break;
+        let numOfFinishedContestants = 0;
+        while(numOfFinishedContestants < this.state.numOfContestants) {
+            for(let i = 0; i < this.state.numOfContestants; ++i) {
+                if(stepCounter === allContestantAnimationData.at(i).length) {
+                    numOfFinishedContestants++;
+                    this.algoContestantRefs[i].handleAlgorithmIsNowFinished(stepCounter);
+                    continue;
                 }
-                contestants[i].doAnimationNextStep(allContestantAnimationData.at(i).at(stepCounter), stepCounter);
+                else if(stepCounter > allContestantAnimationData.at(i).length) {
+                    continue;
+                }
+                else {
+                    this.algoContestantRefs[i].doAnimationNextStep(allContestantAnimationData.at(i).at(stepCounter), stepCounter);
+                }
             }
             stepCounter++;
         }
+
+        console.log('finishing contest');
     }
 
-    algorithmNowReady() {
-        let newNumOfReadyContestants = this.state.numOfReadyContestants + 1;
-        this.setState({ ...this.state, numOfReadyContestants: newNumOfReadyContestants });
-        console.log(`Contestant ${newNumOfReadyContestants} is ready`);
-    }
-
-    isAlgorithmsReady() {
-        return (this.state.numOfReadyContestants === this.state.numOfContestants);
+    isContestOver() {
+        return this.state.numOfFinishedContestants === this.state.numOfContestants;
     }
 
     randomizeArray() {
@@ -135,91 +128,28 @@ export default class SortContest extends React.Component {
     }
 
     render() {
-        const algorithmTypes = ['merge', 'quick', 'shell', 'insertion',
-                                'heap', 'selection', 'bubble']
+        const contestantNumbers = [];
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            contestantNumbers.push(i+1);
+        }
+
         return (
             <div id='sortcontest'>
                 <div id="sortcontestheader"></div>
-                {/* <SortVisualizer array={this.state.array} isContestStarting={this.state.isContestStarting} algorithmType="merge" algorithmTypes={algorithmTypes} contestantNumber={1} />
-                <SortVisualizer array={this.state.array} isContestStarting={this.state.isContestStarting} algorithmType="quick" algorithmTypes={algorithmTypes} contestantNumber={2}/>
-                <SortVisualizer array={this.state.array} isContestStarting={this.state.isContestStarting} algorithmType="insertion" algorithmTypes={algorithmTypes} contestantNumber={3}/>
-                <SortVisualizer array={this.state.array} isContestStarting={this.state.isContestStarting} algorithmType="shell" algorithmTypes={algorithmTypes} contestantNumber={4} />
-                <SortVisualizer array={this.state.array} isContestStarting={this.state.isContestStarting} algorithmType="heap" algorithmTypes={algorithmTypes} contestantNumber={5} />
-                <SortVisualizer array={this.state.array} isContestStarting={this.state.isContestStarting} algorithmType="selection" algorithmTypes={algorithmTypes} contestantNumber={6} />
-                <SortVisualizer array={this.state.array} isContestStarting={this.state.isContestStarting} algorithmType="bubble" algorithmTypes={algorithmTypes} contestantNumber={7} /> */}
 
-                {/* Feels too hard coded, will try to refactor later */}
+                <div id='sort-visualizers'>
+                    {contestantNumbers.map(contestantNum => (
+                        <SortVisualizer 
+                            key={contestantNum}
+                            ref={this.setRef}
+                            array={this.state.array}
+                            algorithmType={ALGORITHM_TYPES[contestantNum - 1]}
+                            algorithmTypes={ALGORITHM_TYPES}
+                            contestantNumber={contestantNum}
+                        />
+                    ))}
+                </div>
 
-                <SortVisualizer 
-                    ref={this.contestant1}
-                    array={this.state.array}
-                    isContestStarting={this.state.isContestStarting}
-                    algorithmType="merge"
-                    algorithmTypes={algorithmTypes}
-                    contestantNumber={1}
-                    algorithmNowReady={this.algorithmNowReady}
-                    isAlgorithmsReady={this.isAlgorithmsReady}
-                />
-                <SortVisualizer 
-                    ref={this.contestant2}
-                    array={this.state.array}
-                    isContestStarting={this.state.isContestStarting}
-                    algorithmType="insertion"
-                    algorithmTypes={algorithmTypes}
-                    contestantNumber={2}
-                    algorithmNowReady={this.algorithmNowReady}
-                    isAlgorithmsReady={this.isAlgorithmsReady}
-                />
-                {/* <SortVisualizer
-                    ref={this.contestant3}
-                    array={this.state.array}
-                    isContestStarting={this.state.isContestStarting}
-                    algorithmType="insertion"
-                    algorithmTypes={algorithmTypes}
-                    contestantNumber={3}
-                    algorithmNowReady={this.algorithmNowReady}
-                    isAlgorithmsReady={this.isAlgorithmsReady}
-                />
-                <SortVisualizer 
-                    ref={this.contestant4}
-                    array={this.state.array}
-                    isContestStarting={this.state.isContestStarting}
-                    algorithmType="insertion"
-                    algorithmTypes={algorithmTypes}
-                    contestantNumber={4}
-                    algorithmNowReady={this.algorithmNowReady}
-                    isAlgorithmsReady={this.isAlgorithmsReady}
-                />
-                <SortVisualizer 
-                    ref={this.contestant5}
-                    array={this.state.array}
-                    isContestStarting={this.state.isContestStarting}
-                    algorithmType="insertion"
-                    algorithmTypes={algorithmTypes}
-                    contestantNumber={5}
-                    algorithmNowReady={this.algorithmNowReady}
-                    isAlgorithmsReady={this.isAlgorithmsReady}
-                />
-                <SortVisualizer 
-                    ref={this.contestant6}
-                    array={this.state.array}
-                    isContestStarting={this.state.isContestStarting}
-                    algorithmType="insertion"
-                    algorithmTypes={algorithmTypes}
-                    contestantNumber={6}
-                    algorithmNowReady={this.algorithmNowReady}
-                    isAlgorithmsReady={this.isAlgorithmsReady}
-                />
-                <SortVisualizer 
-                    ref={this.contestant7}
-                    array={this.state.array}
-                    isContestStarting={this.state.isContestStarting}
-                    algorithmType="insertion"
-                    algorithmTypes={algorithmTypes}
-                    contestantNumber={7}
-                    algorithmNowReady={this.algorithmNowReady}
-                    isAlgorithmsReady={this.isAlgorithmsReady}
-                /> */}
             </div>
         );
     }

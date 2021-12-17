@@ -136,53 +136,7 @@ export default class SortVisualizer extends React.Component {
             return;
         }
 
-        // find a way to do this later
-        // setTimeout(() => {
-        //     document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = '#c4ffe9';
-        // }, animations.length * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
     }
-
-    // async animateMergeSort(animations) {
-
-    //     console.log('starting sort animation');
-
-    //     for(let i = 0; i < animations.length; ++i) {
-    //         const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
-    //         const isComparison = animations.at(i).at(0) !== 'o';
-
-    //         const barOneIndex = animations.at(i).at(1);
-    //         const barOneStyle = arrayBars[barOneIndex].style;
-
-    //         if (isComparison) {
-    //             const barTwoIndex = animations.at(i).at(2);
-    //             const barTwoStyle = arrayBars[barTwoIndex].style;
-
-    //             if(animations.at(i).at(0) === 'c') {
-    //                 await setTimeout(() => {
-    //                     barOneStyle.backgroundColor = SECONDARY_COLOR;
-    //                     barTwoStyle.backgroundColor = SECONDARY_COLOR;
-    //                 }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
-    //             }
-    //             else if(animations.at(i).at(0) === 'cf') {
-    //                 await setTimeout(() => {
-    //                     barOneStyle.backgroundColor = PRIMARY_COLOR;
-    //                     barTwoStyle.backgroundColor = PRIMARY_COLOR;
-    //                 }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
-    //             }
-    //         } else {
-    //             await setTimeout(() => {
-    //                 barOneStyle.height = `${animations.at(i).at(2)}px`;
-    //             }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
-    //         }
-    //     }  
-
-    //     setTimeout(() => {
-    //         document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = '#c4ffe9';
-    //     }, animations.length * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
-
-    //     this.props.algorithmNowReady();
-    //     console.log(this.props.isAlgorithmsReady());
-    // }
 
     quickSort() {
         // TODO
@@ -223,48 +177,6 @@ export default class SortVisualizer extends React.Component {
         }
     }
 
-    // async animateInsertionSort(animations) {
-
-    //     console.log('starting sort animation');
-
-    //     for(let i = 0; i < animations.length; ++i) {
-    //         const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
-    //         const isComparison = animations.at(i).at(0) !== 's';
-
-    //         const barOneIndex = animations.at(i).at(1);
-    //         const barTwoIndex = animations.at(i).at(2);
-    //         const barOneStyle = arrayBars[barOneIndex].style;
-    //         const barTwoStyle = arrayBars[barTwoIndex].style;
-
-    //         if (isComparison) {
-    //             if(animations.at(i).at(0) === 'c') {
-    //                 await setTimeout(() => {
-    //                     barOneStyle.backgroundColor = SECONDARY_COLOR;
-    //                     barTwoStyle.backgroundColor = SECONDARY_COLOR;
-    //                 }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
-    //             }
-    //             else if(animations.at(i).at(0) === 'cf') {
-    //                 await setTimeout(() => {
-    //                     barOneStyle.backgroundColor = PRIMARY_COLOR;
-    //                     barTwoStyle.backgroundColor = PRIMARY_COLOR;
-    //                 }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
-    //             }
-    //         } else {
-    //             await setTimeout(() => {
-    //                 barOneStyle.height = `${animations.at(i).at(4)}px`;
-    //                 barTwoStyle.height = `${animations.at(i).at(3)}px`;
-    //             }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
-    //         }
-    //     }
-
-    //     setTimeout(() => {
-    //         document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = '#c4ffe9';
-    //     }, animations.length * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
-
-    //     this.props.algorithmNowReady();
-    //     console.log(this.props.isAlgorithmsReady());
-    // }
-
     heapSort() {
         // TODO
     }
@@ -275,6 +187,12 @@ export default class SortVisualizer extends React.Component {
 
     bubbleSort() {
         // TODO
+    }
+
+    handleAlgorithmIsNowFinished(lastAnimationStepNumber) {
+        setTimeout(() => {
+            document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = '#c4ffe9';
+        }, lastAnimationStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
     }
 
     updateAlgorithmType(algorithmType) {
