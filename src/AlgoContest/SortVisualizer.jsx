@@ -4,7 +4,7 @@ import {getMergeSortAnimations} from './sortAlgorithms/MergeSort.js';
 import './css/SortVisualizer.css';
 
 const ANIMATION_SPEED_MS = 5;
-const ANIMATION_DELAY_MS = 10000;
+const ANIMATION_DELAY_MS = 8000;
 // main color of the array bars: dark blue
 const PRIMARY_COLOR = '#292cff'; 
 // color of array bars that are being compared
@@ -45,10 +45,6 @@ export default class SortVisualizer extends React.Component {
             }
         }
         return null;
-    }
-
-    updateAlgorithmType(algorithmType) {
-        this.setState({...this.state, algorithmType: algorithmType});
     }
 
     doSort() {
@@ -106,19 +102,19 @@ export default class SortVisualizer extends React.Component {
                 const barTwoStyle = arrayBars[barTwoIndex].style;
 
                 if(animations.at(i).at(0) === 'c') {
-                    setTimeout(() => {
+                    await setTimeout(() => {
                         barOneStyle.backgroundColor = SECONDARY_COLOR;
                         barTwoStyle.backgroundColor = SECONDARY_COLOR;
                     }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
                 }
                 else if(animations.at(i).at(0) === 'cf') {
-                    setTimeout(() => {
+                    await setTimeout(() => {
                         barOneStyle.backgroundColor = PRIMARY_COLOR;
                         barTwoStyle.backgroundColor = PRIMARY_COLOR;
                     }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
                 }
             } else {
-                setTimeout(() => {
+                await setTimeout(() => {
                     barOneStyle.height = `${animations.at(i).at(2)}px`;
                 }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
             }
@@ -155,19 +151,19 @@ export default class SortVisualizer extends React.Component {
 
             if (isComparison) {
                 if(animations.at(i).at(0) === 'c') {
-                    setTimeout(() => {
+                    await setTimeout(() => {
                         barOneStyle.backgroundColor = SECONDARY_COLOR;
                         barTwoStyle.backgroundColor = SECONDARY_COLOR;
                     }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
                 }
                 else if(animations.at(i).at(0) === 'cf') {
-                    setTimeout(() => {
+                    await setTimeout(() => {
                         barOneStyle.backgroundColor = PRIMARY_COLOR;
                         barTwoStyle.backgroundColor = PRIMARY_COLOR;
                     }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
                 }
             } else {
-                    setTimeout(() => {
+                await setTimeout(() => {
                     barOneStyle.height = `${animations.at(i).at(4)}px`;
                     barTwoStyle.height = `${animations.at(i).at(3)}px`;
                 }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
@@ -192,6 +188,10 @@ export default class SortVisualizer extends React.Component {
 
     bubbleSort() {
         // TODO
+    }
+
+    updateAlgorithmType(algorithmType) {
+        this.setState({...this.state, algorithmType: algorithmType});
     }
 
     render() {
