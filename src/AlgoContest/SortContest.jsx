@@ -21,6 +21,24 @@ export default class SortContest extends React.Component {
         };
         this.algorithmNowReady = this.algorithmNowReady.bind(this);
         this.isAlgorithmsReady = this.isAlgorithmsReady.bind(this);
+        this.child1 = React.createRef();
+        this.child2 = React.createRef();
+        this.child3 = React.createRef();
+        this.child4 = React.createRef();
+        this.child5 = React.createRef();
+        this.child6 = React.createRef();
+        this.child7 = React.createRef();
+    }
+
+    testReferences() {
+        console.log('testing referneces');
+        this.child1.current.doSort();
+        this.child2.current.doSort();
+        this.child3.current.doSort();
+        this.child4.current.doSort();
+        this.child5.current.doSort();
+        this.child6.current.doSort();
+        this.child7.current.doSort();
     }
 
     componentDidMount() {
@@ -31,6 +49,7 @@ export default class SortContest extends React.Component {
                 <button id="nearlysortedbutton" onClick={() => this.generateNearlySortedArray()}>Generate Nearly Sorted Array</button>
                 <button id="logconteststatebutton" onClick={() => console.log(this.state)}>Log Sort Contest State</button>
                 {/* <button>{this.state.countdown}</button> */}
+                <button onClick={() => this.testReferences()}>Test References</button>
                 <button id="startcontestbutton" onClick={() => this.startContest()}>Start</button>
             </>, document.getElementById('sortcontestheader'));
     }
@@ -100,6 +119,7 @@ export default class SortContest extends React.Component {
                 <SortVisualizer array={this.state.array} isContestStarting={this.state.isContestStarting} algorithmType="bubble" algorithmTypes={algorithmTypes} contestantNumber={7} /> */}
 
                 <SortVisualizer 
+                    ref={this.child1}
                     array={this.state.array}
                     isContestStarting={this.state.isContestStarting}
                     algorithmType="merge"
@@ -109,6 +129,7 @@ export default class SortContest extends React.Component {
                     isAlgorithmsReady={this.isAlgorithmsReady}
                 />
                 <SortVisualizer 
+                    ref={this.child2}
                     array={this.state.array}
                     isContestStarting={this.state.isContestStarting}
                     algorithmType="insertion"
@@ -117,7 +138,8 @@ export default class SortContest extends React.Component {
                     algorithmNowReady={this.algorithmNowReady}
                     isAlgorithmsReady={this.isAlgorithmsReady}
                 />
-                <SortVisualizer 
+                <SortVisualizer
+                    ref={this.child3}
                     array={this.state.array}
                     isContestStarting={this.state.isContestStarting}
                     algorithmType="insertion"
@@ -127,6 +149,7 @@ export default class SortContest extends React.Component {
                     isAlgorithmsReady={this.isAlgorithmsReady}
                 />
                 <SortVisualizer 
+                    ref={this.child4}
                     array={this.state.array}
                     isContestStarting={this.state.isContestStarting}
                     algorithmType="insertion"
@@ -136,6 +159,7 @@ export default class SortContest extends React.Component {
                     isAlgorithmsReady={this.isAlgorithmsReady}
                 />
                 <SortVisualizer 
+                    ref={this.child5}
                     array={this.state.array}
                     isContestStarting={this.state.isContestStarting}
                     algorithmType="insertion"
@@ -145,6 +169,7 @@ export default class SortContest extends React.Component {
                     isAlgorithmsReady={this.isAlgorithmsReady}
                 />
                 <SortVisualizer 
+                    ref={this.child6}
                     array={this.state.array}
                     isContestStarting={this.state.isContestStarting}
                     algorithmType="insertion"
@@ -154,6 +179,7 @@ export default class SortContest extends React.Component {
                     isAlgorithmsReady={this.isAlgorithmsReady}
                 />
                 <SortVisualizer 
+                    ref={this.child7}
                     array={this.state.array}
                     isContestStarting={this.state.isContestStarting}
                     algorithmType="insertion"

@@ -86,6 +86,11 @@ export default class SortVisualizer extends React.Component {
         }
     }
 
+    //next attempt: take each animation one step at a time and alternate between all algorithm's animations
+    doNextMergeSortAnimation(animations, currentStep) {
+
+    }
+
     async animateMergeSort(animations) {
 
         console.log('starting sort animation');
@@ -134,6 +139,11 @@ export default class SortVisualizer extends React.Component {
 
     shellSort() {
         // TODO
+    }
+
+    //next attempt: take each animation one step at a time and alternate between all algorithm's animations
+    doNextInsertionSortAnimation(animations, currentStep) {
+
     }
 
     async animateInsertionSort(animations) {
