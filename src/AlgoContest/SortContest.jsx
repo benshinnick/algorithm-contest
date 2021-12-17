@@ -36,15 +36,6 @@ export default class SortContest extends React.Component {
 
     componentDidMount() {
         this.randomizeArray();
-        ReactDOM.render(
-            <>
-                <button id="randomizebutton" onClick={() => this.randomizeArray()}>Generate Random Array</button>
-                <button id="nearlysortedbutton" onClick={() => this.generateNearlySortedArray()}>Generate Nearly Sorted Array</button>
-                <button id="logconteststatebutton" onClick={() => console.log(this.state)}>Log Sort Contest State</button>
-                {/* some sort of countdown marker */}
-                <button onClick={() => this.testReferences()}>Test References</button>
-                <button id="startcontestbutton" onClick={() => this.startContest()}>Start</button>
-            </>, document.getElementById('sortcontestheader'));
     }
 
     startContest() {
@@ -63,7 +54,7 @@ export default class SortContest extends React.Component {
             allContestantAnimationData[i] = this.algoContestantRefs[i].getSortAnimations();
         }
 
-        console.log(allContestantAnimationData);
+        console.log('got all animation data');
 
         let stepCounter = 0;
         let numOfFinishedContestants = 0;
@@ -85,10 +76,6 @@ export default class SortContest extends React.Component {
         }
 
         console.log('finishing contest');
-    }
-
-    isContestOver() {
-        return this.state.numOfFinishedContestants === this.state.numOfContestants;
     }
 
     randomizeArray() {
@@ -127,6 +114,27 @@ export default class SortContest extends React.Component {
         this.setState({ ...this.state, array: array });
     }
 
+    resetAlgorithmVisualizationStyling() {
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            this.algoContestantRefs[i].resetVisualizationStyling();
+        }
+    }
+
+    genearateRandomArrayButtonOnClick() {
+        this.resetAlgorithmVisualizationStyling();
+        this.randomizeArray();
+    }
+
+    genearateNearySortedArrayButtonOnClick() {
+        this.resetAlgorithmVisualizationStyling();
+        this.generateNearlySortedArray()
+    }
+
+    startContestButtonOnClick() {
+        this.resetAlgorithmVisualizationStyling();
+        this.startContest();
+    }
+
     render() {
         const contestantNumbers = [];
         for(let i = 0; i < this.state.numOfContestants; ++i) {
@@ -135,7 +143,13 @@ export default class SortContest extends React.Component {
 
         return (
             <div id='sortcontest'>
-                <div id="sortcontestheader"></div>
+                <div id="sortcontestheader">
+                    <button id="randomizebutton" onClick={() => this.genearateRandomArrayButtonOnClick()}>Generate Random Array</button>
+                    <button id="nearlysortedbutton" onClick={() => this.genearateNearySortedArrayButtonOnClick()}>Generate Nearly Sorted Array</button>
+                    {/* <button id="logconteststatebutton" onClick={() => console.log(this.state)}>Log Sort Contest State</button> */}
+                    {/* some sort of countdown marker */}
+                    <button id="startcontestbutton" onClick={() => this.startContestButtonOnClick()}>Start</button>
+                </div>
 
                 <div id='sort-visualizers'>
                     {contestantNumbers.map(contestantNum => (

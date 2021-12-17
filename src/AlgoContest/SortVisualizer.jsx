@@ -35,14 +35,10 @@ export default class SortVisualizer extends React.Component {
 
     static getDerivedStateFromProps(props, state) {
         if(props.array !== state.array){
-            return{
-                array: props.array
-            };
+            return{ array: props.array };
         }
         if(props.contestantNumber !== state.contestantNumber) {
-            return{
-                contestantNumber: props.contestantNumber
-            }
+            return{ contestantNumber: props.contestantNumber }
         }
         return null;
     }
@@ -189,6 +185,10 @@ export default class SortVisualizer extends React.Component {
         // TODO
     }
 
+    resetVisualizationStyling() {
+        document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = '#f7f7f7';
+    }
+
     handleAlgorithmIsNowFinished(lastAnimationStepNumber) {
         setTimeout(() => {
             document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = '#c4ffe9';
@@ -225,8 +225,7 @@ export default class SortVisualizer extends React.Component {
                     ))}
                 </div>
 
-                <button id="logvisualizerstatebutton" onClick={() => console.log(this.state)}>Log Sort Visualizer State</button>
-                <button onClick={() => this.doSort()}>Test Sort</button>
+                {/* <button id="logvisualizerstatebutton" onClick={() => console.log(this.state)}>Log Sort Visualizer State</button> */}
             </div>
         );
     }
