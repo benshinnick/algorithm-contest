@@ -4,7 +4,7 @@ import {getMergeSortAnimations} from './sortAlgorithms/MergeSort.js';
 import './css/SortVisualizer.css';
 
 const ANIMATION_SPEED_MS = 5;
-const ANIMATION_DELAY_MS = 8000;
+const ANIMATION_DELAY_MS = 3000;
 // main color of the array bars: dark blue
 const PRIMARY_COLOR = '#292cff'; 
 // color of array bars that are being compared
@@ -47,39 +47,56 @@ export default class SortVisualizer extends React.Component {
         return null;
     }
 
-    doSort() {
-        let arrayCopy = this.state.array.map((x) => x);
-        let animations = [];
+    getSortAnimations() {
+        let arrayCopy = this.state.array.map((value) => value);
 
         switch(this.state.algorithmType) {
             case 'merge':
-                animations = Promise.resolve(getMergeSortAnimations(arrayCopy));
-                animations.then(animationData => {
-                    // console.log("Starting merge sort");
-                    this.animateMergeSort(animationData);
-                });
-                break;
+                return getMergeSortAnimations(arrayCopy);
             case 'quick':
-                this.quickSort();
+                // return getQuickSortAnimations(arrayCopy);
                 break;
             case 'shell':
-                this.shellSort();
+                // return getShellSortAnimations(arrayCopy);
                 break;
             case 'insertion':
-                animations = Promise.resolve(getInsertionSortAnimations(arrayCopy));
-                animations.then(animationData => {
-                    // console.log("Starting insertion sort");
-                    this.animateInsertionSort(animationData);
-                });
-                break;
+                return getInsertionSortAnimations(arrayCopy);
             case 'heap':
-                this.heapSort();
+                // return getHeapSortAnimations(arrayCopy);
                 break;
             case 'selection':
-                this.selectionSort();
+                // return getSelectionSortAnimations(arrayCopy);
                 break;
             case 'bubble':
-                this.bubbleSort();
+                // return getBubbleSortAnimations(arrayCopy);
+                break;
+            default:
+                console.log("Error: Unexpected Algorithm Type",);
+        }
+    }
+
+    doAnimationNextStep(animationStepInfo, currentStepNumber) {
+        switch(this.state.algorithmType) {
+            case 'merge':
+                this.doNextMergeSortAnimationStep(animationStepInfo, currentStepNumber);
+                break;
+            case 'quick':
+                // doNextQuickSortAnimationStep(animationStepInfo, currentStepNumber);
+                break;
+            case 'shell':
+                // doNextShellSortAnimationStep(animationStepInfo, currentStepNumber);
+                break;
+            case 'insertion':
+                this.doNextInsertionSortAnimationStep(animationStepInfo, currentStepNumber);
+                break;
+            case 'heap':
+                // doNextHeapSortAnimationStep(animationStepInfo, currentStepNumber);
+                break;
+            case 'selection':
+                // doNextSelectionSortAnimationStep(animationStepInfo, currentStepNumber);
+                break;
+            case 'bubble':
+                // doNextBubbleSortAnimationStep(animationStepInfo, currentStepNumber);
                 break;
             default:
                 console.log("Error: Unexpected Algorithm Type",);
@@ -87,51 +104,85 @@ export default class SortVisualizer extends React.Component {
     }
 
     //next attempt: take each animation one step at a time and alternate between all algorithm's animations
-    doNextMergeSortAnimation(animations, currentStep) {
+    doNextMergeSortAnimationStep(animationStepInfo, currentStepNumber) {
+        const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
+        const isComparison = animationStepInfo.at(0) !== 'o';
 
-    }
+        const barOneIndex = animationStepInfo.at(1);
+        const barOneStyle = arrayBars[barOneIndex].style;
 
-    async animateMergeSort(animations) {
+        if (isComparison) {
+            const barTwoIndex = animationStepInfo.at(2);
+            const barTwoStyle = arrayBars[barTwoIndex].style;
 
-        console.log('starting sort animation');
-
-        for(let i = 0; i < animations.length; ++i) {
-            const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
-            const isComparison = animations.at(i).at(0) !== 'o';
-
-            const barOneIndex = animations.at(i).at(1);
-            const barOneStyle = arrayBars[barOneIndex].style;
-
-            if (isComparison) {
-                const barTwoIndex = animations.at(i).at(2);
-                const barTwoStyle = arrayBars[barTwoIndex].style;
-
-                if(animations.at(i).at(0) === 'c') {
-                    await setTimeout(() => {
-                        barOneStyle.backgroundColor = SECONDARY_COLOR;
-                        barTwoStyle.backgroundColor = SECONDARY_COLOR;
-                    }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
-                }
-                else if(animations.at(i).at(0) === 'cf') {
-                    await setTimeout(() => {
-                        barOneStyle.backgroundColor = PRIMARY_COLOR;
-                        barTwoStyle.backgroundColor = PRIMARY_COLOR;
-                    }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
-                }
-            } else {
-                await setTimeout(() => {
-                    barOneStyle.height = `${animations.at(i).at(2)}px`;
-                }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+            if(animationStepInfo.at(0) === 'c') {
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = SECONDARY_COLOR;
+                    barTwoStyle.backgroundColor = SECONDARY_COLOR;
+                }, currentStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+                return;
             }
-        }  
+            else if(animationStepInfo.at(0) === 'cf') {
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = PRIMARY_COLOR;
+                    barTwoStyle.backgroundColor = PRIMARY_COLOR;
+                }, currentStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+                return;
+            }
+        } else {
+            setTimeout(() => {
+                barOneStyle.height = `${animationStepInfo.at(2)}px`;
+            }, currentStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+            return;
+        }
 
-        setTimeout(() => {
-            document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = '#c4ffe9';
-        }, animations.length * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
-
-        this.props.algorithmNowReady();
-        console.log(this.props.isAlgorithmsReady());
+        // find a way to do this later
+        // setTimeout(() => {
+        //     document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = '#c4ffe9';
+        // }, animations.length * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
     }
+
+    // async animateMergeSort(animations) {
+
+    //     console.log('starting sort animation');
+
+    //     for(let i = 0; i < animations.length; ++i) {
+    //         const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
+    //         const isComparison = animations.at(i).at(0) !== 'o';
+
+    //         const barOneIndex = animations.at(i).at(1);
+    //         const barOneStyle = arrayBars[barOneIndex].style;
+
+    //         if (isComparison) {
+    //             const barTwoIndex = animations.at(i).at(2);
+    //             const barTwoStyle = arrayBars[barTwoIndex].style;
+
+    //             if(animations.at(i).at(0) === 'c') {
+    //                 await setTimeout(() => {
+    //                     barOneStyle.backgroundColor = SECONDARY_COLOR;
+    //                     barTwoStyle.backgroundColor = SECONDARY_COLOR;
+    //                 }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+    //             }
+    //             else if(animations.at(i).at(0) === 'cf') {
+    //                 await setTimeout(() => {
+    //                     barOneStyle.backgroundColor = PRIMARY_COLOR;
+    //                     barTwoStyle.backgroundColor = PRIMARY_COLOR;
+    //                 }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+    //             }
+    //         } else {
+    //             await setTimeout(() => {
+    //                 barOneStyle.height = `${animations.at(i).at(2)}px`;
+    //             }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+    //         }
+    //     }  
+
+    //     setTimeout(() => {
+    //         document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = '#c4ffe9';
+    //     }, animations.length * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+
+    //     this.props.algorithmNowReady();
+    //     console.log(this.props.isAlgorithmsReady());
+    // }
 
     quickSort() {
         // TODO
@@ -142,51 +193,77 @@ export default class SortVisualizer extends React.Component {
     }
 
     //next attempt: take each animation one step at a time and alternate between all algorithm's animations
-    doNextInsertionSortAnimation(animations, currentStep) {
+    doNextInsertionSortAnimationStep(animationStepInfo, currentStepNumber) {
+        const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
+        const isComparison = animationStepInfo.at(0) !== 's';
 
-    }
+        const barOneIndex = animationStepInfo.at(1);
+        const barTwoIndex = animationStepInfo.at(2);
+        const barOneStyle = arrayBars[barOneIndex].style;
+        const barTwoStyle = arrayBars[barTwoIndex].style;
 
-    async animateInsertionSort(animations) {
-
-        console.log('starting sort animation');
-
-        for(let i = 0; i < animations.length; ++i) {
-            const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
-            const isComparison = animations.at(i).at(0) !== 's';
-
-            const barOneIndex = animations.at(i).at(1);
-            const barTwoIndex = animations.at(i).at(2);
-            const barOneStyle = arrayBars[barOneIndex].style;
-            const barTwoStyle = arrayBars[barTwoIndex].style;
-
-            if (isComparison) {
-                if(animations.at(i).at(0) === 'c') {
-                    await setTimeout(() => {
-                        barOneStyle.backgroundColor = SECONDARY_COLOR;
-                        barTwoStyle.backgroundColor = SECONDARY_COLOR;
-                    }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
-                }
-                else if(animations.at(i).at(0) === 'cf') {
-                    await setTimeout(() => {
-                        barOneStyle.backgroundColor = PRIMARY_COLOR;
-                        barTwoStyle.backgroundColor = PRIMARY_COLOR;
-                    }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
-                }
-            } else {
-                await setTimeout(() => {
-                    barOneStyle.height = `${animations.at(i).at(4)}px`;
-                    barTwoStyle.height = `${animations.at(i).at(3)}px`;
-                }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+        if (isComparison) {
+            if(animationStepInfo.at(0) === 'c') {
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = SECONDARY_COLOR;
+                    barTwoStyle.backgroundColor = SECONDARY_COLOR;
+                }, currentStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
             }
+            else if(animationStepInfo.at(0) === 'cf') {
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = PRIMARY_COLOR;
+                    barTwoStyle.backgroundColor = PRIMARY_COLOR;
+                }, currentStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+            }
+        } else {
+            setTimeout(() => {
+                barOneStyle.height = `${animationStepInfo.at(4)}px`;
+                barTwoStyle.height = `${animationStepInfo.at(3)}px`;
+            }, currentStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
         }
-
-        setTimeout(() => {
-            document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = '#c4ffe9';
-        }, animations.length * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
-
-        this.props.algorithmNowReady();
-        console.log(this.props.isAlgorithmsReady());
     }
+
+    // async animateInsertionSort(animations) {
+
+    //     console.log('starting sort animation');
+
+    //     for(let i = 0; i < animations.length; ++i) {
+    //         const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
+    //         const isComparison = animations.at(i).at(0) !== 's';
+
+    //         const barOneIndex = animations.at(i).at(1);
+    //         const barTwoIndex = animations.at(i).at(2);
+    //         const barOneStyle = arrayBars[barOneIndex].style;
+    //         const barTwoStyle = arrayBars[barTwoIndex].style;
+
+    //         if (isComparison) {
+    //             if(animations.at(i).at(0) === 'c') {
+    //                 await setTimeout(() => {
+    //                     barOneStyle.backgroundColor = SECONDARY_COLOR;
+    //                     barTwoStyle.backgroundColor = SECONDARY_COLOR;
+    //                 }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+    //             }
+    //             else if(animations.at(i).at(0) === 'cf') {
+    //                 await setTimeout(() => {
+    //                     barOneStyle.backgroundColor = PRIMARY_COLOR;
+    //                     barTwoStyle.backgroundColor = PRIMARY_COLOR;
+    //                 }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+    //             }
+    //         } else {
+    //             await setTimeout(() => {
+    //                 barOneStyle.height = `${animations.at(i).at(4)}px`;
+    //                 barTwoStyle.height = `${animations.at(i).at(3)}px`;
+    //             }, i * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+    //         }
+    //     }
+
+    //     setTimeout(() => {
+    //         document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = '#c4ffe9';
+    //     }, animations.length * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+
+    //     this.props.algorithmNowReady();
+    //     console.log(this.props.isAlgorithmsReady());
+    // }
 
     heapSort() {
         // TODO

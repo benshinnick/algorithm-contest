@@ -19,26 +19,28 @@ export default class SortContest extends React.Component {
             numOfReadyContestants: 0,
             countdown: null,
         };
+
         this.algorithmNowReady = this.algorithmNowReady.bind(this);
         this.isAlgorithmsReady = this.isAlgorithmsReady.bind(this);
-        this.child1 = React.createRef();
-        this.child2 = React.createRef();
-        this.child3 = React.createRef();
-        this.child4 = React.createRef();
-        this.child5 = React.createRef();
-        this.child6 = React.createRef();
-        this.child7 = React.createRef();
+
+        this.contestant1 = React.createRef();
+        this.contestant2 = React.createRef();
+        this.contestant3 = React.createRef();
+        this.contestant4 = React.createRef();
+        this.contestant5 = React.createRef();
+        this.contestant6 = React.createRef();
+        this.contestant7 = React.createRef();
     }
 
     testReferences() {
         console.log('testing referneces');
-        this.child1.current.doSort();
-        this.child2.current.doSort();
-        this.child3.current.doSort();
-        this.child4.current.doSort();
-        this.child5.current.doSort();
-        this.child6.current.doSort();
-        this.child7.current.doSort();
+        this.contestant1.current.doSort();
+        this.contestant2.current.doSort();
+        this.contestant3.current.doSort();
+        this.contestant4.current.doSort();
+        this.contestant5.current.doSort();
+        this.contestant6.current.doSort();
+        this.contestant7.current.doSort();
     }
 
     componentDidMount() {
@@ -55,7 +57,35 @@ export default class SortContest extends React.Component {
     }
 
     startContest() {
-        this.setState({ ...this.state, isContestStarting: true }, () => this.setState({ ...this.state, isContestStarting: false }));
+        // this.setState({ ...this.state, isContestStarting: true }, () => this.setState({ ...this.state, isContestStarting: false }));
+        console.log('starting contest');
+        let contestants = [
+            this.contestant1.current,
+            this.contestant2.current,
+            // this.contestant3.current,
+            // this.contestant4.current,
+            // this.contestant5.current,
+            // this.contestant6.current,
+            // this.contestant7.current
+        ]
+
+        let allContestantAnimationData = [];
+        for(let i = 0; i < contestants.length; ++i) {
+            allContestantAnimationData[i] = contestants[i].getSortAnimations();
+        }
+
+        let contestIsOver = false;
+        let stepCounter = 0;
+        while(!contestIsOver) {
+            for(let i = 0; i < contestants.length; ++i) {
+                if(stepCounter >= allContestantAnimationData.at(i).length) {
+                    contestIsOver = true;
+                    break;
+                }
+                contestants[i].doAnimationNextStep(allContestantAnimationData.at(i).at(stepCounter), stepCounter);
+            }
+            stepCounter++;
+        }
     }
 
     algorithmNowReady() {
@@ -118,8 +148,10 @@ export default class SortContest extends React.Component {
                 <SortVisualizer array={this.state.array} isContestStarting={this.state.isContestStarting} algorithmType="selection" algorithmTypes={algorithmTypes} contestantNumber={6} />
                 <SortVisualizer array={this.state.array} isContestStarting={this.state.isContestStarting} algorithmType="bubble" algorithmTypes={algorithmTypes} contestantNumber={7} /> */}
 
+                {/* Feels too hard coded, will try to refactor later */}
+
                 <SortVisualizer 
-                    ref={this.child1}
+                    ref={this.contestant1}
                     array={this.state.array}
                     isContestStarting={this.state.isContestStarting}
                     algorithmType="merge"
@@ -129,7 +161,7 @@ export default class SortContest extends React.Component {
                     isAlgorithmsReady={this.isAlgorithmsReady}
                 />
                 <SortVisualizer 
-                    ref={this.child2}
+                    ref={this.contestant2}
                     array={this.state.array}
                     isContestStarting={this.state.isContestStarting}
                     algorithmType="insertion"
@@ -138,8 +170,8 @@ export default class SortContest extends React.Component {
                     algorithmNowReady={this.algorithmNowReady}
                     isAlgorithmsReady={this.isAlgorithmsReady}
                 />
-                <SortVisualizer
-                    ref={this.child3}
+                {/* <SortVisualizer
+                    ref={this.contestant3}
                     array={this.state.array}
                     isContestStarting={this.state.isContestStarting}
                     algorithmType="insertion"
@@ -149,7 +181,7 @@ export default class SortContest extends React.Component {
                     isAlgorithmsReady={this.isAlgorithmsReady}
                 />
                 <SortVisualizer 
-                    ref={this.child4}
+                    ref={this.contestant4}
                     array={this.state.array}
                     isContestStarting={this.state.isContestStarting}
                     algorithmType="insertion"
@@ -159,7 +191,7 @@ export default class SortContest extends React.Component {
                     isAlgorithmsReady={this.isAlgorithmsReady}
                 />
                 <SortVisualizer 
-                    ref={this.child5}
+                    ref={this.contestant5}
                     array={this.state.array}
                     isContestStarting={this.state.isContestStarting}
                     algorithmType="insertion"
@@ -169,7 +201,7 @@ export default class SortContest extends React.Component {
                     isAlgorithmsReady={this.isAlgorithmsReady}
                 />
                 <SortVisualizer 
-                    ref={this.child6}
+                    ref={this.contestant6}
                     array={this.state.array}
                     isContestStarting={this.state.isContestStarting}
                     algorithmType="insertion"
@@ -179,7 +211,7 @@ export default class SortContest extends React.Component {
                     isAlgorithmsReady={this.isAlgorithmsReady}
                 />
                 <SortVisualizer 
-                    ref={this.child7}
+                    ref={this.contestant7}
                     array={this.state.array}
                     isContestStarting={this.state.isContestStarting}
                     algorithmType="insertion"
@@ -187,7 +219,7 @@ export default class SortContest extends React.Component {
                     contestantNumber={7}
                     algorithmNowReady={this.algorithmNowReady}
                     isAlgorithmsReady={this.isAlgorithmsReady}
-                />
+                /> */}
             </div>
         );
     }
