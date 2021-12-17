@@ -14,13 +14,13 @@ export default class SortContest extends React.Component {
         this.state = {
             array: [],
             arraySize: INITIAL_ARRAY_SIZE,
-            numOfContestants: 2,
+            numOfContestants: 7,
             isContestStarting: false,
             numOfReadyContestants: 0,
             countdown: null,
         };
         this.algorithmNowReady = this.algorithmNowReady.bind(this);
-        this.algorithmsReady = this.algorithmsReady.bind(this);
+        this.isAlgorithmsReady = this.isAlgorithmsReady.bind(this);
     }
 
     componentDidMount() {
@@ -41,19 +41,12 @@ export default class SortContest extends React.Component {
 
     algorithmNowReady() {
         let newNumOfReadyContestants = this.state.numOfReadyContestants + 1;
-        console.log(newNumOfReadyContestants);
         this.setState({ ...this.state, numOfReadyContestants: newNumOfReadyContestants });
+        console.log(`Contestant ${newNumOfReadyContestants} is ready`);
     }
 
-    algorithmsReady() {
-        return new Promise(resolve => {
-            setInterval(() => {
-                console.log('promise pending');
-                if(this.state.numOfReadyContestants === this.state.numOfContestants) {
-                    resolve(true);
-                }
-            }, 250);
-        });
+    isAlgorithmsReady() {
+        return (this.state.numOfReadyContestants === this.state.numOfContestants);
     }
 
     randomizeArray() {
@@ -95,7 +88,6 @@ export default class SortContest extends React.Component {
     render() {
         const algorithmTypes = ['merge', 'quick', 'shell', 'insertion',
                                 'heap', 'selection', 'bubble']
-
         return (
             <div id='sortcontest'>
                 <div id="sortcontestheader"></div>
@@ -114,7 +106,7 @@ export default class SortContest extends React.Component {
                     algorithmTypes={algorithmTypes}
                     contestantNumber={1}
                     algorithmNowReady={this.algorithmNowReady}
-                    algorithmsReady={this.algorithmsReady}
+                    isAlgorithmsReady={this.isAlgorithmsReady}
                 />
                 <SortVisualizer 
                     array={this.state.array}
@@ -123,7 +115,7 @@ export default class SortContest extends React.Component {
                     algorithmTypes={algorithmTypes}
                     contestantNumber={2}
                     algorithmNowReady={this.algorithmNowReady}
-                    algorithmsReady={this.algorithmsReady}
+                    isAlgorithmsReady={this.isAlgorithmsReady}
                 />
                 <SortVisualizer 
                     array={this.state.array}
@@ -132,7 +124,7 @@ export default class SortContest extends React.Component {
                     algorithmTypes={algorithmTypes}
                     contestantNumber={3}
                     algorithmNowReady={this.algorithmNowReady}
-                    algorithmsReady={this.algorithmsReady}
+                    isAlgorithmsReady={this.isAlgorithmsReady}
                 />
                 <SortVisualizer 
                     array={this.state.array}
@@ -141,7 +133,7 @@ export default class SortContest extends React.Component {
                     algorithmTypes={algorithmTypes}
                     contestantNumber={4}
                     algorithmNowReady={this.algorithmNowReady}
-                    algorithmsReady={this.algorithmsReady}
+                    isAlgorithmsReady={this.isAlgorithmsReady}
                 />
                 <SortVisualizer 
                     array={this.state.array}
@@ -150,7 +142,7 @@ export default class SortContest extends React.Component {
                     algorithmTypes={algorithmTypes}
                     contestantNumber={5}
                     algorithmNowReady={this.algorithmNowReady}
-                    algorithmsReady={this.algorithmsReady}
+                    isAlgorithmsReady={this.isAlgorithmsReady}
                 />
                 <SortVisualizer 
                     array={this.state.array}
@@ -159,7 +151,7 @@ export default class SortContest extends React.Component {
                     algorithmTypes={algorithmTypes}
                     contestantNumber={6}
                     algorithmNowReady={this.algorithmNowReady}
-                    algorithmsReady={this.algorithmsReady}
+                    isAlgorithmsReady={this.isAlgorithmsReady}
                 />
                 <SortVisualizer 
                     array={this.state.array}
@@ -168,7 +160,7 @@ export default class SortContest extends React.Component {
                     algorithmTypes={algorithmTypes}
                     contestantNumber={7}
                     algorithmNowReady={this.algorithmNowReady}
-                    algorithmsReady={this.algorithmsReady}
+                    isAlgorithmsReady={this.isAlgorithmsReady}
                 />
             </div>
         );
