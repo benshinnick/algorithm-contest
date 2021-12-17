@@ -4,6 +4,7 @@ import {getMergeSortAnimations} from './sortAlgorithms/MergeSort.js';
 import './css/SortVisualizer.css';
 
 const ANIMATION_SPEED_MS = 5;
+const ANIMATION_DELAY_MS = 3000;
 // main color of the array bars: dark blue
 const PRIMARY_COLOR = '#292cff'; 
 // color of array bars that are being compared
@@ -13,12 +14,11 @@ export default class SortVisualizer extends React.Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             array: this.props.array,
             algorithmType: this.props.algorithmType,
             allAlgorithmTypes: this.props.algorithmTypes,
-            contestantNumber: this.props.contestantNumber
+            contestantNumber: this.props.contestantNumber,
         };
     }
 
@@ -44,95 +44,98 @@ export default class SortVisualizer extends React.Component {
                 contestantNumber: props.contestantNumber
             }
         }
-        if(props.isContestStarted !== state.isContestStarted) {
-            return {
-                isContestStarted: props.isContestStarted
-            }
-        }
         return null;
     }
 
-    updateAlgorithmType(algorithmType) {
-        this.setState({...this.state, algorithmType: algorithmType});
-    }
-
-    doSort() {
-        let arrayCopy = this.state.array.map((x) => x);
-        let animations = [];
+    getSortAnimations() {
+        let arrayCopy = this.state.array.map((value) => value);
 
         switch(this.state.algorithmType) {
             case 'merge':
-                animations = Promise.resolve(getMergeSortAnimations(arrayCopy));
-                animations.then(animationData => {
-                    console.log("Starting merge sort");
-                    this.mergeSort(animationData);
-                });
-                break;
+                return getMergeSortAnimations(arrayCopy);
             case 'quick':
-                this.quickSort();
+                // return getQuickSortAnimations(arrayCopy);
                 break;
             case 'shell':
-                this.shellSort();
+                // return getShellSortAnimations(arrayCopy);
                 break;
             case 'insertion':
-                animations = Promise.resolve(getInsertionSortAnimations(arrayCopy));
-                animations.then(animationData => {
-                    console.log("Starting insertion sort");
-                    this.doInsertionSortAnimations(animationData);
-                });
-                break;
+                return getInsertionSortAnimations(arrayCopy);
             case 'heap':
-                this.heapSort();
+                // return getHeapSortAnimations(arrayCopy);
                 break;
             case 'selection':
-                this.selectionSort();
+                // return getSelectionSortAnimations(arrayCopy);
                 break;
             case 'bubble':
-                this.bubbleSort();
+                // return getBubbleSortAnimations(arrayCopy);
                 break;
             default:
                 console.log("Error: Unexpected Algorithm Type",);
         }
     }
 
-    //Sort Algorithm Animation Rendering Functions
+    doAnimationNextStep(animationStepInfo, currentStepNumber) {
+        switch(this.state.algorithmType) {
+            case 'merge':
+                this.doNextMergeSortAnimationStep(animationStepInfo, currentStepNumber);
+                break;
+            case 'quick':
+                // doNextQuickSortAnimationStep(animationStepInfo, currentStepNumber);
+                break;
+            case 'shell':
+                // doNextShellSortAnimationStep(animationStepInfo, currentStepNumber);
+                break;
+            case 'insertion':
+                this.doNextInsertionSortAnimationStep(animationStepInfo, currentStepNumber);
+                break;
+            case 'heap':
+                // doNextHeapSortAnimationStep(animationStepInfo, currentStepNumber);
+                break;
+            case 'selection':
+                // doNextSelectionSortAnimationStep(animationStepInfo, currentStepNumber);
+                break;
+            case 'bubble':
+                // doNextBubbleSortAnimationStep(animationStepInfo, currentStepNumber);
+                break;
+            default:
+                console.log("Error: Unexpected Algorithm Type",);
+        }
+    }
 
-    async mergeSort(animations) {
+    //next attempt: take each animation one step at a time and alternate between all algorithm's animations
+    doNextMergeSortAnimationStep(animationStepInfo, currentStepNumber) {
+        const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
+        const isComparison = animationStepInfo.at(0) !== 'o';
 
-        for(let i = 0; i < animations.length; ++i) {
-            const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
-            const isComparison = animations.at(i).at(0) !== 'o';
+        const barOneIndex = animationStepInfo.at(1);
+        const barOneStyle = arrayBars[barOneIndex].style;
 
-            const barOneIndex = animations.at(i).at(1);
-            const barOneStyle = arrayBars[barOneIndex].style;
+        if (isComparison) {
+            const barTwoIndex = animationStepInfo.at(2);
+            const barTwoStyle = arrayBars[barTwoIndex].style;
 
-            if (isComparison) {
-                const barTwoIndex = animations.at(i).at(2);
-                const barTwoStyle = arrayBars[barTwoIndex].style;
-
-                if(animations.at(i).at(0) === 'c') {
-                    await setTimeout(() => {
-                        barOneStyle.backgroundColor = SECONDARY_COLOR;
-                        barTwoStyle.backgroundColor = SECONDARY_COLOR;
-                    }, i * ANIMATION_SPEED_MS);
-                }
-                else if(animations.at(i).at(0) === 'cf') {
-                    await setTimeout(() => {
-                        barOneStyle.backgroundColor = PRIMARY_COLOR;
-                        barTwoStyle.backgroundColor = PRIMARY_COLOR;
-                    }, i * ANIMATION_SPEED_MS);
-                }
-            } else {
-                await setTimeout(() => {
-                    barOneStyle.height = `${animations.at(i).at(2)}px`;
-                }, i * ANIMATION_SPEED_MS);
+            if(animationStepInfo.at(0) === 'c') {
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = SECONDARY_COLOR;
+                    barTwoStyle.backgroundColor = SECONDARY_COLOR;
+                }, currentStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+                return;
             }
-        }  
+            else if(animationStepInfo.at(0) === 'cf') {
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = PRIMARY_COLOR;
+                    barTwoStyle.backgroundColor = PRIMARY_COLOR;
+                }, currentStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+                return;
+            }
+        } else {
+            setTimeout(() => {
+                barOneStyle.height = `${animationStepInfo.at(2)}px`;
+            }, currentStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+            return;
+        }
 
-        console.log("Finished Proccessing Merge Sort");
-        setTimeout(() => {
-            document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = '#c4ffe9';
-        }, animations.length * ANIMATION_SPEED_MS);
     }
 
     quickSort() {
@@ -143,40 +146,35 @@ export default class SortVisualizer extends React.Component {
         // TODO
     }
 
-    async doInsertionSortAnimations(animations) {
-        for(let i = 0; i < animations.length; ++i) {
-            const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
-            const isComparison = animations.at(i).at(0) !== 's';
+    //next attempt: take each animation one step at a time and alternate between all algorithm's animations
+    doNextInsertionSortAnimationStep(animationStepInfo, currentStepNumber) {
+        const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
+        const isComparison = animationStepInfo.at(0) !== 's';
 
-            const barOneIndex = animations.at(i).at(1);
-            const barTwoIndex = animations.at(i).at(2);
-            const barOneStyle = arrayBars[barOneIndex].style;
-            const barTwoStyle = arrayBars[barTwoIndex].style;
+        const barOneIndex = animationStepInfo.at(1);
+        const barTwoIndex = animationStepInfo.at(2);
+        const barOneStyle = arrayBars[barOneIndex].style;
+        const barTwoStyle = arrayBars[barTwoIndex].style;
 
-            if (isComparison) {
-                if(animations.at(i).at(0) === 'c') {
-                    await setTimeout(() => {
-                        barOneStyle.backgroundColor = SECONDARY_COLOR;
-                        barTwoStyle.backgroundColor = SECONDARY_COLOR;
-                    }, i * ANIMATION_SPEED_MS);
-                }
-                else if(animations.at(i).at(0) === 'cf') {
-                    await setTimeout(() => {
-                        barOneStyle.backgroundColor = PRIMARY_COLOR;
-                        barTwoStyle.backgroundColor = PRIMARY_COLOR;
-                    }, i * ANIMATION_SPEED_MS);
-                }
-            } else {
-                await setTimeout(() => {
-                    barOneStyle.height = `${animations.at(i).at(4)}px`;
-                    barTwoStyle.height = `${animations.at(i).at(3)}px`;
-                }, i * ANIMATION_SPEED_MS);
+        if (isComparison) {
+            if(animationStepInfo.at(0) === 'c') {
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = SECONDARY_COLOR;
+                    barTwoStyle.backgroundColor = SECONDARY_COLOR;
+                }, currentStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
             }
+            else if(animationStepInfo.at(0) === 'cf') {
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = PRIMARY_COLOR;
+                    barTwoStyle.backgroundColor = PRIMARY_COLOR;
+                }, currentStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+            }
+        } else {
+            setTimeout(() => {
+                barOneStyle.height = `${animationStepInfo.at(4)}px`;
+                barTwoStyle.height = `${animationStepInfo.at(3)}px`;
+            }, currentStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
         }
-        console.log("Finished Proccessing Insertion Sort");
-        setTimeout(() => {
-            document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = '#c4ffe9';
-        }, animations.length * ANIMATION_SPEED_MS);
     }
 
     heapSort() {
@@ -189,6 +187,16 @@ export default class SortVisualizer extends React.Component {
 
     bubbleSort() {
         // TODO
+    }
+
+    handleAlgorithmIsNowFinished(lastAnimationStepNumber) {
+        setTimeout(() => {
+            document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = '#c4ffe9';
+        }, lastAnimationStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+    }
+
+    updateAlgorithmType(algorithmType) {
+        this.setState({...this.state, algorithmType: algorithmType});
     }
 
     render() {
@@ -217,7 +225,7 @@ export default class SortVisualizer extends React.Component {
                     ))}
                 </div>
 
-                {/* <button id="logvisualizerstatebutton" onClick={() => console.log(this.state)}>Log Sort Visualizer State</button> */}
+                <button id="logvisualizerstatebutton" onClick={() => console.log(this.state)}>Log Sort Visualizer State</button>
                 <button onClick={() => this.doSort()}>Test Sort</button>
             </div>
         );

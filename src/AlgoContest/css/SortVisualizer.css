@@ -23,7 +23,7 @@
     padding-bottom: 5px;
     margin-left: 5px;
     margin-top: 0px;
-    margin-right: 5px;
+    margin-right: 0px;
     margin-bottom: 0px;
 }
 
@@ -91,11 +91,11 @@
     /* top: 100px; */
   }
   
-  .array-bar-1, .array-bar-2, .array-bar-3, .array-bar-4,
-  .array-bar-5, .array-bar-6, .array-bar-7 {
-    width: 2px;
-    display: inline-block;
-    margin: 0 1px;
+.array-bar-1, .array-bar-2, .array-bar-3, .array-bar-4,
+.array-bar-5, .array-bar-6, .array-bar-7 {
+  width: 2px;
+  display: inline-block;
+  margin: 0 1px;
   }
 
   /* end of array styling  */
