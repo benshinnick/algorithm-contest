@@ -3,21 +3,20 @@ import {getInsertionSortAnimations} from './sortAlgorithms/InsertionSort.js';
 import {getMergeSortAnimations} from './sortAlgorithms/MergeSort.js';
 import './css/SortVisualizer.css';
 
-const ANIMATION_SPEED_MS = 5;
-const ANIMATION_DELAY_MS = 3000;
-
 // main color of the array bars: dark blue
 const PRIMARY_COLOR = '#292cff'; 
 // color of array bars that are being compared
 const SECONDARY_COLOR = 'red';
 // color of all the array bars once sorting has finished
 const FINISHED_SORTING_COLOR = '#007bff';
-// color of the component background: light grey
-const DEFAULT_BACKGROUND_COLOR = '#f7f7f7';
-// color of the component backgound after finishing sorting: light green
-const FINISHED_SORTING_BACKGROUND_COLOR = '#edfff2';
+
+const DEFAULT_BACKGROUND_COLOR = '#f7f7f7'; // light grey
+const FINISHED_SORTING_BACKGROUND_COLOR = '#edfff2'; // light green
 
 export default class SortVisualizer extends React.Component {
+
+    static ANIMATION_SPEED_MS = 5;
+    static ANIMATION_DELAY_MS = 3000;
 
     constructor(props) {
         super(props);
@@ -121,20 +120,20 @@ export default class SortVisualizer extends React.Component {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = SECONDARY_COLOR;
                     barTwoStyle.backgroundColor = SECONDARY_COLOR;
-                }, currentStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
                 return;
             }
             else if(animationStepInfo[0] === 'cf') {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = PRIMARY_COLOR;
                     barTwoStyle.backgroundColor = PRIMARY_COLOR;
-                }, currentStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
                 return;
             }
         } else {
             setTimeout(() => {
                 barOneStyle.height = `${animationStepInfo[2]}px`;
-            }, currentStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
             return;
         }
 
@@ -162,19 +161,19 @@ export default class SortVisualizer extends React.Component {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = SECONDARY_COLOR;
                     barTwoStyle.backgroundColor = SECONDARY_COLOR;
-                }, currentStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
             }
             else if(animationStepInfo[0] === 'cf') {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = PRIMARY_COLOR;
                     barTwoStyle.backgroundColor = PRIMARY_COLOR;
-                }, currentStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
             }
         } else {
             setTimeout(() => {
                 barOneStyle.height = `${animationStepInfo[4]}px`;
                 barTwoStyle.height = `${animationStepInfo[3]}px`;
-            }, currentStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
         }
     }
 
@@ -207,7 +206,7 @@ export default class SortVisualizer extends React.Component {
             for (var i = 0; i < arrayBars.length; i++) {
                 arrayBars[i].style.backgroundColor = FINISHED_SORTING_COLOR;
             }
-        }, lastAnimationStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
+        }, lastAnimationStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
     }
 
     updateAlgorithmType(algorithmType) {

@@ -10,8 +10,6 @@
 }
 
 #randomizebutton {
-    /* background-color: #0084ff; */
-    /* background-color: #3b3b3b; */
     background-color: #007bff;
     border: none;
     color: white;
@@ -32,9 +30,12 @@
 }
 
 #randomizebutton:hover {
-    /* background-color: #318fac; */
-    /* background-color: black; */
     background-color: #0069d9;
+}
+
+#randomizebutton:disabled,
+#randomizebutton[disabled] {
+    background-color: #00458f;
 }
 
 #nearlysortedbutton {
@@ -61,12 +62,18 @@
     background-color: #0069d9;
 }
 
+#nearlysortedbutton:disabled,
+#nearlysortedbutton[disabled] {
+    background-color: #00458f;
+}
+
 #startcontestbutton {
     background-color: #1ea33b;
     border: none;
     color: white;
-    padding-left: 50px;
-    padding-right: 50px;
+    width: 224px;
+    padding-left: 45px;
+    padding-right: 45px;
     padding-top: 7px;
     padding-bottom: 7px;
     text-align: center;
@@ -82,5 +89,10 @@
 }
 
 #startcontestbutton:hover {
+    background-color: #0e7424;
+}
+
+#startcontestbutton:disabled,
+#startcontestbutton[disabled] {
     background-color: #0e7424;
 }

@@ -4,8 +4,10 @@ import './css/SortContest.css';
 
 const ARRAY_MIN_VALUE = 5;
 const ARRAY_MAX_VALUE = 145;
-const INITIAL_ARRAY_SIZE = 250;
-const INITIAL_NUM_OF_CONTESTANTS = 7;
+const INITIAL_ARRAY_SIZE = 300;
+const INITIAL_NUM_OF_CONTESTANTS = 2;
+
+const COUNTDOWN_DURATION_MS = SortVisualizer.ANIMATION_DELAY_MS;
 
 const ALGORITHM_TYPES = [
     'merge',
@@ -38,6 +40,10 @@ export default class SortContest extends React.Component {
     }
 
     startContest() {
+
+        this.disablePreContestButtons();
+        this.startCountdown();
+
         const allContestantAnimationData = [];
         for(let i = 0; i < this.state.numOfContestants; ++i) {
             allContestantAnimationData[i] = this.algoContestantRefs[i].getSortAnimations();
@@ -64,6 +70,39 @@ export default class SortContest extends React.Component {
             }
             stepCounter++;
         }
+
+        this.scheduleContestFinishedCommands(allContestantAnimationData);
+    }
+
+    scheduleContestFinishedCommands(allContestantAnimationData) {
+        const allContestantMaxAnimationSteps = [];
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            allContestantMaxAnimationSteps.push(allContestantAnimationData[i].length);
+        }
+
+        const maxNumberOfAnimationSteps = Math.max(...allContestantMaxAnimationSteps);
+        setTimeout(() => {
+            this.handleContestIsNowFinished();
+        }, maxNumberOfAnimationSteps * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+    }
+
+    handleContestIsNowFinished() {
+        const sortedArray = this.state.array.sort(function(a, b){return a - b});
+        this.setState({ ...this.state, array: sortedArray });
+        this.enablePreContestSetupButtons();
+    }
+
+    startCountdown() {
+        let numOfCountdownSeconds = COUNTDOWN_DURATION_MS / 1000;
+        for(let i = 0; i < numOfCountdownSeconds; ++i) {
+            setTimeout(() => {
+                document.getElementById("startcontestbutton").innerHTML = `${numOfCountdownSeconds - i}`;
+            }, i * 1000);
+        }
+
+        setTimeout(() => {
+            document.getElementById("startcontestbutton").innerHTML = 'GO!';
+        }, COUNTDOWN_DURATION_MS); 
     }
 
     randomizeArray() {
@@ -101,25 +140,42 @@ export default class SortContest extends React.Component {
         this.setState({ ...this.state, array: array });
     }
 
-    resetAlgorithmVisualizationStyling() {
+    resetSortContestPage() {
+        this.enablePreContestSetupButtons();
         for(let i = 0; i < this.state.numOfContestants; ++i) {
             this.algoContestantRefs[i].resetVisualizationStyling();
         }
     }
 
     genearateRandomArrayButtonOnClick() {
-        this.resetAlgorithmVisualizationStyling();
+        this.enablePreContestSetupButtons();
+        this.resetSortContestPage();
         this.randomizeArray();
     }
 
     genearateNearySortedArrayButtonOnClick() {
-        this.resetAlgorithmVisualizationStyling();
+        this.enablePreContestSetupButtons();
+        this.resetSortContestPage();
         this.generateNearlySortedArray()
     }
 
     startContestButtonOnClick() {
-        this.resetAlgorithmVisualizationStyling();
+        this.enablePreContestSetupButtons();
+        this.resetSortContestPage();
         this.startContest();
+    }
+
+    disablePreContestButtons() {
+        document.getElementById("startcontestbutton").disabled = true;
+        document.getElementById("randomizebutton").disabled = true;
+        document.getElementById("nearlysortedbutton").disabled = true;
+    }
+
+    enablePreContestSetupButtons() {
+        document.getElementById("startcontestbutton").innerHTML = 'Start';
+        document.getElementById("startcontestbutton").disabled = false;
+        document.getElementById("randomizebutton").disabled = false;
+        document.getElementById("nearlysortedbutton").disabled = false;
     }
 
     render() {
@@ -137,8 +193,7 @@ export default class SortContest extends React.Component {
                     <button id="nearlysortedbutton" onClick={() => this.genearateNearySortedArrayButtonOnClick()}>
                         Generate Nearly Sorted Array
                     </button>
-                    {/* <button id="logconteststatebutton" onClick={() => console.log(this.state)}>Log Sort Contest State</button> */}
-                    {/* some sort of countdown marker */}
+                    {/* <button onClick={() => console.log(this.state)}>Log Sort Contest State</button> */}
                     <button id="startcontestbutton" onClick={() => this.startContestButtonOnClick()}>Start</button>
                 </div>
 
