@@ -106,26 +106,25 @@ export default class SortVisualizer extends React.Component {
         }
     }
 
-    //next attempt: take each animation one step at a time and alternate between all algorithm's animations
     doNextMergeSortAnimationStep(animationStepInfo, currentStepNumber) {
         const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
-        const isComparison = animationStepInfo.at(0) !== 'o';
+        const isComparison = animationStepInfo[0] !== 'o';
 
-        const barOneIndex = animationStepInfo.at(1);
+        const barOneIndex = animationStepInfo[1];
         const barOneStyle = arrayBars[barOneIndex].style;
 
         if (isComparison) {
-            const barTwoIndex = animationStepInfo.at(2);
+            const barTwoIndex = animationStepInfo[2];
             const barTwoStyle = arrayBars[barTwoIndex].style;
 
-            if(animationStepInfo.at(0) === 'c') {
+            if(animationStepInfo[0] === 'c') {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = SECONDARY_COLOR;
                     barTwoStyle.backgroundColor = SECONDARY_COLOR;
                 }, currentStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
                 return;
             }
-            else if(animationStepInfo.at(0) === 'cf') {
+            else if(animationStepInfo[0] === 'cf') {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = PRIMARY_COLOR;
                     barTwoStyle.backgroundColor = PRIMARY_COLOR;
@@ -134,7 +133,7 @@ export default class SortVisualizer extends React.Component {
             }
         } else {
             setTimeout(() => {
-                barOneStyle.height = `${animationStepInfo.at(2)}px`;
+                barOneStyle.height = `${animationStepInfo[2]}px`;
             }, currentStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
             return;
         }
@@ -149,24 +148,23 @@ export default class SortVisualizer extends React.Component {
         // TODO
     }
 
-    //next attempt: take each animation one step at a time and alternate between all algorithm's animations
-    doNextInsertionSortAnimationStep(animationStepInfo, currentStepNumber) {
+    async doNextInsertionSortAnimationStep(animationStepInfo, currentStepNumber) {
         const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
-        const isComparison = animationStepInfo.at(0) !== 's';
+        const isComparison = animationStepInfo[0] !== 's';
 
-        const barOneIndex = animationStepInfo.at(1);
-        const barTwoIndex = animationStepInfo.at(2);
+        const barOneIndex = animationStepInfo[1];
+        const barTwoIndex = animationStepInfo[2];
         const barOneStyle = arrayBars[barOneIndex].style;
         const barTwoStyle = arrayBars[barTwoIndex].style;
 
         if (isComparison) {
-            if(animationStepInfo.at(0) === 'c') {
+            if(animationStepInfo[0] === 'c') {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = SECONDARY_COLOR;
                     barTwoStyle.backgroundColor = SECONDARY_COLOR;
                 }, currentStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
             }
-            else if(animationStepInfo.at(0) === 'cf') {
+            else if(animationStepInfo[0] === 'cf') {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = PRIMARY_COLOR;
                     barTwoStyle.backgroundColor = PRIMARY_COLOR;
@@ -174,8 +172,8 @@ export default class SortVisualizer extends React.Component {
             }
         } else {
             setTimeout(() => {
-                barOneStyle.height = `${animationStepInfo.at(4)}px`;
-                barTwoStyle.height = `${animationStepInfo.at(3)}px`;
+                barOneStyle.height = `${animationStepInfo[4]}px`;
+                barTwoStyle.height = `${animationStepInfo[3]}px`;
             }, currentStepNumber * ANIMATION_SPEED_MS + ANIMATION_DELAY_MS);
         }
     }

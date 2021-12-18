@@ -5,7 +5,7 @@ import './css/SortContest.css';
 const ARRAY_MIN_VALUE = 5;
 const ARRAY_MAX_VALUE = 145;
 const INITIAL_ARRAY_SIZE = 250;
-const INITIAL_NUM_OF_CONTESTANTS = 3;
+const INITIAL_NUM_OF_CONTESTANTS = 7;
 
 const ALGORITHM_TYPES = [
     'merge',
@@ -38,43 +38,32 @@ export default class SortContest extends React.Component {
     }
 
     startContest() {
-        console.log('starting contest');
-
-        //console countdown timer
-        let numOfCountdownSeconds = 3;
-        for(let i = 0; i < numOfCountdownSeconds; ++i) {
-            setTimeout(() => {
-                console.log(numOfCountdownSeconds - i);
-            }, i * 1000);
-        }
-
         const allContestantAnimationData = [];
         for(let i = 0; i < this.state.numOfContestants; ++i) {
             allContestantAnimationData[i] = this.algoContestantRefs[i].getSortAnimations();
         }
 
-        console.log('got all animation data');
-
         let stepCounter = 0;
         let numOfFinishedContestants = 0;
         while(numOfFinishedContestants < this.state.numOfContestants) {
             for(let i = 0; i < this.state.numOfContestants; ++i) {
-                if(stepCounter === allContestantAnimationData.at(i).length) {
+                if(stepCounter === allContestantAnimationData[i].length) {
                     numOfFinishedContestants++;
                     this.algoContestantRefs[i].handleAlgorithmIsNowFinished(stepCounter);
                     continue;
                 }
-                else if(stepCounter > allContestantAnimationData.at(i).length) {
+                else if(stepCounter > allContestantAnimationData[i].length) {
                     continue;
                 }
                 else {
-                    this.algoContestantRefs[i].doAnimationNextStep(allContestantAnimationData.at(i).at(stepCounter), stepCounter);
+                    this.algoContestantRefs[i].doAnimationNextStep(
+                        allContestantAnimationData[i][stepCounter],
+                        stepCounter
+                    );
                 }
             }
             stepCounter++;
         }
-
-        console.log('finishing contest');
     }
 
     randomizeArray() {
@@ -89,7 +78,6 @@ export default class SortContest extends React.Component {
         let numOfElements = 0;
         let array = [];
 
-        //Simplify This Later
         for (let i = ARRAY_MIN_VALUE; i < ARRAY_MAX_VALUE; ++i) {
             array.push(i);
             if(numOfElements >= this.state.arraySize) {
@@ -143,8 +131,12 @@ export default class SortContest extends React.Component {
         return (
             <div id='sortcontest'>
                 <div id="sortcontestheader">
-                    <button id="randomizebutton" onClick={() => this.genearateRandomArrayButtonOnClick()}>Generate Random Array</button>
-                    <button id="nearlysortedbutton" onClick={() => this.genearateNearySortedArrayButtonOnClick()}>Generate Nearly Sorted Array</button>
+                    <button id="randomizebutton" onClick={() => this.genearateRandomArrayButtonOnClick()}>
+                        Generate Random Array
+                    </button>
+                    <button id="nearlysortedbutton" onClick={() => this.genearateNearySortedArrayButtonOnClick()}>
+                        Generate Nearly Sorted Array
+                    </button>
                     {/* <button id="logconteststatebutton" onClick={() => console.log(this.state)}>Log Sort Contest State</button> */}
                     {/* some sort of countdown marker */}
                     <button id="startcontestbutton" onClick={() => this.startContestButtonOnClick()}>Start</button>
