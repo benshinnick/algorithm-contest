@@ -4,8 +4,10 @@ import './css/SortContest.css';
 
 const ARRAY_MIN_VALUE = 5;
 const ARRAY_MAX_VALUE = 145;
-const INITIAL_ARRAY_SIZE = 250;
-const INITIAL_NUM_OF_CONTESTANTS = 7;
+const INITIAL_ARRAY_SIZE = 300;
+const INITIAL_NUM_OF_CONTESTANTS = 2;
+
+const COUNTDOWN_DURATION_MS = 3000;
 
 const ALGORITHM_TYPES = [
     'merge',
@@ -38,6 +40,10 @@ export default class SortContest extends React.Component {
     }
 
     startContest() {
+
+        this.disablePreContestButtons();
+        this.startCountdown();
+
         const allContestantAnimationData = [];
         for(let i = 0; i < this.state.numOfContestants; ++i) {
             allContestantAnimationData[i] = this.algoContestantRefs[i].getSortAnimations();
@@ -64,6 +70,46 @@ export default class SortContest extends React.Component {
             }
             stepCounter++;
         }
+
+        // this.enablePreContestSetupButtons();
+    }
+
+    startCountdown() {
+        let numOfCountdownSeconds = COUNTDOWN_DURATION_MS / 1000;
+        for(let i = 0; i < numOfCountdownSeconds; ++i) {
+            setTimeout(() => {
+                document.getElementById("startcontestbutton").innerHTML = `${numOfCountdownSeconds - i}`;
+            }, i * 1000);
+        }
+
+        setTimeout(() => {
+            document.getElementById("startcontestbutton").style.backgroundColor = '#0e7424';
+            document.getElementById("startcontestbutton").innerHTML = 'GO!';
+        }, COUNTDOWN_DURATION_MS); 
+    }
+
+    disablePreContestButtons() {
+        document.getElementById("startcontestbutton").disabled = true;
+        document.getElementById("startcontestbutton").style.backgroundColor = '#0e7424';
+
+        document.getElementById("randomizebutton").disabled = true;
+        document.getElementById("randomizebutton").style.backgroundColor = '#0069d9';
+
+        document.getElementById("nearlysortedbutton").disabled = true;
+        document.getElementById("nearlysortedbutton").style.backgroundColor = '#0069d9';
+    }
+
+    enablePreContestSetupButtons() {
+        document.getElementById("startcontestbutton").innerHTML = 'Start';
+        document.getElementById("startcontestbutton").disabled = false;
+        document.getElementById("startcontestbutton").style.backgroundColor = '#1ea33b';
+
+        document.getElementById("randomizebutton").disabled = false;
+        document.getElementById("randomizebutton").style.backgroundColor = '#007bff';
+        
+        document.getElementById("nearlysortedbutton").disabled = false;
+        document.getElementById("nearlysortedbutton").style.backgroundColor = '#007bff';
+
     }
 
     randomizeArray() {
@@ -101,24 +147,28 @@ export default class SortContest extends React.Component {
         this.setState({ ...this.state, array: array });
     }
 
-    resetAlgorithmVisualizationStyling() {
+    resetSortContestPage() {
+        this.enablePreContestSetupButtons();
         for(let i = 0; i < this.state.numOfContestants; ++i) {
             this.algoContestantRefs[i].resetVisualizationStyling();
         }
     }
 
     genearateRandomArrayButtonOnClick() {
-        this.resetAlgorithmVisualizationStyling();
+        this.enablePreContestSetupButtons();
+        this.resetSortContestPage();
         this.randomizeArray();
     }
 
     genearateNearySortedArrayButtonOnClick() {
-        this.resetAlgorithmVisualizationStyling();
+        this.enablePreContestSetupButtons();
+        this.resetSortContestPage();
         this.generateNearlySortedArray()
     }
 
     startContestButtonOnClick() {
-        this.resetAlgorithmVisualizationStyling();
+        this.enablePreContestSetupButtons();
+        this.resetSortContestPage();
         this.startContest();
     }
 
@@ -138,7 +188,6 @@ export default class SortContest extends React.Component {
                         Generate Nearly Sorted Array
                     </button>
                     {/* <button id="logconteststatebutton" onClick={() => console.log(this.state)}>Log Sort Contest State</button> */}
-                    {/* some sort of countdown marker */}
                     <button id="startcontestbutton" onClick={() => this.startContestButtonOnClick()}>Start</button>
                 </div>
 
