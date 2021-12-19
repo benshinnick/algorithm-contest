@@ -90,6 +90,7 @@ export default class SortContest extends React.Component {
 
     handleContestIsNowFinished() {
         this.enablePreContestSetupButtons();
+        this.disableDuringContestControlButtons();
         const sortedArray = this.state.array.sort(function(a, b){return a - b});
         this.setState({ ...this.state, array: sortedArray });
     }

@@ -106,6 +106,10 @@ export default class SortVisualizer extends React.Component {
     }
 
     doNextMergeSortAnimationStep(animationStepInfo, currentStepNumber) {
+        if(animationStepInfo[0] === 'of') {
+            return;
+        }
+
         const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
         const isComparison = animationStepInfo[0] !== 'o';
 
@@ -147,7 +151,11 @@ export default class SortVisualizer extends React.Component {
         // TODO
     }
 
-    async doNextInsertionSortAnimationStep(animationStepInfo, currentStepNumber) {
+    doNextInsertionSortAnimationStep(animationStepInfo, currentStepNumber) {
+        if(animationStepInfo[0] === 'sf') {
+            return;
+        }
+
         const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
         const isComparison = animationStepInfo[0] !== 's';
 

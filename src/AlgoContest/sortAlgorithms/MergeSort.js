@@ -29,9 +29,11 @@ function merge(mainArray, startIndex, middleIndex, endIndex, auxiliaryArray, ani
         if(auxiliaryArray[i] <= auxiliaryArray[j]) {
             animations.push(['o', k, auxiliaryArray[i]]);
             mainArray[k++] = auxiliaryArray[i++];
+            animations.push(['of', k, auxiliaryArray[i]]);
         } else {
             animations.push(['o', k, auxiliaryArray[j]]);
             mainArray[k++] = auxiliaryArray[j++];
+            animations.push(['of', k, auxiliaryArray[j]]);
         }
     }
     while(i <= middleIndex) {
@@ -39,11 +41,13 @@ function merge(mainArray, startIndex, middleIndex, endIndex, auxiliaryArray, ani
         animations.push(['cf', i, i]);
         animations.push(['o', k, auxiliaryArray[i]]);
         mainArray[k++] = auxiliaryArray[i++];
+        animations.push(['of', k, auxiliaryArray[i]]);
     }
     while (j <= endIndex) {
         animations.push(['c', j, j]);
         animations.push(['cf', j, j]);
         animations.push(['o', k, auxiliaryArray[j]]);
         mainArray[k++] = auxiliaryArray[j++];
+        animations.push(['of', k, auxiliaryArray[j]]);
         }
   }
