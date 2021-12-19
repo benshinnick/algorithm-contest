@@ -1,6 +1,7 @@
 import React from 'react';
 import {getInsertionSortAnimations} from './sortAlgorithms/InsertionSort.js';
 import {getMergeSortAnimations} from './sortAlgorithms/MergeSort.js';
+import {getQuicksortAnimations} from './sortAlgorithms/Quicksort.js';
 import './css/SortVisualizer.css';
 
 // main color of the array bars: dark blue
@@ -56,8 +57,7 @@ export default class SortVisualizer extends React.Component {
             case 'merge':
                 return getMergeSortAnimations(arrayCopy);
             case 'quick':
-                // return getQuickSortAnimations(arrayCopy);
-                break;
+                return getQuicksortAnimations(arrayCopy);
             case 'shell':
                 // return getShellSortAnimations(arrayCopy);
                 break;
@@ -83,7 +83,7 @@ export default class SortVisualizer extends React.Component {
                 this.doNextMergeSortAnimationStep(animationStepInfo, currentStepNumber);
                 break;
             case 'quick':
-                this.doNextQuickSortAnimationStep(animationStepInfo, currentStepNumber);
+                this.doNextQuicksortAnimationStep(animationStepInfo, currentStepNumber);
                 break;
             case 'shell':
                 this.doNextShellSortAnimationStep(animationStepInfo, currentStepNumber);
@@ -147,8 +147,38 @@ export default class SortVisualizer extends React.Component {
 
     }
 
-    doNextQuickSortAnimationStep(animationStepInfo, currentStepNumber) {
-        // TODO
+    doNextQuicksortAnimationStep(animationStepInfo, currentStepNumber) {
+        if(animationStepInfo[0] === 'sf' || animationStepInfo[0] === 'p') {
+            return;
+        }
+
+        const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
+        const isComparison = animationStepInfo[0] === 'c' || animationStepInfo[0] === 'cf';
+
+        const barOneIndex = animationStepInfo[1];
+        const barTwoIndex = animationStepInfo[2];
+        const barOneStyle = arrayBars[barOneIndex].style;
+        const barTwoStyle = arrayBars[barTwoIndex].style;
+
+        if (isComparison) {
+            if(animationStepInfo[0] === 'c') {
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = SECONDARY_COLOR;
+                    barTwoStyle.backgroundColor = SECONDARY_COLOR;
+                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }
+            else if(animationStepInfo[0] === 'cf') {
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = PRIMARY_COLOR;
+                    barTwoStyle.backgroundColor = PRIMARY_COLOR;
+                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }
+        } else {
+            setTimeout(() => {
+                barOneStyle.height = `${animationStepInfo[4]}px`;
+                barTwoStyle.height = `${animationStepInfo[3]}px`;
+            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+        }
     }
 
     doNextShellSortAnimationStep(animationStepInfo, currentStepNumber) {
@@ -266,6 +296,12 @@ export default class SortVisualizer extends React.Component {
                     ))}
                 </div>
 
+                {/* <button onClick={() => {
+                    let arrayCopy = this.state.array.map((value) => value);
+                    console.log(arrayCopy);
+                    let quicksortedArray = getQuicksortAnimations(arrayCopy);
+                    console.log(quicksortedArray);
+                }}>Test Quick Sort</button> */}
                 {/* <button id="logvisualizerstatebutton" onClick={() => console.log(this.state)}>Log Sort Visualizer State</button> */}
             </div>
         );
