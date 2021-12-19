@@ -83,22 +83,22 @@ export default class SortVisualizer extends React.Component {
                 this.doNextMergeSortAnimationStep(animationStepInfo, currentStepNumber);
                 break;
             case 'quick':
-                // doNextQuickSortAnimationStep(animationStepInfo, currentStepNumber);
+                this.doNextQuickSortAnimationStep(animationStepInfo, currentStepNumber);
                 break;
             case 'shell':
-                // doNextShellSortAnimationStep(animationStepInfo, currentStepNumber);
+                this.doNextShellSortAnimationStep(animationStepInfo, currentStepNumber);
                 break;
             case 'insertion':
                 this.doNextInsertionSortAnimationStep(animationStepInfo, currentStepNumber);
                 break;
             case 'heap':
-                // doNextHeapSortAnimationStep(animationStepInfo, currentStepNumber);
+                this.doNextHeapSortAnimationStep(animationStepInfo, currentStepNumber);
                 break;
             case 'selection':
-                // doNextSelectionSortAnimationStep(animationStepInfo, currentStepNumber);
+                this.doNextSelectionSortAnimationStep(animationStepInfo, currentStepNumber);
                 break;
             case 'bubble':
-                // doNextBubbleSortAnimationStep(animationStepInfo, currentStepNumber);
+                this.doNextBubbleSortAnimationStep(animationStepInfo, currentStepNumber);
                 break;
             default:
                 console.log("Error: Unexpected Algorithm Type",);
@@ -107,7 +107,7 @@ export default class SortVisualizer extends React.Component {
 
     doNextMergeSortAnimationStep(animationStepInfo, currentStepNumber) {
         const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
-        const isComparison = animationStepInfo[0] !== 'o';
+        const isComparison = animationStepInfo[0] === 'c' || animationStepInfo[0] === 'cf';
 
         const barOneIndex = animationStepInfo[1];
         const barOneStyle = arrayBars[barOneIndex].style;
@@ -131,23 +131,35 @@ export default class SortVisualizer extends React.Component {
                 return;
             }
         } else {
-            setTimeout(() => {
-                barOneStyle.height = `${animationStepInfo[2]}px`;
-            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            if(animationStepInfo[0] === 'o') {
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = SECONDARY_COLOR;
+                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }
+            else if(animationStepInfo[0] === 'of') {
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = PRIMARY_COLOR;
+                    barOneStyle.height = `${animationStepInfo[2]}px`;
+                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }
             return;
         }
 
     }
 
-    quickSort() {
+    doNextQuickSortAnimationStep(animationStepInfo, currentStepNumber) {
         // TODO
     }
 
-    shellSort() {
+    doNextShellSortAnimationStep(animationStepInfo, currentStepNumber) {
         // TODO
     }
 
-    async doNextInsertionSortAnimationStep(animationStepInfo, currentStepNumber) {
+    doNextInsertionSortAnimationStep(animationStepInfo, currentStepNumber) {
+        if(animationStepInfo[0] === 'sf') {
+            return;
+        }
+
         const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
         const isComparison = animationStepInfo[0] !== 's';
 
@@ -177,15 +189,15 @@ export default class SortVisualizer extends React.Component {
         }
     }
 
-    heapSort() {
+    doNextHeapSortAnimationStep(animationStepInfo, currentStepNumber) {
         // TODO
     }
 
-    selectionSort() {
+    doNextSelectionSortAnimationStep(animationStepInfo, currentStepNumber) {
         // TODO
     }
 
-    bubbleSort() {
+    doNextBubbleSortAnimationStep(animationStepInfo, currentStepNumber) {
         // TODO
     }
 
