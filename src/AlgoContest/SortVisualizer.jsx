@@ -15,7 +15,7 @@ const FINISHED_SORTING_BACKGROUND_COLOR = '#edfff2'; // light green
 
 export default class SortVisualizer extends React.Component {
 
-    static ANIMATION_SPEED_MS = 5;
+    static ANIMATION_SPEED_MS = 2;
     static ANIMATION_DELAY_MS = 3000;
 
     constructor(props) {
@@ -24,7 +24,7 @@ export default class SortVisualizer extends React.Component {
             array: this.props.array,
             algorithmType: this.props.algorithmType,
             allAlgorithmTypes: this.props.algorithmTypes,
-            contestantNumber: this.props.contestantNumber,
+            contestantNumber: this.props.contestantNumber
         };
     }
 
@@ -199,18 +199,33 @@ export default class SortVisualizer extends React.Component {
         }
     }
 
-    handleAlgorithmIsNowFinished(lastAnimationStepNumber) {
+    scheduleAlgorithmIsNowFinishedCommands(lastAnimationStepNumber) {
         setTimeout(() => {
-            document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = FINISHED_SORTING_BACKGROUND_COLOR;
-            const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
-            for (var i = 0; i < arrayBars.length; i++) {
-                arrayBars[i].style.backgroundColor = FINISHED_SORTING_COLOR;
-            }
+            this.handleAlgorithmIsNowFinishedStyling();
         }, lastAnimationStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+    }
+
+    handleAlgorithmIsNowFinishedStyling() {
+        document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = FINISHED_SORTING_BACKGROUND_COLOR;
+        const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
+        for (var i = 0; i < arrayBars.length; i++) {
+            arrayBars[i].style.backgroundColor = FINISHED_SORTING_COLOR;
+        }
     }
 
     updateAlgorithmType(algorithmType) {
         this.setState({...this.state, algorithmType: algorithmType});
+    }
+
+    setArrayBarsToSortedA(array) {
+        this.setState({...this.state, array: array});
+    }
+
+    resetArrayBarsToCorrectHeights() {
+        const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
+        for (var i = 0; i < arrayBars.length; i++) {
+            arrayBars[i].style.height = `${this.state.array[i]}px`;
+        }
     }
 
     render() {

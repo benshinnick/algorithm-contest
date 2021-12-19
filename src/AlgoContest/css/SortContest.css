@@ -11,6 +11,7 @@
 
 #randomizebutton {
     background-color: #007bff;
+    display: inline-block;
     border: none;
     color: white;
     padding-left: 10px;
@@ -19,7 +20,6 @@
     padding-bottom: 7px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
     font-size: 15px;
     transition-duration: 0.2s;
     border-radius: 1px;
@@ -40,6 +40,7 @@
 
 #nearlysortedbutton {
     background-color: #007bff;
+    display: inline-block;
     border: none;
     color: white;
     padding-left: 10px;
@@ -48,7 +49,6 @@
     padding-bottom: 7px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
     font-size: 15px;
     transition-duration: 0.2s;
     border-radius: 1px;
@@ -71,14 +71,14 @@
     background-color: #1ea33b;
     border: none;
     color: white;
-    width: 224px;
+    width: 210px;
     padding-left: 45px;
     padding-right: 45px;
     padding-top: 7px;
     padding-bottom: 7px;
     text-align: center;
     text-decoration: none;
-    float: right;
+    display: inline-block;
     font-size: 15px;
     transition-duration: 0.2s;
     border-radius: 1px;
@@ -89,10 +89,39 @@
 }
 
 #startcontestbutton:hover {
-    background-color: #0e7424;
+    background-color: #118c2b;
 }
 
 #startcontestbutton:disabled,
 #startcontestbutton[disabled] {
+    background-color: #0e7424;
+}
+
+#skip-to-finish-button {
+    background-color: #1ea33b;
+    float: right;
+    border: none;
+    color: white;
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    transition-duration: 0.2s;
+    border-radius: 1px;
+    margin-right: 7px;
+    margin-top: 2px;
+    margin-left: 4px;
+    margin-bottom: 2px;
+}
+
+#skip-to-finish-button:hover {
+    background-color: #118c2b;
+}
+
+#skip-to-finish-button:disabled,
+#skip-to-finish-button[disabled] {
     background-color: #0e7424;
 }
