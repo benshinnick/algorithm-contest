@@ -4,7 +4,7 @@
     margin-bottom: 0px;
     margin-left: 0px;
     margin-right: 0px;
-
+    z-index: 1;
     padding-top :5px;
     padding-bottom: 5px;
 }
@@ -124,4 +124,21 @@
 #skip-to-finish-button:disabled,
 #skip-to-finish-button[disabled] {
     background-color: #0e7424;
+}
+
+/* .sticky header
+.sort-visualizers {
+    padding: 0;
+} */
+  
+/* The sticky class is added to the header with JS when it reaches its scroll position */
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%
+}
+  
+/* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
+.sticky + .sort-visualizers {
+    padding-top: 45px;
 }

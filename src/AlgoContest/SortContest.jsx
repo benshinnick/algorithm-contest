@@ -226,7 +226,7 @@ export default class SortContest extends React.Component {
         }
 
         return (
-            <div id='sortcontest'>
+            <div class='sortcontest'>
                 <div id="sortcontestheader">
                     <button id="startcontestbutton" onClick={() => this.startContestButtonOnClick()}>Start</button>
                     <button id="randomizebutton" onClick={() => this.genearateRandomArrayButtonOnClick()}>
@@ -238,8 +238,7 @@ export default class SortContest extends React.Component {
                     {/* <button onClick={() => console.log(this.state)}>Log Sort Contest State</button> */}
                     <button id="skip-to-finish-button" onClick={() => this.skipToFinishButtonOnClick()}>Skip To Finish</button>
                 </div>
-
-                <div id='sort-visualizers'>
+                <div class='sort-visualizers'>
                     {contestantNumbers.map(contestantNum => (
                         <SortVisualizer 
                             key={contestantNum}
@@ -265,4 +264,19 @@ function swap(array, index1, index2) {
     let temp = array[index1];
     array[index1] = array[index2];
     array[index2] = temp;
+}
+
+// Referenced https://www.w3schools.com/howto/howto_js_sticky_header.asp
+window.onscroll = function() {addOrRemoveStickyEffectOnSortContestHeader()};
+function addOrRemoveStickyEffectOnSortContestHeader() {
+    const SORT_CONTEST_HEADER_HEIGHT = 45;
+
+    var header = document.getElementById("sortcontestheader");
+    var sticky = SORT_CONTEST_HEADER_HEIGHT;
+
+    if (window.pageYOffset > sticky) {
+        header.classList.add("sticky");
+    } else {
+        header.classList.remove("sticky");
+    }
 }
