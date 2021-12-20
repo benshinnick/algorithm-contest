@@ -1,5 +1,6 @@
 #sort-visualizer-1, #sort-visualizer-2, #sort-visualizer-3, #sort-visualizer-4,
 #sort-visualizer-5, #sort-visualizer-6, #sort-visualizer-7 {
+    white-space: nowrap;
     background-color: #f7f7f7;
     border-style: solid hidden hidden hidden;
     border-width: 2px;

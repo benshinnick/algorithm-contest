@@ -4,8 +4,7 @@ import './css/SortContest.css';
 
 const ARRAY_MIN_VALUE = 5;
 const ARRAY_MAX_VALUE = 130;
-const INITIAL_ARRAY_SIZE = 315;
-const INITIAL_NUM_OF_CONTESTANTS = 7;
+const INITIAL_NUM_OF_CONTESTANTS = 3;
 
 const COUNTDOWN_DURATION_MS = SortVisualizer.ANIMATION_DELAY_MS;
 
@@ -25,8 +24,8 @@ export default class SortContest extends React.Component {
         super(props);
         this.state = {
             array: [],
-            arraySize: INITIAL_ARRAY_SIZE,
-            numOfContestants: INITIAL_NUM_OF_CONTESTANTS
+            numOfContestants: INITIAL_NUM_OF_CONTESTANTS,
+            isPreContest: true
         };
         this.algoContestantRefs = [];
     }
@@ -36,18 +35,17 @@ export default class SortContest extends React.Component {
     };
 
     componentDidMount() {
-        this.randomizeArray();
         this.disableDuringContestControlButtons();
-        this.setInitialArraySize();
-        window.addEventListener('resize', this.changeArrayWhenScreenResizes);
+        let initalArraySize = this.getFullPageWidthArraySize();
+        this.randomizeArray()
+        window.addEventListener('resize', this.updateArrayWhenPageResizes);
     }
     
     componentWillUnmount() {
-        window.removeEventListener('resize', this.changeArrayWhenScreenResizes);
+        window.removeEventListener('resize', this.updateArrayWhenPageResizes);
     }
 
     startContest() {
-
         this.disablePreContestButtons();
         this.enableDuringContestControlButtons()
         this.startCountdown();
@@ -116,7 +114,8 @@ export default class SortContest extends React.Component {
 
     randomizeArray() {
         let array = [];
-        for (let i = 0; i < this.state.arraySize; ++i) {
+        let fullPageWidthArraySize = this.getFullPageWidthArraySize();
+        for (let i = 0; i < fullPageWidthArraySize; ++i) {
             array.push(randomIntFromInterval(ARRAY_MIN_VALUE, ARRAY_MAX_VALUE));
         }
         this.setState({ ...this.state, array: array });
@@ -125,19 +124,20 @@ export default class SortContest extends React.Component {
     generateNearlySortedArray() {
         let numOfElements = 0;
         let array = [];
+        let fullPageWidthArraySize = this.getFullPageWidthArraySize();
 
         for (let i = ARRAY_MIN_VALUE; i < ARRAY_MAX_VALUE; ++i) {
             array.push(i);
-            if(numOfElements >= this.state.arraySize) {
+            if(numOfElements >= fullPageWidthArraySize) {
                 break;
             }
             array.push(i);
             numOfElements += 2;
-            if(numOfElements >= this.state.arraySize) {
+            if(numOfElements >= fullPageWidthArraySize) {
                 break;
             }
         }
-        for (let i = numOfElements; i < this.state.arraySize; ++i) {
+        for (let i = numOfElements; i < fullPageWidthArraySize; ++i) {
             array.push(ARRAY_MAX_VALUE);
         }
         for(let i = 0; i < 5; ++i) {
@@ -208,21 +208,26 @@ export default class SortContest extends React.Component {
     }
 
     genearateRandomArrayButtonOnClick() {
-        this.enablePreContestSetupButtons();
-        this.resetSortContestPage();
-        this.randomizeArray();
+        this.setState({ ...this.state, isPreContest: true }, () => {
+            this.enablePreContestSetupButtons();
+            this.resetSortContestPage();
+            this.randomizeArray();
+        });
     }
 
     genearateNearySortedArrayButtonOnClick() {
-        this.enablePreContestSetupButtons();
-        this.resetSortContestPage();
-        this.generateNearlySortedArray()
+        this.setState({ ...this.state, isPreContest: true }, () => {
+            this.enablePreContestSetupButtons();
+            this.resetSortContestPage();
+            this.generateNearlySortedArray();
+        });
     }
 
     startContestButtonOnClick() {
         this.enablePreContestSetupButtons();
         this.resetSortContestPage();
         this.startContest();
+        this.setState({ ...this.state, isPreContest: false });
     }
 
     render() {
@@ -260,17 +265,15 @@ export default class SortContest extends React.Component {
         );
     }
 
-
-    changeArrayWhenScreenResizes = () => {
-        const newArraySize = Math.floor((window.innerWidth - 30) / 4);
-        this.setState({ ...this.state, arraySize: newArraySize });
-        this.randomizeArray();
+    updateArrayWhenPageResizes = () => {
+        if(this.state.isPreContest === true) {
+            this.randomizeArray();
+        }
     }
 
-    setInitialArraySize() {
-        const newArraySize = Math.floor((window.innerWidth - 30) / 4);
-        this.setState({ ...this.state, arraySize: newArraySize });
-        this.randomizeArray();
+    getFullPageWidthArraySize() {
+        const initialArraySize = Math.floor((window.innerWidth - 14) / 4);
+        return initialArraySize;
     }
 }
 
