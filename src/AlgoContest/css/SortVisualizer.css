@@ -67,9 +67,7 @@
     display: block;
 }
 
-/* End of Algorithm Selection Dropdown Styling */
-
-/* array styling  */
+/* End Of Algorithm Selection Dropdown Styling */
 
 #array-container-1, #array-container-2, #array-container-3, #array-container-4,
 #array-container-5, #array-container-6, #array-container-7 {
@@ -87,33 +85,11 @@
   margin: 0 1px;
 }
 
-/* end of array styling  */
-
 .pivot-line {
-  /* display: none; */
   border: 0;
   position: absolute;
   background-color: red;
   z-index: 1;
   height: 1px;
   visibility: visible;
-  /* border-left: 1px;
-  border-right: 1px; */
-}
-
-/* .sticky header */
-.sort-visualizer-content {
-  padding: 0;
-}
-
-/* The sticky class is added to the header with JS when it reaches its scroll position */
-.sticky {
-  position: fixed;
-  top: 0;
-  width: 100%
-}
-
-/* Add some top padding to the page content to prevent sudden quick movement (as the header gets a new position at the top of the page (position:fixed and top:0) */
-.sticky + #algocontestheader {
-  margin-bottom: 200px;
 }
