@@ -71,24 +71,13 @@
 
 /* array styling  */
 
-.array-container {
+#array-container-1, #array-container-2, #array-container-3, #array-container-4,
+#array-container-5, #array-container-6, #array-container-7 {
     position: absolute;
     padding-top: 15px;
     padding-right: 5px;
     padding-left: 5px;
     padding-bottom: 10px;
-    /* margin: auto;
-    width: 75%; */
-    /* margin: auto;
-    width: 80%;
-    border: 3px solid green;
-    padding: 15px; */
-
-    /* display: flex;
-    justify-content: center; */
-    /* align-items: center; */
-
-    /* top: 100px; */
   }
   
 .array-bar-1, .array-bar-2, .array-bar-3, .array-bar-4,
@@ -96,10 +85,18 @@
   width: 2px;
   display: inline-block;
   margin: 0 1px;
-  }
+}
 
-  /* end of array styling  */
+/* end of array styling  */
 
-#logvisualizerstatebutton {
-    margin-left: 15px;
+.pivot-line {
+  /* display: none; */
+  border: 0;
+  position: absolute;
+  background-color: red;
+  z-index: 1;
+  height: 1px;
+  visibility: visible;
+  /* border-left: 1px;
+  border-right: 1px; */
 }

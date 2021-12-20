@@ -173,6 +173,7 @@ export default class SortContest extends React.Component {
 
     skipToFinishButtonOnClick() {
         this.clearAllTimeouts();
+        this.clearAllQuicksortPivotBars();
         this.handleContestIsNowFinished();
         this.disableDuringContestControlButtons();
 
@@ -188,6 +189,15 @@ export default class SortContest extends React.Component {
         var id = setTimeout(function() {}, 0);
         while (id--) {
             clearTimeout(id);
+        }
+    }
+
+    clearAllQuicksortPivotBars() {
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            let pivotLine = document.getElementById(`pivot-line-${i+1}`);
+            if(pivotLine !== null) {
+                pivotLine.remove();
+            }
         }
     }
 
