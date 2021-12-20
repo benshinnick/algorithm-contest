@@ -4,7 +4,7 @@ import './css/SortContest.css';
 
 const ARRAY_MIN_VALUE = 5;
 const ARRAY_MAX_VALUE = 130;
-const INITIAL_NUM_OF_CONTESTANTS = 3;
+const INITIAL_NUM_OF_CONTESTANTS = 7;
 
 const COUNTDOWN_DURATION_MS = SortVisualizer.ANIMATION_DELAY_MS;
 
@@ -37,12 +37,14 @@ export default class SortContest extends React.Component {
     componentDidMount() {
         this.disableDuringContestControlButtons();
         let initalArraySize = this.getFullPageWidthArraySize();
-        this.randomizeArray()
+        this.randomizeArray();
         window.addEventListener('resize', this.updateArrayWhenPageResizes);
+        window.addEventListener('scroll', this.addOrRemoveStickyEffectOnSortContestHeader);
     }
     
     componentWillUnmount() {
         window.removeEventListener('resize', this.updateArrayWhenPageResizes);
+        window.addEventListener('scroll', this.addOrRemoveStickyEffectOnSortContestHeader);
     }
 
     startContest() {
@@ -275,6 +277,18 @@ export default class SortContest extends React.Component {
         const initialArraySize = Math.floor((window.innerWidth - 14) / 4);
         return initialArraySize;
     }
+
+    // Referenced https://www.w3schools.com/howto/howto_js_sticky_header.asp
+    addOrRemoveStickyEffectOnSortContestHeader = () => {
+        let header = document.getElementById("sortcontestheader");
+        let sticky = header.offsetHeight;
+
+        if (window.pageYOffset > sticky) {
+            header.classList.add("sticky");
+        } else {
+            header.classList.remove("sticky");
+        }
+    }
 }
 
 function randomIntFromInterval(min, max) {
@@ -285,19 +299,4 @@ function swap(array, index1, index2) {
     let temp = array[index1];
     array[index1] = array[index2];
     array[index2] = temp;
-}
-
-// Referenced https://www.w3schools.com/howto/howto_js_sticky_header.asp
-window.onscroll = function() {addOrRemoveStickyEffectOnSortContestHeader()};
-function addOrRemoveStickyEffectOnSortContestHeader() {
-    const SORT_CONTEST_HEADER_HEIGHT = 45;
-
-    var header = document.getElementById("sortcontestheader");
-    var sticky = SORT_CONTEST_HEADER_HEIGHT;
-
-    if (window.pageYOffset > sticky) {
-        header.classList.add("sticky");
-    } else {
-        header.classList.remove("sticky");
-    }
 }
