@@ -1,5 +1,6 @@
 #sort-visualizer-1, #sort-visualizer-2, #sort-visualizer-3, #sort-visualizer-4,
 #sort-visualizer-5, #sort-visualizer-6, #sort-visualizer-7 {
+    white-space: nowrap;
     background-color: #f7f7f7;
     border-style: solid hidden hidden hidden;
     border-width: 2px;
@@ -92,4 +93,15 @@
   z-index: 1;
   height: 1px;
   visibility: visible;
+}
+
+.algorithm-info {
+  background-color: rgba(53, 53, 53, 0.863);
+  height: 140px;
+  width: 143px;
+  margin: 12px 7px;
+  border-radius: 5px;
+  float: right;
+  color: white;
+  text-align: center;
 }

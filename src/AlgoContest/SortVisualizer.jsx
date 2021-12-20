@@ -153,7 +153,6 @@ export default class SortVisualizer extends React.Component {
     doNextQuicksortAnimationStep(animationStepInfo, currentStepNumber) {
         const animationCode = animationStepInfo[0];
         const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
-        const isSwap = animationCode === 's' || animationCode === 'sf';
 
         // swap cases
         if (animationCode === 's' || animationCode === 'sf') {
@@ -279,13 +278,16 @@ export default class SortVisualizer extends React.Component {
         }
     }
 
-    scheduleAlgorithmIsNowFinishedCommands(lastAnimationStepNumber) {
+    scheduleAlgorithmIsNowFinishedCommands(lastAnimationStepNumber, algorithmPlace) {
         setTimeout(() => {
-            this.handleAlgorithmIsNowFinishedStyling();
+            this.handleAlgorithmIsNowFinished(algorithmPlace);
         }, lastAnimationStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
     }
 
-    handleAlgorithmIsNowFinishedStyling() {
+    handleAlgorithmIsNowFinished(algorithmPlace) {
+
+        console.log(`Contestant ${this.state.contestantNumber} finished ${algorithmPlace}`);
+
         document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = FINISHED_SORTING_BACKGROUND_COLOR;
         const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
         for (var i = 0; i < arrayBars.length; i++) {
@@ -333,6 +335,10 @@ export default class SortVisualizer extends React.Component {
                         }}></div>
                     ))}
                 </div>
+
+                {/* <div className="algorithm-info">
+                        {this.state.algorithmType}
+                </div> */}
             </div>
         );
     }
