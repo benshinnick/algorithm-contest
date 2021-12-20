@@ -3,7 +3,7 @@ import SortVisualizer from './SortVisualizer.jsx';
 import './css/SortContest.css';
 
 const ARRAY_MIN_VALUE = 5;
-const ARRAY_MAX_VALUE = 145;
+const ARRAY_MAX_VALUE = 130;
 const INITIAL_ARRAY_SIZE = 300;
 const INITIAL_NUM_OF_CONTESTANTS = 7;
 
