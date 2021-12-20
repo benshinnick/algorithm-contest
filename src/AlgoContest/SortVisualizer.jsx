@@ -16,7 +16,7 @@ const FINISHED_SORTING_BACKGROUND_COLOR = '#edfff2'; // light green
 
 export default class SortVisualizer extends React.Component {
 
-    static ANIMATION_SPEED_MS = 1;
+    static ANIMATION_SPEED_MS = 2;
     static ANIMATION_DELAY_MS = 3000;
 
     constructor(props) {
@@ -189,10 +189,7 @@ export default class SortVisualizer extends React.Component {
             }
             else if(animationCode === 'cf') {
                 setTimeout(() => {
-                    let pivotIndex = animationStepInfo[2];
-                    if(barOneIndex !== pivotIndex) {
-                        barOneStyle.backgroundColor = PRIMARY_COLOR;
-                    }
+                    barOneStyle.backgroundColor = PRIMARY_COLOR;
                 }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
             }
         }
