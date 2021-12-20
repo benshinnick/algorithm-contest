@@ -6,7 +6,7 @@ import './css/SortVisualizer.css';
 
 // main color of the array bars: dark blue
 const PRIMARY_COLOR = '#292cff'; 
-// color of array bars that are being compared
+// color of array bars that are being compared or swapped
 const SECONDARY_COLOR = 'red';
 // color of all the array bars once sorting has finished
 const FINISHED_SORTING_COLOR = '#007bff';
@@ -16,7 +16,7 @@ const FINISHED_SORTING_BACKGROUND_COLOR = '#edfff2'; // light green
 
 export default class SortVisualizer extends React.Component {
 
-    static ANIMATION_SPEED_MS = 2;
+    static ANIMATION_SPEED_MS = 1;
     static ANIMATION_DELAY_MS = 3000;
 
     constructor(props) {
@@ -73,7 +73,7 @@ export default class SortVisualizer extends React.Component {
                 // return getBubbleSortAnimations(arrayCopy);
                 break;
             default:
-                console.log("Error: Unexpected Algorithm Type",);
+                console.log("Error: Unexpected Algorithm Type");
         }
     }
 
@@ -106,37 +106,40 @@ export default class SortVisualizer extends React.Component {
     }
 
     doNextMergeSortAnimationStep(animationStepInfo, currentStepNumber) {
+        const animationCode = animationStepInfo[0];
         const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
-        const isComparison = animationStepInfo[0] === 'c' || animationStepInfo[0] === 'cf';
 
         const barOneIndex = animationStepInfo[1];
         const barOneStyle = arrayBars[barOneIndex].style;
 
-        if (isComparison) {
+        //comparison cases
+        if (animationCode === 'c' || animationCode === 'cf') {
             const barTwoIndex = animationStepInfo[2];
             const barTwoStyle = arrayBars[barTwoIndex].style;
 
-            if(animationStepInfo[0] === 'c') {
+            if(animationCode === 'c') {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = SECONDARY_COLOR;
                     barTwoStyle.backgroundColor = SECONDARY_COLOR;
                 }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
                 return;
             }
-            else if(animationStepInfo[0] === 'cf') {
+            else if(animationCode === 'cf') {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = PRIMARY_COLOR;
                     barTwoStyle.backgroundColor = PRIMARY_COLOR;
                 }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
                 return;
             }
-        } else {
-            if(animationStepInfo[0] === 'o') {
+        }
+        //overwrite cases
+        else {
+            if(animationCode === 'o') {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = SECONDARY_COLOR;
                 }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
             }
-            else if(animationStepInfo[0] === 'of') {
+            else if(animationCode === 'of') {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = PRIMARY_COLOR;
                     barOneStyle.height = `${animationStepInfo[2]}px`;
@@ -148,36 +151,72 @@ export default class SortVisualizer extends React.Component {
     }
 
     doNextQuicksortAnimationStep(animationStepInfo, currentStepNumber) {
-        if(animationStepInfo[0] === 'sf' || animationStepInfo[0] === 'p') {
-            return;
-        }
-
+        const animationCode = animationStepInfo[0];
         const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
-        const isComparison = animationStepInfo[0] === 'c' || animationStepInfo[0] === 'cf';
+        const isSwap = animationCode === 's' || animationCode === 'sf';
 
-        const barOneIndex = animationStepInfo[1];
-        const barTwoIndex = animationStepInfo[2];
-        const barOneStyle = arrayBars[barOneIndex].style;
-        const barTwoStyle = arrayBars[barTwoIndex].style;
+        // swap cases
+        if (animationCode === 's' || animationCode === 'sf') {
+            const barOneIndex = animationStepInfo[1];
+            const barOneStyle = arrayBars[barOneIndex].style;
+            const barTwoIndex = animationStepInfo[2];
+            const barTwoStyle = arrayBars[barTwoIndex].style;
 
-        if (isComparison) {
-            if(animationStepInfo[0] === 'c') {
+            if(animationCode === 's') {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = SECONDARY_COLOR;
                     barTwoStyle.backgroundColor = SECONDARY_COLOR;
                 }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
             }
-            else if(animationStepInfo[0] === 'cf') {
+            else if(animationCode === 'sf') {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = PRIMARY_COLOR;
                     barTwoStyle.backgroundColor = PRIMARY_COLOR;
+                    barOneStyle.height = `${animationStepInfo[4]}px`;
+                    barTwoStyle.height = `${animationStepInfo[3]}px`;
                 }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
             }
-        } else {
-            setTimeout(() => {
-                barOneStyle.height = `${animationStepInfo[4]}px`;
-                barTwoStyle.height = `${animationStepInfo[3]}px`;
-            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+        } 
+        // comparison cases
+        else if(animationCode === 'c' || animationCode === 'cf'){
+            const barOneIndex = animationStepInfo[1];
+            const barOneStyle = arrayBars[barOneIndex].style;
+
+            if(animationCode === 'c') {
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = SECONDARY_COLOR;
+                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }
+            else if(animationCode === 'cf') {
+                setTimeout(() => {
+                    let pivotIndex = animationStepInfo[2];
+                    if(barOneIndex !== pivotIndex) {
+                        barOneStyle.backgroundColor = PRIMARY_COLOR;
+                    }
+                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }
+        }
+        // pivot cases
+        else {
+            if(animationCode === 'p') {
+                setTimeout(() => {
+                    let pivotLine = document.createElement("HR");
+                    let arrayContainer = document.getElementById(`array-container-${this.state.contestantNumber}`);
+                    pivotLine.setAttribute("id", `pivot-line-${this.state.contestantNumber}`);
+                    pivotLine.setAttribute("class", `pivot-line`);
+                    pivotLine.style.width = `${((animationStepInfo[2] - animationStepInfo[1] + 1) * 4)-2}px`;
+                    pivotLine.style.bottom = `${animationStepInfo[3] + 4}px`;
+                    pivotLine.style.left = `${((animationStepInfo[1] + 1) * 4) + 2}px`;
+                    arrayContainer.appendChild(pivotLine);
+                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+                return;
+            }
+            else if(animationCode === 'pf') {
+                setTimeout(() => {
+                    let pivotLine = document.getElementById(`pivot-line-${this.state.contestantNumber}`);
+                    pivotLine.remove();
+                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }
         }
     }
 
@@ -186,32 +225,34 @@ export default class SortVisualizer extends React.Component {
     }
 
     doNextInsertionSortAnimationStep(animationStepInfo, currentStepNumber) {
-        if(animationStepInfo[0] === 'sf') {
+        const animationCode = animationStepInfo[0];
+        if(animationCode === 'sf') {
             return;
         }
-
         const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
-        const isComparison = animationStepInfo[0] !== 's';
 
         const barOneIndex = animationStepInfo[1];
         const barTwoIndex = animationStepInfo[2];
         const barOneStyle = arrayBars[barOneIndex].style;
         const barTwoStyle = arrayBars[barTwoIndex].style;
 
-        if (isComparison) {
-            if(animationStepInfo[0] === 'c') {
+        // comparison cases
+        if (animationCode === 'c' || animationCode === 'cf') {
+            if(animationCode === 'c') {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = SECONDARY_COLOR;
                     barTwoStyle.backgroundColor = SECONDARY_COLOR;
                 }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
             }
-            else if(animationStepInfo[0] === 'cf') {
+            else if(animationCode === 'cf') {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = PRIMARY_COLOR;
                     barTwoStyle.backgroundColor = PRIMARY_COLOR;
                 }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
             }
-        } else {
+        }
+        // swap case
+        else {
             setTimeout(() => {
                 barOneStyle.height = `${animationStepInfo[4]}px`;
                 barTwoStyle.height = `${animationStepInfo[3]}px`;
@@ -285,7 +326,7 @@ export default class SortVisualizer extends React.Component {
                     </div>
                 </div>
 
-                <div className="array-container">
+                <div id={`array-container-${this.state.contestantNumber}`}>
                     {this.state.array.map((value, index) => (
                     <div className={`array-bar-${this.state.contestantNumber}`}
                         key={`${index}-${this.contestantNumber}`}
@@ -295,14 +336,6 @@ export default class SortVisualizer extends React.Component {
                         }}></div>
                     ))}
                 </div>
-
-                {/* <button onClick={() => {
-                    let arrayCopy = this.state.array.map((value) => value);
-                    console.log(arrayCopy);
-                    let quicksortedArray = getQuicksortAnimations(arrayCopy);
-                    console.log(quicksortedArray);
-                }}>Test Quick Sort</button> */}
-                {/* <button id="logvisualizerstatebutton" onClick={() => console.log(this.state)}>Log Sort Visualizer State</button> */}
             </div>
         );
     }

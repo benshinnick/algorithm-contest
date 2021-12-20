@@ -9,9 +9,9 @@ function insertionSort(array, animations) {
 
     // Animation codes:
     //  'c' denotes comparison between two indexes,
+    //  'cf' denotes that a comparison is finished
     //  's' denotes a swap between two indexes,
     //  'sf' denotes a swap is finished
-    //  'cf' denotes that a comparison (or comparison and swap) is finished
     for(let i = 1; i < array.length; ++i) {
         animations.push(['c',i, i-1]);
         animations.push(['cf',i, i-1]);
@@ -20,10 +20,10 @@ function insertionSort(array, animations) {
             let j = i;
             for(j; array[j] < array[j-1]; --j) {
                 animations.push(['c', j, j-1]);
-                animations.push(['s', j, j-1, array[j], array[j-1]]);
-                swap(array, j, j-1);
-                animations.push(['sf', j, j-1, array[j], array[j-1]]);
                 animations.push(['cf', j, j-1]);
+                animations.push(['s', j, j-1, array[j], array[j-1]]);
+                animations.push(['sf', j, j-1, array[j], array[j-1]]);
+                swap(array, j, j-1);
             }
             if(j-1 >= 0) {
                 animations.push(['c',j, j-1]);

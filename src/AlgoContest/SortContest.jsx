@@ -5,7 +5,7 @@ import './css/SortContest.css';
 const ARRAY_MIN_VALUE = 5;
 const ARRAY_MAX_VALUE = 145;
 const INITIAL_ARRAY_SIZE = 300;
-const INITIAL_NUM_OF_CONTESTANTS = 3;
+const INITIAL_NUM_OF_CONTESTANTS = 7;
 
 const COUNTDOWN_DURATION_MS = SortVisualizer.ANIMATION_DELAY_MS;
 
@@ -173,6 +173,7 @@ export default class SortContest extends React.Component {
 
     skipToFinishButtonOnClick() {
         this.clearAllTimeouts();
+        this.clearAllQuicksortPivotBars();
         this.handleContestIsNowFinished();
         this.disableDuringContestControlButtons();
 
@@ -188,6 +189,15 @@ export default class SortContest extends React.Component {
         var id = setTimeout(function() {}, 0);
         while (id--) {
             clearTimeout(id);
+        }
+    }
+
+    clearAllQuicksortPivotBars() {
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            let pivotLine = document.getElementById(`pivot-line-${i+1}`);
+            if(pivotLine !== null) {
+                pivotLine.remove();
+            }
         }
     }
 
