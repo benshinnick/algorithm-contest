@@ -4,7 +4,7 @@ import './css/SortContest.css';
 
 const ARRAY_MIN_VALUE = 5;
 const ARRAY_MAX_VALUE = 130;
-const INITIAL_ARRAY_SIZE = 300;
+const INITIAL_ARRAY_SIZE = 315;
 const INITIAL_NUM_OF_CONTESTANTS = 7;
 
 const COUNTDOWN_DURATION_MS = SortVisualizer.ANIMATION_DELAY_MS;
@@ -38,6 +38,12 @@ export default class SortContest extends React.Component {
     componentDidMount() {
         this.randomizeArray();
         this.disableDuringContestControlButtons();
+        this.setInitialArraySize();
+        window.addEventListener('resize', this.changeArrayWhenScreenResizes);
+    }
+    
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.changeArrayWhenScreenResizes);
     }
 
     startContest() {
@@ -57,7 +63,7 @@ export default class SortContest extends React.Component {
             for(let i = 0; i < this.state.numOfContestants; ++i) {
                 if(stepCounter === allContestantAnimationData[i].length) {
                     numOfFinishedContestants++;
-                    this.algoContestantRefs[i].scheduleAlgorithmIsNowFinishedCommands(stepCounter);
+                    this.algoContestantRefs[i].scheduleAlgorithmIsNowFinishedCommands(stepCounter, numOfFinishedContestants);
                     continue;
                 }
                 else if(stepCounter > allContestantAnimationData[i].length) {
@@ -178,7 +184,7 @@ export default class SortContest extends React.Component {
         this.disableDuringContestControlButtons();
 
         for(let i = 0; i < this.state.numOfContestants; ++i) {
-            this.algoContestantRefs[i].handleAlgorithmIsNowFinishedStyling();
+            this.algoContestantRefs[i].handleAlgorithmIsNowFinished();
             this.algoContestantRefs[i].resetArrayBarsToCorrectHeights();
         }
     }
@@ -226,7 +232,7 @@ export default class SortContest extends React.Component {
         }
 
         return (
-            <div class='sortcontest'>
+            <div className='sortcontest'>
                 <div id="sortcontestheader">
                     <button id="startcontestbutton" onClick={() => this.startContestButtonOnClick()}>Start</button>
                     <button id="randomizebutton" onClick={() => this.genearateRandomArrayButtonOnClick()}>
@@ -238,7 +244,7 @@ export default class SortContest extends React.Component {
                     {/* <button onClick={() => console.log(this.state)}>Log Sort Contest State</button> */}
                     <button id="skip-to-finish-button" onClick={() => this.skipToFinishButtonOnClick()}>Skip To Finish</button>
                 </div>
-                <div class='sort-visualizers'>
+                <div className='sort-visualizers'>
                     {contestantNumbers.map(contestantNum => (
                         <SortVisualizer 
                             key={contestantNum}
@@ -254,6 +260,18 @@ export default class SortContest extends React.Component {
         );
     }
 
+
+    changeArrayWhenScreenResizes = () => {
+        const newArraySize = Math.floor((window.innerWidth - 30) / 4);
+        this.setState({ ...this.state, arraySize: newArraySize });
+        this.randomizeArray();
+    }
+
+    setInitialArraySize() {
+        const newArraySize = Math.floor((window.innerWidth - 30) / 4);
+        this.setState({ ...this.state, arraySize: newArraySize });
+        this.randomizeArray();
+    }
 }
 
 function randomIntFromInterval(min, max) {
