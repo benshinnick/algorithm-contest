@@ -347,6 +347,12 @@ export default class SortVisualizer extends React.Component {
         }
     }
 
+    algorithmDropDownButtonOnClick(algorithmType) {
+        this.destructAlgorithmPlaceLabel();
+        this.resetVisualizationStyling();
+        this.updateAlgorithmType(algorithmType)
+    }
+
     render() {
         return (
             <div id={`sort-visualizer-${this.state.contestantNumber}`}>
@@ -356,7 +362,11 @@ export default class SortVisualizer extends React.Component {
                     <div className="dropdown-content">
                         {this.state.allAlgorithmTypes.map((algorithmType) => (
                         (algorithmType !== this.state.algorithmType) ?
-                            <button key={algorithmType} onClick={() => this.updateAlgorithmType(algorithmType)}>{algorithmType}</button>
+                            <button
+                                key={algorithmType}
+                                class='algorithm-dropdown-button'
+                                onClick={() => this.algorithmDropDownButtonOnClick(algorithmType)}
+                            >{algorithmType}</button>
                             : null
                         ))}
                     </div>

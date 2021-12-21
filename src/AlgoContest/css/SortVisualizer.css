@@ -61,8 +61,8 @@
   }
 
 
-  .dropdown-content button:disabled,
-  .dropdown-content button[disabled] {
+  .algorithm-dropdown-button:disabled,
+  .algorithm-dropdown-button[disabled] {
     display:none;
   }
   
