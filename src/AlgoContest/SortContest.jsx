@@ -4,7 +4,7 @@ import './css/SortContest.css';
 
 const ARRAY_MIN_VALUE = 5;
 const ARRAY_MAX_VALUE = 130;
-const INITIAL_NUM_OF_CONTESTANTS = 7;
+const INITIAL_NUM_OF_CONTESTANTS = 5;
 
 const COUNTDOWN_DURATION_MS = SortVisualizer.ANIMATION_DELAY_MS;
 
@@ -36,7 +36,6 @@ export default class SortContest extends React.Component {
 
     componentDidMount() {
         this.disableDuringContestControlButtons();
-        let initalArraySize = this.getFullPageWidthArraySize();
         this.randomizeArray();
         window.addEventListener('resize', this.updateArrayWhenPageResizes);
         window.addEventListener('scroll', this.addOrRemoveStickyEffectOnSortContestHeader);
@@ -55,18 +54,44 @@ export default class SortContest extends React.Component {
         const allContestantAnimationData = [];
         for(let i = 0; i < this.state.numOfContestants; ++i) {
             allContestantAnimationData[i] = this.algoContestantRefs[i].getSortAnimations();
+            let numOfComparisons = 0;
+            let numOfSwapsOrOverwrites = 0;
+            for(let j = 0; j < allContestantAnimationData[i].length; ++j){
+                let animationCode = allContestantAnimationData[i][j][0];
+                if(animationCode === 'c') {
+                    numOfComparisons++;
+                }
+                else if(animationCode === 's' || animationCode === 'o') {
+                    numOfSwapsOrOverwrites++;
+                }
+            }
+            // console.log(`contestant ${i+1} number of comparisons is ${numOfComparisons}`);
+            // console.log(`contestant ${i+1} number of swaps or overwrites is ${numOfSwapsOrOverwrites}`);
+            // this.algoContestantRefs[i].setNumOfAnimationsSteps(allContestantAnimationData[i].length / 2);
+            this.algoContestantRefs[i].setAllAlgorithmStatInfo(allContestantAnimationData[i].length / 2, numOfComparisons, numOfSwapsOrOverwrites);
+            // this.algoContestantRefs[i].setNumOfComparisons(numOfComparisons);
+            // this.algoContestantRefs[i].setNumOfSwapsOrOverwrites(numOfSwapsOrOverwrites);
         }
 
         let stepCounter = 0;
         let numOfFinishedContestants = 0;
+        let placeNumber = 0;
         while(numOfFinishedContestants < this.state.numOfContestants) {
+            let hasContestantFinishedThisStep = false;
             for(let i = 0; i < this.state.numOfContestants; ++i) {
-                if(stepCounter === allContestantAnimationData[i].length) {
-                    numOfFinishedContestants++;
-                    this.algoContestantRefs[i].scheduleAlgorithmIsNowFinishedCommands(stepCounter, numOfFinishedContestants);
+                if(stepCounter > allContestantAnimationData[i].length) {
                     continue;
                 }
-                else if(stepCounter > allContestantAnimationData[i].length) {
+                else if(stepCounter === allContestantAnimationData[i].length) {
+                    numOfFinishedContestants++;
+                    if(hasContestantFinishedThisStep === false) {
+                        placeNumber++;
+                        hasContestantFinishedThisStep = true;
+                        this.algoContestantRefs[i].scheduleAlgorithmIsNowFinishedCommands(stepCounter, placeNumber);
+                    }
+                    else {
+                        this.algoContestantRefs[i].scheduleAlgorithmIsNowFinishedCommands(stepCounter, placeNumber);
+                    }
                     continue;
                 }
                 else {
@@ -99,6 +124,11 @@ export default class SortContest extends React.Component {
         this.disableDuringContestControlButtons();
         const sortedArray = this.state.array.sort(function(a, b){return a - b});
         this.setState({ ...this.state, array: sortedArray });
+
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            this.algoContestantRefs[i].createAlgorithmStatsLabel();
+            this.algoContestantRefs[i].setAllAlgorithmStatInfo(-1, -1, -1);
+        }
     }
 
     startCountdown() {
@@ -153,6 +183,7 @@ export default class SortContest extends React.Component {
 
     resetSortContestPage() {
         this.enablePreContestSetupButtons();
+        this.clearAllAlgorithmStatsAndPlaceLabels();
         for(let i = 0; i < this.state.numOfContestants; ++i) {
             this.algoContestantRefs[i].resetVisualizationStyling();
         }
@@ -162,6 +193,11 @@ export default class SortContest extends React.Component {
         document.getElementById("startcontestbutton").disabled = true;
         document.getElementById("randomizebutton").disabled = true;
         document.getElementById("nearlysortedbutton").disabled = true;
+
+        const algorithmDropDownButtons = document.getElementsByClassName('algorithm-dropdown-button');
+        for(let i = 0; i < algorithmDropDownButtons.length; ++i) {
+            algorithmDropDownButtons[i].disabled = true;
+        }
     }
 
     enablePreContestSetupButtons() {
@@ -169,6 +205,11 @@ export default class SortContest extends React.Component {
         document.getElementById("startcontestbutton").disabled = false;
         document.getElementById("randomizebutton").disabled = false;
         document.getElementById("nearlysortedbutton").disabled = false;
+
+        const algorithmDropDownButtons = document.getElementsByClassName('algorithm-dropdown-button');
+        for(let i = 0; i < algorithmDropDownButtons.length; ++i) {
+            algorithmDropDownButtons[i].disabled = false;
+        }
     }
 
     disableDuringContestControlButtons() {
@@ -182,12 +223,63 @@ export default class SortContest extends React.Component {
     skipToFinishButtonOnClick() {
         this.clearAllTimeouts();
         this.clearAllQuicksortPivotBars();
-        this.handleContestIsNowFinished();
         this.disableDuringContestControlButtons();
+        this.clearAllAlgorithmStatsAndPlaceLabels();
+
+        let allContestantPlaceInfo = this.findAllPlaceInformation();
 
         for(let i = 0; i < this.state.numOfContestants; ++i) {
-            this.algoContestantRefs[i].handleAlgorithmIsNowFinished();
+            const algorithmPlace = allContestantPlaceInfo[i][2];
+            this.algoContestantRefs[i].handleAlgorithmIsNowFinished(algorithmPlace);
             this.algoContestantRefs[i].resetArrayBarsToCorrectHeights();
+        }
+        this.handleContestIsNowFinished();
+    }
+
+    findAllPlaceInformation() {
+
+        const allContestantPlaceInfo = [];
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            const contestantNum = i+1;
+            const numOfSteps = this.algoContestantRefs[i].getNumOfAnimationsSteps();
+            allContestantPlaceInfo.push([contestantNum, numOfSteps]);
+        }
+
+        //sort by number of animation steps to get the list in order of place
+        allContestantPlaceInfo.sort(function(a,b) {
+            return a[1]-b[1]
+        });
+
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            if(i > 0) {
+                if(allContestantPlaceInfo[i][1] === allContestantPlaceInfo[i-1][1]) {
+                    let placeNumber = allContestantPlaceInfo[i-1][2];
+                    allContestantPlaceInfo[i][2] = placeNumber;
+                }
+                else {
+                    let placeNumber = allContestantPlaceInfo[i-1][2] + 1;
+                    allContestantPlaceInfo[i][2] = placeNumber;
+                }
+            }
+            else {
+                let placeNumber = 1;
+                allContestantPlaceInfo[i][2] = placeNumber;
+            }
+        }
+
+        //sort by contestant number to get the list in the correct order
+        allContestantPlaceInfo.sort(function(a,b) {
+            return a[0]-b[0]
+        });
+        
+        //final format [contestant number, number of animation steps, place achieved]
+        return allContestantPlaceInfo;
+    }
+
+    clearAllAlgorithmStatsAndPlaceLabels() {
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            this.algoContestantRefs[i].destructAlgorithmPlaceLabel();
+            this.algoContestantRefs[i].destructAlgorithmStatsLabel();
         }
     }
 

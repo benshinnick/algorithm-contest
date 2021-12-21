@@ -25,7 +25,10 @@ export default class SortVisualizer extends React.Component {
             array: this.props.array,
             algorithmType: this.props.algorithmType,
             allAlgorithmTypes: this.props.algorithmTypes,
-            contestantNumber: this.props.contestantNumber
+            contestantNumber: this.props.contestantNumber,
+            numOfAnimationSteps: -1,
+            numOfSwapsOrOverwrites: -1,
+            numOfComparisons: -1
         };
     }
 
@@ -175,9 +178,12 @@ export default class SortVisualizer extends React.Component {
                     barTwoStyle.height = `${animationStepInfo[3]}px`;
                 }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
             }
-        } 
+        }
         // comparison cases
         else if(animationCode === 'c' || animationCode === 'cf'){
+            if(animationStepInfo.length === 1) {
+                return;
+            }
             const barOneIndex = animationStepInfo[1];
             const barOneStyle = arrayBars[barOneIndex].style;
 
@@ -285,13 +291,81 @@ export default class SortVisualizer extends React.Component {
     }
 
     handleAlgorithmIsNowFinished(algorithmPlace) {
-
-        console.log(`Contestant ${this.state.contestantNumber} finished ${algorithmPlace}`);
-
+        this.createAlgorithmPlacelabel(algorithmPlace);
         document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = FINISHED_SORTING_BACKGROUND_COLOR;
         const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
         for (var i = 0; i < arrayBars.length; i++) {
             arrayBars[i].style.backgroundColor = FINISHED_SORTING_COLOR;
+        }  
+    }
+
+    createAlgorithmPlacelabel(algorithmPlace) {
+        let sortVisualizer = document.getElementById(`sort-visualizer-${this.state.contestantNumber}`);
+        let placeLabel = document.createElement("DIV");
+        placeLabel.setAttribute("id", `place-label-${this.state.contestantNumber}`);
+        placeLabel.setAttribute("class", 'place-label');
+
+        let placeLabelText;
+        if(algorithmPlace === 1) {
+            const GOLD = '#c7b620';
+            placeLabel.style.backgroundColor = GOLD;
+            placeLabelText = document.createTextNode('1st Place');
+        }
+        else if(algorithmPlace === 2) {
+            const SILVER = '#929292';
+            placeLabel.style.backgroundColor = SILVER;
+            placeLabelText = document.createTextNode('2nd Place');
+        }
+        else if(algorithmPlace === 3) {
+            const BRONZE = '#ab7627';
+            placeLabel.style.backgroundColor = BRONZE;
+            placeLabelText = document.createTextNode('3rd Place');
+        }
+        else {
+            const DEFAULT = '#636363';
+            placeLabel.style.backgroundColor = DEFAULT;
+            placeLabelText = document.createTextNode(`${algorithmPlace}th Place`);
+        }
+
+        placeLabel.appendChild(placeLabelText);
+        sortVisualizer.appendChild(placeLabel);
+    }
+
+    createAlgorithmStatsLabel() {
+        let sortVisualizer = document.getElementById(`sort-visualizer-${this.state.contestantNumber}`);
+        let statsLabel = document.createElement("DIV");
+        statsLabel.setAttribute("id", `stats-label-${this.state.contestantNumber}`);
+        statsLabel.setAttribute("class", 'stats-label');
+
+        let placeLabelColor = document.getElementById(`place-label-${this.state.contestantNumber}`).style.backgroundColor;
+        statsLabel.style.borderColor = placeLabelColor;
+
+        let statsLabelText;
+        let swapsOrOverwrites;
+        if(this.state.algorithmType !== 'merge') {
+            swapsOrOverwrites = 'swaps';
+        }
+        else {
+            swapsOrOverwrites = 'overwrites';
+        }
+        statsLabelText = document.createTextNode(
+            `Final Stats: ${this.state.numOfComparisons} comparisons and ${this.state.numOfSwapsOrOverwrites} ${swapsOrOverwrites}`);
+        
+        statsLabel.appendChild(statsLabelText);
+        sortVisualizer.appendChild(statsLabel);
+    }
+
+    destructAlgorithmPlaceLabel() {
+        let placeLabel = document.getElementById(`place-label-${this.state.contestantNumber}`);
+        if(placeLabel !== null) {
+            placeLabel.remove();
+        }
+    }
+
+    destructAlgorithmStatsLabel() {
+        let statsLabel = document.getElementById(`stats-label-${this.state.contestantNumber}`);
+        if(statsLabel !== null) {
+            statsLabel.remove();
         }
     }
 
@@ -299,8 +373,25 @@ export default class SortVisualizer extends React.Component {
         this.setState({...this.state, algorithmType: algorithmType});
     }
 
-    setArrayBarsToSortedA(array) {
-        this.setState({...this.state, array: array});
+    setAllAlgorithmStatInfo(numOfAnimationSteps, numOfComparisons, numOfSwapsOrOverwrites) {
+        this.setState({
+            ...this.state,
+            numOfAnimationSteps: numOfAnimationSteps,
+            numOfComparisons: numOfComparisons,
+            numOfSwapsOrOverwrites: numOfSwapsOrOverwrites
+        });
+    }
+
+    getNumOfAnimationsSteps() {
+        return this.state.numOfAnimationSteps;  
+    }
+
+    getNumOfComparisons() {
+        return this.state.numOfComparisons;  
+    }
+
+    getNumOfSwapsOrOverwrites() {
+        return this.state.numOfSwapsOrOverwrites;
     }
 
     resetArrayBarsToCorrectHeights() {
@@ -308,6 +399,13 @@ export default class SortVisualizer extends React.Component {
         for (var i = 0; i < arrayBars.length; i++) {
             arrayBars[i].style.height = `${this.state.array[i]}px`;
         }
+    }
+
+    algorithmDropDownButtonOnClick(algorithmType) {
+        this.destructAlgorithmPlaceLabel();
+        this.destructAlgorithmStatsLabel();
+        this.resetVisualizationStyling();
+        this.updateAlgorithmType(algorithmType);
     }
 
     render() {
@@ -319,7 +417,11 @@ export default class SortVisualizer extends React.Component {
                     <div className="dropdown-content">
                         {this.state.allAlgorithmTypes.map((algorithmType) => (
                         (algorithmType !== this.state.algorithmType) ?
-                            <button key={algorithmType} onClick={() => this.updateAlgorithmType(algorithmType)}>{algorithmType}</button>
+                            <button
+                                key={algorithmType}
+                                className='algorithm-dropdown-button'
+                                onClick={() => this.algorithmDropDownButtonOnClick(algorithmType)}
+                            >{algorithmType}</button>
                             : null
                         ))}
                     </div>
@@ -335,10 +437,6 @@ export default class SortVisualizer extends React.Component {
                         }}></div>
                     ))}
                 </div>
-
-                {/* <div className="algorithm-info">
-                        {this.state.algorithmType}
-                </div> */}
             </div>
         );
     }

@@ -22,7 +22,7 @@ function insertionSort(array, animations) {
                 animations.push(['c', j, j-1]);
                 animations.push(['cf', j, j-1]);
                 animations.push(['s', j, j-1, array[j], array[j-1]]);
-                animations.push(['sf', j, j-1, array[j], array[j-1]]);
+                animations.push(['sf']);
                 swap(array, j, j-1);
             }
             if(j-1 >= 0) {
