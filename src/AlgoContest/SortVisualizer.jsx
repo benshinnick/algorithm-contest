@@ -350,7 +350,7 @@ export default class SortVisualizer extends React.Component {
     algorithmDropDownButtonOnClick(algorithmType) {
         this.destructAlgorithmPlaceLabel();
         this.resetVisualizationStyling();
-        this.updateAlgorithmType(algorithmType)
+        this.updateAlgorithmType(algorithmType);
     }
 
     render() {
