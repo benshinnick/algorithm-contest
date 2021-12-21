@@ -109,6 +109,7 @@
 .place-label {
   background-color: #636363;
   z-index: 1;
+  width: 80px;
   text-align: center;
   padding-left: 15px;
   padding-top: 4px;
@@ -119,4 +120,21 @@
   border-radius: 0px 5px 5px 0px; 
   color: white;
   text-align: center;
+}
+
+.stats-label {
+  background-color: #3b3b3b;
+  z-index: 1;
+  float: right;
+  width: 390px;
+  text-align: center;
+  padding-left: 15px;
+  padding-top: 4px;
+  padding-right: 15px;
+  padding-bottom: 4px;
+  margin: 0px 7px;
+  border-style: hidden hidden hidden solid;
+  border-width: 10px;
+  border-radius: 4px;
+  color: white;
 }

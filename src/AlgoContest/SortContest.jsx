@@ -4,7 +4,7 @@ import './css/SortContest.css';
 
 const ARRAY_MIN_VALUE = 5;
 const ARRAY_MAX_VALUE = 130;
-const INITIAL_NUM_OF_CONTESTANTS = 3;
+const INITIAL_NUM_OF_CONTESTANTS = 5;
 
 const COUNTDOWN_DURATION_MS = SortVisualizer.ANIMATION_DELAY_MS;
 
@@ -54,7 +54,23 @@ export default class SortContest extends React.Component {
         const allContestantAnimationData = [];
         for(let i = 0; i < this.state.numOfContestants; ++i) {
             allContestantAnimationData[i] = this.algoContestantRefs[i].getSortAnimations();
-            this.algoContestantRefs[i].setNumOfAnimationsSteps(allContestantAnimationData[i].length / 2);
+            let numOfComparisons = 0;
+            let numOfSwapsOrOverwrites = 0;
+            for(let j = 0; j < allContestantAnimationData[i].length; ++j){
+                let animationCode = allContestantAnimationData[i][j][0];
+                if(animationCode === 'c') {
+                    numOfComparisons++;
+                }
+                else if(animationCode === 's' || animationCode === 'o') {
+                    numOfSwapsOrOverwrites++;
+                }
+            }
+            // console.log(`contestant ${i+1} number of comparisons is ${numOfComparisons}`);
+            // console.log(`contestant ${i+1} number of swaps or overwrites is ${numOfSwapsOrOverwrites}`);
+            // this.algoContestantRefs[i].setNumOfAnimationsSteps(allContestantAnimationData[i].length / 2);
+            this.algoContestantRefs[i].setAllAlgorithmStatInfo(allContestantAnimationData[i].length / 2, numOfComparisons, numOfSwapsOrOverwrites);
+            // this.algoContestantRefs[i].setNumOfComparisons(numOfComparisons);
+            // this.algoContestantRefs[i].setNumOfSwapsOrOverwrites(numOfSwapsOrOverwrites);
         }
 
         let stepCounter = 0;
@@ -110,7 +126,8 @@ export default class SortContest extends React.Component {
         this.setState({ ...this.state, array: sortedArray });
 
         for(let i = 0; i < this.state.numOfContestants; ++i) {
-            this.algoContestantRefs[i].setNumOfAnimationsSteps(-1);
+            this.algoContestantRefs[i].createAlgorithmStatsLabel();
+            this.algoContestantRefs[i].setAllAlgorithmStatInfo(-1, -1, -1);
         }
     }
 
@@ -166,7 +183,7 @@ export default class SortContest extends React.Component {
 
     resetSortContestPage() {
         this.enablePreContestSetupButtons();
-        this.clearAllAlgorithmPlaceLabels();
+        this.clearAllAlgorithmStatsAndPlaceLabels();
         for(let i = 0; i < this.state.numOfContestants; ++i) {
             this.algoContestantRefs[i].resetVisualizationStyling();
         }
@@ -206,17 +223,17 @@ export default class SortContest extends React.Component {
     skipToFinishButtonOnClick() {
         this.clearAllTimeouts();
         this.clearAllQuicksortPivotBars();
-        this.handleContestIsNowFinished();
         this.disableDuringContestControlButtons();
+        this.clearAllAlgorithmStatsAndPlaceLabels();
 
         let allContestantPlaceInfo = this.findAllPlaceInformation();
-        this.clearAllAlgorithmPlaceLabels();
 
         for(let i = 0; i < this.state.numOfContestants; ++i) {
             const algorithmPlace = allContestantPlaceInfo[i][2];
             this.algoContestantRefs[i].handleAlgorithmIsNowFinished(algorithmPlace);
             this.algoContestantRefs[i].resetArrayBarsToCorrectHeights();
         }
+        this.handleContestIsNowFinished();
     }
 
     findAllPlaceInformation() {
@@ -259,9 +276,10 @@ export default class SortContest extends React.Component {
         return allContestantPlaceInfo;
     }
 
-    clearAllAlgorithmPlaceLabels() {
+    clearAllAlgorithmStatsAndPlaceLabels() {
         for(let i = 0; i < this.state.numOfContestants; ++i) {
             this.algoContestantRefs[i].destructAlgorithmPlaceLabel();
+            this.algoContestantRefs[i].destructAlgorithmStatsLabel();
         }
     }
 

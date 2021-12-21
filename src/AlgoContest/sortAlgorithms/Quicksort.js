@@ -45,9 +45,9 @@ function quicksortPartition(array, lowIndex, highIndex, animations) {
         }
 
         if (lowIndex >= highIndex) {
-            animations.push(['c', highIndex]);
-            animations.push(['cf', highIndex]);
             done = true;
+            animations.push(['c']);
+            animations.push(['cf']);
         }
 
         else {

@@ -26,7 +26,9 @@ export default class SortVisualizer extends React.Component {
             algorithmType: this.props.algorithmType,
             allAlgorithmTypes: this.props.algorithmTypes,
             contestantNumber: this.props.contestantNumber,
-            numOfAnimationSteps: -1
+            numOfAnimationSteps: -1,
+            numOfSwapsOrOverwrites: -1,
+            numOfComparisons: -1
         };
     }
 
@@ -176,9 +178,12 @@ export default class SortVisualizer extends React.Component {
                     barTwoStyle.height = `${animationStepInfo[3]}px`;
                 }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
             }
-        } 
+        }
         // comparison cases
         else if(animationCode === 'c' || animationCode === 'cf'){
+            if(animationStepInfo.length === 1) {
+                return;
+            }
             const barOneIndex = animationStepInfo[1];
             const barOneStyle = arrayBars[barOneIndex].style;
 
@@ -302,23 +307,52 @@ export default class SortVisualizer extends React.Component {
 
         let placeLabelText;
         if(algorithmPlace === 1) {
-            placeLabel.style.backgroundColor = '#c7b620';
+            const GOLD = '#c7b620';
+            placeLabel.style.backgroundColor = GOLD;
             placeLabelText = document.createTextNode('1st Place');
         }
         else if(algorithmPlace === 2) {
-            placeLabel.style.backgroundColor = '#929292';
+            const SILVER = '#929292';
+            placeLabel.style.backgroundColor = SILVER;
             placeLabelText = document.createTextNode('2nd Place');
         }
         else if(algorithmPlace === 3) {
-            placeLabel.style.backgroundColor = '#ab7627';
+            const BRONZE = '#ab7627';
+            placeLabel.style.backgroundColor = BRONZE;
             placeLabelText = document.createTextNode('3rd Place');
         }
         else {
+            const DEFAULT = '#636363';
+            placeLabel.style.backgroundColor = DEFAULT;
             placeLabelText = document.createTextNode(`${algorithmPlace}th Place`);
         }
 
         placeLabel.appendChild(placeLabelText);
         sortVisualizer.appendChild(placeLabel);
+    }
+
+    createAlgorithmStatsLabel() {
+        let sortVisualizer = document.getElementById(`sort-visualizer-${this.state.contestantNumber}`);
+        let statsLabel = document.createElement("DIV");
+        statsLabel.setAttribute("id", `stats-label-${this.state.contestantNumber}`);
+        statsLabel.setAttribute("class", 'stats-label');
+
+        let placeLabelColor = document.getElementById(`place-label-${this.state.contestantNumber}`).style.backgroundColor;
+        statsLabel.style.borderColor = placeLabelColor;
+
+        let statsLabelText;
+        let swapsOrOverwrites;
+        if(this.state.algorithmType !== 'merge') {
+            swapsOrOverwrites = 'swaps';
+        }
+        else {
+            swapsOrOverwrites = 'overwrites';
+        }
+        statsLabelText = document.createTextNode(
+            `Final Stats: ${this.state.numOfComparisons} comparisons and ${this.state.numOfSwapsOrOverwrites} ${swapsOrOverwrites}`);
+        
+        statsLabel.appendChild(statsLabelText);
+        sortVisualizer.appendChild(statsLabel);
     }
 
     destructAlgorithmPlaceLabel() {
@@ -328,16 +362,36 @@ export default class SortVisualizer extends React.Component {
         }
     }
 
+    destructAlgorithmStatsLabel() {
+        let statsLabel = document.getElementById(`stats-label-${this.state.contestantNumber}`);
+        if(statsLabel !== null) {
+            statsLabel.remove();
+        }
+    }
+
     updateAlgorithmType(algorithmType) {
         this.setState({...this.state, algorithmType: algorithmType});
     }
 
-    setNumOfAnimationsSteps(numOfSteps) {
-        this.setState({...this.state, numOfAnimationSteps: numOfSteps});   
+    setAllAlgorithmStatInfo(numOfAnimationSteps, numOfComparisons, numOfSwapsOrOverwrites) {
+        this.setState({
+            ...this.state,
+            numOfAnimationSteps: numOfAnimationSteps,
+            numOfComparisons: numOfComparisons,
+            numOfSwapsOrOverwrites: numOfSwapsOrOverwrites
+        });
     }
 
     getNumOfAnimationsSteps() {
         return this.state.numOfAnimationSteps;  
+    }
+
+    getNumOfComparisons() {
+        return this.state.numOfComparisons;  
+    }
+
+    getNumOfSwapsOrOverwrites() {
+        return this.state.numOfSwapsOrOverwrites;
     }
 
     resetArrayBarsToCorrectHeights() {
@@ -349,6 +403,7 @@ export default class SortVisualizer extends React.Component {
 
     algorithmDropDownButtonOnClick(algorithmType) {
         this.destructAlgorithmPlaceLabel();
+        this.destructAlgorithmStatsLabel();
         this.resetVisualizationStyling();
         this.updateAlgorithmType(algorithmType);
     }
@@ -364,7 +419,7 @@ export default class SortVisualizer extends React.Component {
                         (algorithmType !== this.state.algorithmType) ?
                             <button
                                 key={algorithmType}
-                                class='algorithm-dropdown-button'
+                                className='algorithm-dropdown-button'
                                 onClick={() => this.algorithmDropDownButtonOnClick(algorithmType)}
                             >{algorithmType}</button>
                             : null
@@ -382,10 +437,6 @@ export default class SortVisualizer extends React.Component {
                         }}></div>
                     ))}
                 </div>
-
-                {/* <div className="place-label">
-                        {this.state.algorithmType}
-                </div> */}
             </div>
         );
     }
