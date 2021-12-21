@@ -28,11 +28,11 @@ function merge(mainArray, startIndex, middleIndex, endIndex, auxiliaryArray, ani
         animations.push(['c', i, j]);
         animations.push(['cf', i, j]);
         if(auxiliaryArray[i] <= auxiliaryArray[j]) {
-            animations.push(['o', k, auxiliaryArray[i]]);
+            animations.push(['o', k]);
             animations.push(['of', k, auxiliaryArray[i]]);
             mainArray[k++] = auxiliaryArray[i++];
         } else {
-            animations.push(['o', k, auxiliaryArray[j]]);
+            animations.push(['o', k]);
             animations.push(['of', k, auxiliaryArray[j]]);
             mainArray[k++] = auxiliaryArray[j++];
         }
@@ -40,14 +40,14 @@ function merge(mainArray, startIndex, middleIndex, endIndex, auxiliaryArray, ani
     while(i <= middleIndex) {
         animations.push(['c', i, i]);
         animations.push(['cf', i, i]);
-        animations.push(['o', k, auxiliaryArray[i]]);
+        animations.push(['o', k]);
         animations.push(['of', k, auxiliaryArray[i]]);
         mainArray[k++] = auxiliaryArray[i++];
     }
     while (j <= endIndex) {
         animations.push(['c', j, j]);
         animations.push(['cf', j, j]);
-        animations.push(['o', k, auxiliaryArray[j]]);
+        animations.push(['o', k]);
         animations.push(['of', k, auxiliaryArray[j]]);
         mainArray[k++] = auxiliaryArray[j++];
         }

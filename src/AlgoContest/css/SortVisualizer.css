@@ -22,7 +22,7 @@
     padding-top: 4px;
     padding-right: 15px;
     padding-bottom: 4px;
-    margin-left: 5px;
+    margin-left: 0px;
     margin-top: 0px;
     margin-right: 0px;
     margin-bottom: 0px;
@@ -49,15 +49,21 @@
     width: 100px;
     font-size: 16px;
     padding-left: 15px;
-    padding-top: 5px;
+    padding-top: 2px;
     padding-right: 15px;
-    padding-bottom: 5px;
-    margin-left: 5px;
+    padding-bottom: 2px;
+    margin-left: 0px;
     margin-top: 0px;
     margin-right: 0px;
     margin-bottom: 0px;
     text-decoration: none;
     display: block;
+  }
+
+
+  .dropdown-content button:disabled,
+  .dropdown-content button[disabled] {
+    display:none;
   }
   
 .dropdown-content button:hover {
@@ -95,13 +101,17 @@
   visibility: visible;
 }
 
-.algorithm-info {
-  background-color: rgba(53, 53, 53, 0.863);
-  height: 140px;
-  width: 143px;
-  margin: 12px 7px;
-  border-radius: 5px;
-  float: right;
+.place-label {
+  background-color: #636363;
+  z-index: 1;
+  text-align: center;
+  padding-left: 15px;
+  padding-top: 4px;
+  padding-right: 15px;
+  padding-bottom: 4px;
+  margin: 0px 4px;
+  display: inline-block;
+  border-radius: 0px 5px 5px 0px; 
   color: white;
   text-align: center;
 }

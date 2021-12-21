@@ -24,9 +24,7 @@ function quicksortPartition(array, lowIndex, highIndex, animations) {
     //  's' denotes a swap between two indexes
     //  'sf' denotes a swap is finished
 
-    // I choose a valid random index as our pivot value, because I think that is
-    //  the best implementation and it makes it interesting if you have multiple
-    //  quicksort algorithms competing against each other
+    // I choose a value at a valid random index to serve as our pivot value
     let pivotIndex = randomIntFromInterval(lowIndex, highIndex);
     let pivot = array[pivotIndex];
     animations.push(['p', lowIndex, highIndex, pivot]);
@@ -53,7 +51,7 @@ function quicksortPartition(array, lowIndex, highIndex, animations) {
         }
 
         else {
-            animations.push(['s', lowIndex, highIndex, array[lowIndex], array[highIndex]]);
+            animations.push(['s', lowIndex, highIndex]);
             animations.push(['sf', lowIndex, highIndex, array[lowIndex], array[highIndex]]);
             swap(array, lowIndex, highIndex);
             lowIndex++;
@@ -61,7 +59,7 @@ function quicksortPartition(array, lowIndex, highIndex, animations) {
         }
     }
 
-    animations.push(['pf', lowIndex, highIndex, pivot]);
+    animations.push(['pf']);
     
     return highIndex;
 }

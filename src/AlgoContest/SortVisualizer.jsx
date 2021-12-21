@@ -25,7 +25,8 @@ export default class SortVisualizer extends React.Component {
             array: this.props.array,
             algorithmType: this.props.algorithmType,
             allAlgorithmTypes: this.props.algorithmTypes,
-            contestantNumber: this.props.contestantNumber
+            contestantNumber: this.props.contestantNumber,
+            numOfAnimationSteps: -1
         };
     }
 
@@ -285,13 +286,45 @@ export default class SortVisualizer extends React.Component {
     }
 
     handleAlgorithmIsNowFinished(algorithmPlace) {
-
-        console.log(`Contestant ${this.state.contestantNumber} finished ${algorithmPlace}`);
-
+        this.createAlgorithmPlacelabel(algorithmPlace);
         document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = FINISHED_SORTING_BACKGROUND_COLOR;
         const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
         for (var i = 0; i < arrayBars.length; i++) {
             arrayBars[i].style.backgroundColor = FINISHED_SORTING_COLOR;
+        }  
+    }
+
+    createAlgorithmPlacelabel(algorithmPlace) {
+        let sortVisualizer = document.getElementById(`sort-visualizer-${this.state.contestantNumber}`);
+        let placeLabel = document.createElement("DIV");
+        placeLabel.setAttribute("id", `place-label-${this.state.contestantNumber}`);
+        placeLabel.setAttribute("class", 'place-label');
+
+        let placeLabelText;
+        if(algorithmPlace === 1) {
+            placeLabel.style.backgroundColor = '#c7b620';
+            placeLabelText = document.createTextNode('1st Place');
+        }
+        else if(algorithmPlace === 2) {
+            placeLabel.style.backgroundColor = '#929292';
+            placeLabelText = document.createTextNode('2nd Place');
+        }
+        else if(algorithmPlace === 3) {
+            placeLabel.style.backgroundColor = '#ab7627';
+            placeLabelText = document.createTextNode('3rd Place');
+        }
+        else {
+            placeLabelText = document.createTextNode(`${algorithmPlace}th Place`);
+        }
+
+        placeLabel.appendChild(placeLabelText);
+        sortVisualizer.appendChild(placeLabel);
+    }
+
+    destructAlgorithmPlaceLabel() {
+        let placeLabel = document.getElementById(`place-label-${this.state.contestantNumber}`);
+        if(placeLabel !== null) {
+            placeLabel.remove();
         }
     }
 
@@ -299,8 +332,12 @@ export default class SortVisualizer extends React.Component {
         this.setState({...this.state, algorithmType: algorithmType});
     }
 
-    setArrayBarsToSortedA(array) {
-        this.setState({...this.state, array: array});
+    setNumOfAnimationsSteps(numOfSteps) {
+        this.setState({...this.state, numOfAnimationSteps: numOfSteps});   
+    }
+
+    getNumOfAnimationsSteps() {
+        return this.state.numOfAnimationSteps;  
     }
 
     resetArrayBarsToCorrectHeights() {
@@ -336,7 +373,7 @@ export default class SortVisualizer extends React.Component {
                     ))}
                 </div>
 
-                {/* <div className="algorithm-info">
+                {/* <div className="place-label">
                         {this.state.algorithmType}
                 </div> */}
             </div>
