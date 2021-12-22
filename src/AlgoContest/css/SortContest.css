@@ -137,22 +137,22 @@
 
 @media only screen and (max-width: 752px) {
     #nearlysortedbutton {
-        margin: 0 1%;
-        width: 23%;
+        margin: 0 0.5%;
+        width: 24%;
     }
 
     #startcontestbutton {
-        margin: 0 1%;
-        width: 23%;
+        margin: 0 0.5%;
+        width: 24%;
     }
 
     #randomizebutton {
-        margin: 0 1%;
-        width: 23%;
+        margin: 0 0.5%;
+        width: 24%;
     }
 
     #skip-to-finish-button {
-        margin: 0 1%;
-        width: 23%;
+        margin: 0 0.5%;
+        width: 24%;
     }
 }
