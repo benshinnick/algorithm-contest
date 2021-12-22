@@ -23,6 +23,7 @@ function quicksortPartition(array, lowIndex, highIndex, animations) {
     //  'cf' denotes that a comparison is finished
     //  's' denotes a swap between two indexes
     //  'sf' denotes a swap is finished
+    //  'pf' denotes that we are finished using the last pivot
 
     // I choose a value at a valid random index to serve as our pivot value
     let pivotIndex = randomIntFromInterval(lowIndex, highIndex);

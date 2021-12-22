@@ -1,8 +1,9 @@
 import React from 'react';
-import {getInsertionSortAnimations} from './sortAlgorithms/InsertionSort.js';
-import {getMergeSortAnimations} from './sortAlgorithms/MergeSort.js';
-import {getQuicksortAnimations} from './sortAlgorithms/Quicksort.js';
-import {getBubbleSortAnimations} from './sortAlgorithms/BubbleSort.js';
+import { getInsertionSortAnimations } from './sortAlgorithms/InsertionSort.js';
+import { getMergeSortAnimations } from './sortAlgorithms/MergeSort.js';
+import { getQuicksortAnimations } from './sortAlgorithms/Quicksort.js';
+import { getBubbleSortAnimations } from './sortAlgorithms/BubbleSort.js';
+import { getHeapSortAnimations } from './sortAlgorithms/HeapSort.js';
 import './css/SortVisualizer.css';
 
 // main color of the array bars: dark blue
@@ -68,8 +69,7 @@ export default class SortVisualizer extends React.Component {
             case 'insertion':
                 return getInsertionSortAnimations(arrayCopy);
             case 'heap':
-                // return getHeapSortAnimations(arrayCopy);
-                break;
+                return getHeapSortAnimations(arrayCopy);
             case 'selection':
                 // return getSelectionSortAnimations(arrayCopy);
                 break;
@@ -263,7 +263,42 @@ export default class SortVisualizer extends React.Component {
     }
 
     doNextHeapSortAnimationStep(animationStepInfo, currentStepNumber) {
-        // TODO
+        const animationCode = animationStepInfo[0];
+        const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
+
+        const barOneIndex = animationStepInfo[1];
+        const barOneStyle = arrayBars[barOneIndex].style;
+        const barTwoIndex = animationStepInfo[2];
+        const barTwoStyle = arrayBars[barTwoIndex].style;
+
+        // comparison cases
+        if(animationCode === 'c') {
+            setTimeout(() => {
+                barOneStyle.backgroundColor = SECONDARY_COLOR;
+                barTwoStyle.backgroundColor = SECONDARY_COLOR;
+            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+        }
+        else if(animationCode === 'cf') {
+            setTimeout(() => {
+                barOneStyle.backgroundColor = PRIMARY_COLOR;
+                barTwoStyle.backgroundColor = PRIMARY_COLOR;
+            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+        }
+        // swap cases
+        else if(animationCode === 's') {
+        setTimeout(() => {
+                barOneStyle.backgroundColor = SECONDARY_COLOR;
+                barTwoStyle.backgroundColor = SECONDARY_COLOR;
+            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+        }
+        else if(animationCode === 'sf') {
+            setTimeout(() => {
+                barOneStyle.backgroundColor = PRIMARY_COLOR;
+                barTwoStyle.backgroundColor = PRIMARY_COLOR;
+                barOneStyle.height = `${animationStepInfo[4]}px`;
+                barTwoStyle.height = `${animationStepInfo[3]}px`;
+            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+        }
     }
 
     doNextSelectionSortAnimationStep(animationStepInfo, currentStepNumber) {
@@ -475,6 +510,8 @@ export default class SortVisualizer extends React.Component {
                         }}></div>
                     ))}
                 </div>
+
+                {/* <button onClick={() => console.log(getHeapSortAnimations(this.state.array))}>Test HeapSort</button> */}
             </div>
         );
     }
