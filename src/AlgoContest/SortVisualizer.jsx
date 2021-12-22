@@ -2,6 +2,7 @@ import React from 'react';
 import {getInsertionSortAnimations} from './sortAlgorithms/InsertionSort.js';
 import {getMergeSortAnimations} from './sortAlgorithms/MergeSort.js';
 import {getQuicksortAnimations} from './sortAlgorithms/Quicksort.js';
+import {getBubbleSortAnimations} from './sortAlgorithms/BubbleSort.js';
 import './css/SortVisualizer.css';
 
 // main color of the array bars: dark blue
@@ -16,7 +17,7 @@ const FINISHED_SORTING_BACKGROUND_COLOR = '#edfff2'; // light green
 
 export default class SortVisualizer extends React.Component {
 
-    static ANIMATION_SPEED_MS = 2;
+    static ANIMATION_SPEED_MS = 1;
     static ANIMATION_DELAY_MS = 3000;
 
     constructor(props) {
@@ -73,8 +74,7 @@ export default class SortVisualizer extends React.Component {
                 // return getSelectionSortAnimations(arrayCopy);
                 break;
             case 'bubble':
-                // return getBubbleSortAnimations(arrayCopy);
-                break;
+                return getBubbleSortAnimations(arrayCopy);
             default:
                 console.log("Error: Unexpected Algorithm Type");
         }
@@ -271,7 +271,39 @@ export default class SortVisualizer extends React.Component {
     }
 
     doNextBubbleSortAnimationStep(animationStepInfo, currentStepNumber) {
-        // TODO
+        const animationCode = animationStepInfo[0];
+        if(animationCode === 'sf') {
+            return;
+        }
+        const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
+
+        const barOneIndex = animationStepInfo[1];
+        const barTwoIndex = animationStepInfo[2];
+        const barOneStyle = arrayBars[barOneIndex].style;
+        const barTwoStyle = arrayBars[barTwoIndex].style;
+
+        // comparison cases
+        if (animationCode === 'c' || animationCode === 'cf') {
+            if(animationCode === 'c') {
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = SECONDARY_COLOR;
+                    barTwoStyle.backgroundColor = SECONDARY_COLOR;
+                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }
+            else if(animationCode === 'cf') {
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = PRIMARY_COLOR;
+                    barTwoStyle.backgroundColor = PRIMARY_COLOR;
+                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }
+        }
+        // swap case
+        else {
+            setTimeout(() => {
+                barOneStyle.height = `${animationStepInfo[4]}px`;
+                barTwoStyle.height = `${animationStepInfo[3]}px`;
+            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+        }
     }
 
     resetVisualizationStyling() {
