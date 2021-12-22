@@ -4,7 +4,7 @@ import './css/SortContest.css';
 
 const ARRAY_MIN_VALUE = 5;
 const ARRAY_MAX_VALUE = 130;
-const INITIAL_NUM_OF_CONTESTANTS = 4;
+const INITIAL_NUM_OF_CONTESTANTS = 7;
 
 const COUNTDOWN_DURATION_MS = SortVisualizer.ANIMATION_DELAY_MS;
 
@@ -25,7 +25,8 @@ export default class SortContest extends React.Component {
         this.state = {
             array: [],
             numOfContestants: INITIAL_NUM_OF_CONTESTANTS,
-            isPreContest: true
+            isPreContest: true,
+            isRandomArray: true
         };
         this.algoContestantRefs = [];
     }
@@ -35,14 +36,15 @@ export default class SortContest extends React.Component {
     };
 
     componentDidMount() {
+        this.handlePageResize();
         this.disableDuringContestControlButtons();
         this.randomizeArray();
-        window.addEventListener('resize', this.updateArrayWhenPageResizes);
+        window.addEventListener('resize', this.handlePageResize);
         window.addEventListener('scroll', this.addOrRemoveStickyEffectOnSortContestHeader);
     }
     
     componentWillUnmount() {
-        window.removeEventListener('resize', this.updateArrayWhenPageResizes);
+        window.removeEventListener('resize', this.handlePageResize);
         window.addEventListener('scroll', this.addOrRemoveStickyEffectOnSortContestHeader);
     }
 
@@ -65,12 +67,7 @@ export default class SortContest extends React.Component {
                     numOfSwapsOrOverwrites++;
                 }
             }
-            // console.log(`contestant ${i+1} number of comparisons is ${numOfComparisons}`);
-            // console.log(`contestant ${i+1} number of swaps or overwrites is ${numOfSwapsOrOverwrites}`);
-            // this.algoContestantRefs[i].setNumOfAnimationsSteps(allContestantAnimationData[i].length / 2);
             this.algoContestantRefs[i].setAllAlgorithmStatInfo(allContestantAnimationData[i].length / 2, numOfComparisons, numOfSwapsOrOverwrites);
-            // this.algoContestantRefs[i].setNumOfComparisons(numOfComparisons);
-            // this.algoContestantRefs[i].setNumOfSwapsOrOverwrites(numOfSwapsOrOverwrites);
         }
 
         let stepCounter = 0;
@@ -157,15 +154,26 @@ export default class SortContest extends React.Component {
         let numOfElements = 0;
         let array = [];
         let fullPageWidthArraySize = this.getFullPageWidthArraySize();
+        let numOfRepeatNumbers;
+        if(fullPageWidthArraySize < ARRAY_MAX_VALUE) {
+            numOfRepeatNumbers = 1;
+        }
+        else if(fullPageWidthArraySize < ARRAY_MAX_VALUE*2) {
+            numOfRepeatNumbers = 2;
+        }
+        else {
+            numOfRepeatNumbers = 3;
+        }
 
         for (let i = ARRAY_MIN_VALUE; i < ARRAY_MAX_VALUE; ++i) {
-            array.push(i);
-            if(numOfElements >= fullPageWidthArraySize) {
-                break;
+            for(let j = 0; j < numOfRepeatNumbers; ++j) {
+                array.push(i);
+                numOfElements++;
+                if(numOfElements >= fullPageWidthArraySize - 1) {
+                    break;
+                }
             }
-            array.push(i);
-            numOfElements += 2;
-            if(numOfElements >= fullPageWidthArraySize) {
+            if(numOfElements >= fullPageWidthArraySize - 1) {
                 break;
             }
         }
@@ -302,7 +310,9 @@ export default class SortContest extends React.Component {
     }
 
     genearateRandomArrayButtonOnClick() {
-        this.setState({ ...this.state, isPreContest: true }, () => {
+        this.setState({ ...this.state,
+            isPreContest: true,
+            isRandomArray: true }, () => {
             this.enablePreContestSetupButtons();
             this.resetSortContestPage();
             this.randomizeArray();
@@ -310,7 +320,9 @@ export default class SortContest extends React.Component {
     }
 
     genearateNearySortedArrayButtonOnClick() {
-        this.setState({ ...this.state, isPreContest: true }, () => {
+        this.setState({ ...this.state,
+            isPreContest: true,
+            isRandomArray: false }, () => {
             this.enablePreContestSetupButtons();
             this.resetSortContestPage();
             this.generateNearlySortedArray();
@@ -334,6 +346,7 @@ export default class SortContest extends React.Component {
             <div className='sortcontest'>
                 <div id="sortcontestheader">
                     <button id="startcontestbutton" onClick={() => this.startContestButtonOnClick()}>Start</button>
+                    <button id="skip-to-finish-button" onClick={() => this.skipToFinishButtonOnClick()}>Skip To Finish</button>
                     <button id="randomizebutton" onClick={() => this.genearateRandomArrayButtonOnClick()}>
                         Generate Random Array
                     </button>
@@ -341,7 +354,6 @@ export default class SortContest extends React.Component {
                         Generate Nearly Sorted Array
                     </button>
                     {/* <button onClick={() => console.log(this.state)}>Log Sort Contest State</button> */}
-                    <button id="skip-to-finish-button" onClick={() => this.skipToFinishButtonOnClick()}>Skip To Finish</button>
                 </div>
                 <div className='sort-visualizers'>
                     {contestantNumbers.map(contestantNum => (
@@ -359,9 +371,22 @@ export default class SortContest extends React.Component {
         );
     }
 
-    updateArrayWhenPageResizes = () => {
+    handlePageResize = () => {
+        if(window.innerWidth <= 752) {
+            document.querySelector('#randomizebutton').textContent = 'Randomize';
+            document.querySelector('#nearlysortedbutton').textContent = 'Nearly Sorted';
+        }
+        if(window.innerWidth > 752) {
+            document.querySelector('#randomizebutton').textContent = 'Generate Random Array';
+            document.querySelector('#nearlysortedbutton').textContent = 'Generate Nearly Sorted Array';
+        }
         if(this.state.isPreContest === true) {
-            this.randomizeArray();
+            if(this.state.isRandomArray === true) {
+                this.randomizeArray();
+            }
+            else {
+                this.generateNearlySortedArray();
+            }
         }
     }
 
