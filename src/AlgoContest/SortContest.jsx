@@ -4,7 +4,7 @@ import './css/SortContest.css';
 
 const ARRAY_MIN_VALUE = 5;
 const ARRAY_MAX_VALUE = 130;
-const INITIAL_NUM_OF_CONTESTANTS = 6;
+const INITIAL_NUM_OF_CONTESTANTS = 7;
 
 const COUNTDOWN_DURATION_MS = SortVisualizer.ANIMATION_DELAY_MS;
 
