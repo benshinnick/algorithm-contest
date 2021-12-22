@@ -5,6 +5,7 @@ import { getQuicksortAnimations } from './sortAlgorithms/Quicksort.js';
 import { getBubbleSortAnimations } from './sortAlgorithms/BubbleSort.js';
 import { getHeapSortAnimations } from './sortAlgorithms/HeapSort.js';
 import { getShellSortAnimations } from './sortAlgorithms/ShellSort.js';
+import { getSelectionSortAnimations } from './sortAlgorithms/SelectionSort.js';
 import './css/SortVisualizer.css';
 
 // main color of the array bars: dark blue
@@ -71,8 +72,7 @@ export default class SortVisualizer extends React.Component {
             case 'heap':
                 return getHeapSortAnimations(arrayCopy);
             case 'selection':
-                // return getSelectionSortAnimations(arrayCopy);
-                break;
+                return getSelectionSortAnimations(arrayCopy);
             case 'bubble':
                 return getBubbleSortAnimations(arrayCopy);
             default:
@@ -337,7 +337,51 @@ export default class SortVisualizer extends React.Component {
     }
 
     doNextSelectionSortAnimationStep(animationStepInfo, currentStepNumber) {
-        // TODO
+        const animationCode = animationStepInfo[0];
+        const arrayBars = document.getElementsByClassName(`array-bar-${this.state.contestantNumber}`);
+
+        const barOneIndex = animationStepInfo[1];
+        const barOneStyle = arrayBars[barOneIndex].style;
+
+        //comparison cases
+        if(animationCode === 'c') {
+            const barTwoIndex = animationStepInfo[2];
+            const barTwoStyle = arrayBars[barTwoIndex].style;
+            setTimeout(() => {
+                barOneStyle.backgroundColor = SECONDARY_COLOR;
+                barTwoStyle.backgroundColor = SECONDARY_COLOR;
+            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+        }
+        else if(animationCode === 'cf') {
+            setTimeout(() => {
+                barOneStyle.backgroundColor = PRIMARY_COLOR;
+            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+        }
+        // swap case
+        else if(animationCode === 's') {
+            const barTwoIndex = animationStepInfo[2];
+            const barTwoStyle = arrayBars[barTwoIndex].style;
+            setTimeout(() => {
+                barOneStyle.backgroundColor = SECONDARY_COLOR;
+                barTwoStyle.backgroundColor = SECONDARY_COLOR;
+            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+        }
+        else if(animationCode === 'sf') {
+            const barTwoIndex = animationStepInfo[2];
+            const barTwoStyle = arrayBars[barTwoIndex].style;
+            setTimeout(() => {
+                barOneStyle.backgroundColor = PRIMARY_COLOR;
+                barTwoStyle.backgroundColor = PRIMARY_COLOR;
+                barOneStyle.height = `${animationStepInfo[4]}px`;
+                barTwoStyle.height = `${animationStepInfo[3]}px`;
+            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+        }
+        // finished with min case
+        else if(animationCode === 'm') {
+            setTimeout(() => {
+                barOneStyle.backgroundColor = PRIMARY_COLOR;
+            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+        }
     }
 
     doNextBubbleSortAnimationStep(animationStepInfo, currentStepNumber) {
