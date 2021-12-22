@@ -380,8 +380,14 @@ export default class SortVisualizer extends React.Component {
         else {
             swapsOrOverwrites = 'overwrites';
         }
-        statsLabelText = document.createTextNode(
-            `Final Stats: ${this.state.numOfComparisons} comparisons and ${this.state.numOfSwapsOrOverwrites} ${swapsOrOverwrites}`);
+        if(window.innerWidth >= 700) {
+            statsLabelText = document.createTextNode(
+                `Final Stats: ${this.state.numOfComparisons} comparisons and ${this.state.numOfSwapsOrOverwrites} ${swapsOrOverwrites}`);
+        }
+        else {
+            statsLabelText = document.createTextNode(
+                `${this.state.numOfComparisons} comparisons and ${this.state.numOfSwapsOrOverwrites} ${swapsOrOverwrites}`);
+        }
         
         statsLabel.appendChild(statsLabelText);
         sortVisualizer.appendChild(statsLabel);
@@ -442,7 +448,7 @@ export default class SortVisualizer extends React.Component {
 
     render() {
         return (
-            <div id={`sort-visualizer-${this.state.contestantNumber}`}>
+            <div className='sort-visualizer' id={`sort-visualizer-${this.state.contestantNumber}`}>
 
                 <div className="dropdown">
                     <p id='algorithm-dropdown-label'>{this.state.algorithmType}</p>
@@ -459,7 +465,7 @@ export default class SortVisualizer extends React.Component {
                     </div>
                 </div>
 
-                <div id={`array-container-${this.state.contestantNumber}`}>
+                <div className='array-container' id={`array-container-${this.state.contestantNumber}`}>
                     {this.state.array.map((value, index) => (
                     <div className={`array-bar-${this.state.contestantNumber}`}
                         key={`${index}-${this.contestantNumber}`}

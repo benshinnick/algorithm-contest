@@ -40,8 +40,8 @@ export default class AlgoContest extends React.Component {
             <div id='algocontest'>
                 <div id='algocontestheader'>
                     <a href="http://localhost:3000/">AlgoContest</a>
-                    <button id='sortcontestbutton' onClick={() => this.changePageContentToSortContest()}>Comparison Sorting</button>
-                    <button id='graphcontestbutton' onClick={() => this.changePageContentToGraphContest()}>Graph Search</button>
+                    <button id='sortcontestbutton' onClick={() => this.changePageContentToSortContest()}>Sorting</button>
+                    <button id='graphcontestbutton' onClick={() => this.changePageContentToGraphContest()}>Pathfinding</button>
                 </div>
                 <div id='maincontent'></div>
             </div>

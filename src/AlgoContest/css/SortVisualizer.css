@@ -1,5 +1,4 @@
-#sort-visualizer-1, #sort-visualizer-2, #sort-visualizer-3, #sort-visualizer-4,
-#sort-visualizer-5, #sort-visualizer-6, #sort-visualizer-7 {
+.sort-visualizer {
     white-space: nowrap;
     background-color: #f7f7f7;
     border-style: solid hidden hidden hidden;
@@ -34,42 +33,42 @@
 }
 
 .dropdown {
-    position: relative;
-    display: inline-block;
+  position: relative;
+  display: inline-block;
 }
   
 .dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f1f1f1;
-    width: 100px;
-    margin: 0px;
-    z-index: 1;
-  }
-  
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  width: 100px;
+  margin: 0px;
+  z-index: 1;
+}
+
 .dropdown-content button {
-    color: black;
-    text-align: center;
-    border: none;
-    width: 100px;
-    font-size: 16px;
-    padding-left: 15px;
-    padding-top: 2px;
-    padding-right: 15px;
-    padding-bottom: 2px;
-    margin-left: 0px;
-    margin-top: 0px;
-    margin-right: 0px;
-    margin-bottom: 0px;
-    text-decoration: none;
-    display: block;
-  }
+  color: black;
+  text-align: center;
+  border: none;
+  width: 100px;
+  font-size: 16px;
+  padding-left: 15px;
+  padding-top: 2px;
+  padding-right: 15px;
+  padding-bottom: 2px;
+  margin-left: 0px;
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  text-decoration: none;
+  display: block;
+}
 
 
-  .algorithm-dropdown-button:disabled,
-  .algorithm-dropdown-button[disabled] {
+.algorithm-dropdown-button:disabled,
+.algorithm-dropdown-button[disabled] {
     display:none;
-  }
+}
   
 .dropdown-content button:hover {
     background-color: #ddd;
@@ -81,17 +80,15 @@
 
 /* End Of Algorithm Selection Dropdown Styling */
 
-#array-container-1, #array-container-2, #array-container-3, #array-container-4,
-#array-container-5, #array-container-6, #array-container-7 {
+.array-container {
     position: absolute;
     padding-top: 2px;
     padding-right: 5px;
     padding-left: 5px;
     padding-bottom: 10px;
   }
-  
-.array-bar-1, .array-bar-2, .array-bar-3, .array-bar-4,
-.array-bar-5, .array-bar-6, .array-bar-7 {
+ 
+[class*="array-bar-"] {
   width: 2px;
   display: inline-block;
   margin: 0 1px;
@@ -124,7 +121,7 @@
 
 .stats-label {
   background-color: #3b3b3b;
-  z-index: 1;
+  z-index: 2;
   float: right;
   width: 390px;
   text-align: center;
@@ -137,4 +134,25 @@
   border-width: 10px;
   border-radius: 4px;
   color: white;
+  animation: fadein 0.4s;
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@media only screen and (max-width: 752px) {
+  .stats-label {
+    width: 275px;
+    padding-left: 2px;
+    padding-right: 2px;
+    margin-left: 0px;
+  }
+
+  .place-label {
+    margin-right: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
 }
