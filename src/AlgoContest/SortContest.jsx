@@ -26,7 +26,8 @@ export default class SortContest extends React.Component {
             array: [],
             numOfContestants: INITIAL_NUM_OF_CONTESTANTS,
             isPreContest: true,
-            isRandomArray: true
+            isRandomArray: true,
+            activeContestants: []
         };
         this.algoContestantRefs = [];
     }
@@ -36,11 +37,17 @@ export default class SortContest extends React.Component {
     };
 
     componentDidMount() {
-        this.handlePageResize();
-        this.disableDuringContestControlButtons();
-        this.randomizeArray();
-        window.addEventListener('resize', this.handlePageResize);
-        window.addEventListener('scroll', this.addOrRemoveStickyEffectOnSortContestHeader);
+        const startingActiveContestantsNumbers = [];
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            startingActiveContestantsNumbers.push(i+1);
+        }
+        this.setState({...this.state, activeContestants: startingActiveContestantsNumbers}, () => {
+            this.handlePageResize();
+            this.disableDuringContestControlButtons();
+            this.randomizeArray();
+            window.addEventListener('resize', this.handlePageResize);
+            window.addEventListener('scroll', this.addOrRemoveStickyEffectOnSortContestHeader);
+        });
     }
     
     componentWillUnmount() {
@@ -337,11 +344,6 @@ export default class SortContest extends React.Component {
     }
 
     render() {
-        const contestantNumbers = [];
-        for(let i = 0; i < this.state.numOfContestants; ++i) {
-            contestantNumbers.push(i+1);
-        }
-
         return (
             <div className='sortcontest'>
                 <div id="sortcontestheader">
@@ -356,7 +358,7 @@ export default class SortContest extends React.Component {
                     {/* <button onClick={() => console.log(this.state)}>Log Sort Contest State</button> */}
                 </div>
                 <div className='sort-visualizers'>
-                    {contestantNumbers.map(contestantNum => (
+                    {this.state.activeContestants.map(contestantNum => (
                         <SortVisualizer 
                             key={contestantNum}
                             ref={this.setRef}
