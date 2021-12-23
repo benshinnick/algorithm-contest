@@ -30,6 +30,7 @@ export default class SortContest extends React.Component {
             isRandomArray: true,
         };
         this.algoContestantRefs = [];
+        this.removeContestant = this.removeContestant.bind(this);
     }
 
     setRef = (ref) => {
@@ -54,11 +55,16 @@ export default class SortContest extends React.Component {
         console.log('adding contestant');
         const newNumOfContestants = this.state.numOfContestants + 1;
         this.algoContestantRefs[this.state.numOfContestants].addComponent();
+        this.algoContestantRefs[this.state.numOfContestants].updateAlgorithmType(ALGORITHM_TYPES[randomIntFromInterval(0,4)]);
         this.setState({...this.state, numOfContestants: newNumOfContestants});
     }
 
-    removeContestant() {
-        console.log('removing contestant');
+    removeContestant(contestantNum) {
+        console.log(`removing contestant ${contestantNum}`);
+        //shift all algorithm types over then delete the last one
+        for(let i = contestantNum - 1; i < this.state.numOfContestants; ++i) {
+            this.algoContestantRefs[i].updateAlgorithmType(this.algoContestantRefs[i+1].getAlgorithmType());
+        }
         const newNumOfContestants = this.state.numOfContestants - 1;
         this.algoContestantRefs[this.state.numOfContestants - 1].removeComponent();
         this.setState({...this.state, numOfContestants: newNumOfContestants});
@@ -375,10 +381,10 @@ export default class SortContest extends React.Component {
                     <button id="nearlysortedbutton" onClick={() => this.genearateNearySortedArrayButtonOnClick()}>
                         Generate Nearly Sorted Array
                     </button>
-                    <div id="add-or-remove-contestant-controls">
-                        <button onClick={() => this.removeContestant()}>-</button>
-                        {this.state.numOfContestants}
-                        <button onClick={() => this.addContestant()}>+</button>
+                    {/* <button id='remove-contestant-button' onClick={() => this.removeContestant()}>-</button> */}
+                    <button id='add-contestant-button' onClick={() => this.addContestant()}>Add Contestant</button>
+                    <div id="num-of-contestants-label">
+                        {this.state.numOfContestants} Contestants
                     </div>
                     {/* <button onClick={() => console.log(this.state)}>Log Sort Contest State</button> */}
                 </div>
@@ -391,6 +397,7 @@ export default class SortContest extends React.Component {
                             algorithmType={ALGORITHM_TYPES[(contestantNum - 1) % ALGORITHM_TYPES.length]}
                             algorithmTypes={ALGORITHM_TYPES}
                             contestantNumber={contestantNum}
+                            removeMe={this.removeContestant}
                         />
                     ))}
                 </div>

@@ -16,8 +16,8 @@
     color: white;
     padding-left: 10px;
     padding-right: 10px;
-    padding-top: 7px;
-    padding-bottom: 7px;
+    padding-top: 9px;
+    padding-bottom: 9px;
     text-align: center;
     text-decoration: none;
     font-size: 15px;
@@ -45,8 +45,8 @@
     color: white;
     padding-left: 10px;
     padding-right: 10px;
-    padding-top: 7px;
-    padding-bottom: 7px;
+    padding-top: 9px;
+    padding-bottom: 9px;
     text-align: center;
     text-decoration: none;
     font-size: 15px;
@@ -74,8 +74,8 @@
     width: 170px;
     /* padding-left: 55px;
     padding-right: 55px; */
-    padding-top: 7px;
-    padding-bottom: 7px;
+    padding-top: 9px;
+    padding-bottom: 9px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -103,8 +103,8 @@
     border: none;
     color: white;
     width: 19%;
-    padding-top: 7px;
-    padding-bottom: 7px;
+    padding-top: 9px;
+    padding-bottom: 9px;
     text-align: center;
     text-decoration: none;
     font-size: 15px;
@@ -125,8 +125,48 @@
     background-color: #0e7424;
 }
 
-#add-or-remove-contestant-controls {
+#num-of-contestants-label {
     display: inline-block;
+    background-color: #6c757d;
+    border: none;
+    color: white;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    padding-left: 15px;
+    padding-right: 15px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    transition-duration: 0.2s;
+    border-radius: 1px;
+    margin-right: 7px;
+    margin-top: 2px;
+    margin-left: 4px;
+    margin-bottom: 2px;
+}
+
+#add-contestant-button {
+    background-color: #007bff;
+    display: inline-block;
+    border: none;
+    color: white;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    transition-duration: 0.2s;
+    border-radius: 1px;
+    margin-right: 4px;
+    margin-top: 2px;
+    margin-left: 4px;
+    margin-bottom: 2px;
+}
+
+#add-contestant-button:hover {
+    background-color: #0069d9;
 }
 
 .sticky {

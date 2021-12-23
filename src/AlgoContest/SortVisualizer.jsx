@@ -497,6 +497,10 @@ export default class SortVisualizer extends React.Component {
         this.setState({...this.state, algorithmType: algorithmType});
     }
 
+    getAlgorithmType() {
+        return this.state.algorithmType;
+    }
+
     setAllAlgorithmStatInfo(numOfAnimationSteps, numOfComparisons, numOfSwapsOrOverwrites) {
         this.setState({
             ...this.state,
@@ -561,6 +565,8 @@ export default class SortVisualizer extends React.Component {
                         }}></div>
                     ))}
                 </div>
+
+                <button id='remove-button' onClick={() => this.props.removeMe(this.state.contestantNumber)}>-</button>
             </div>
         );
     }

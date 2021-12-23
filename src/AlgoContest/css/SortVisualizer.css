@@ -137,6 +137,27 @@
   animation: fadein 0.4s;
 }
 
+#remove-button {
+  background-color: #dc3545;
+  border-radius: 4px;
+  float: right;
+  border: none;
+  color: white;
+  padding-left: 15px;
+  padding-top: 4px;
+  padding-right: 15px;
+  padding-bottom: 4px;
+  text-align: center;
+  text-decoration: none;
+  font-size: 15px;
+  transition-duration: 0.2s;
+  margin: 0px 7px;
+}
+
+#remove-button:hover {
+  background-color: #c82333
+}
+
 @keyframes fadein {
   from { opacity: 0; }
   to   { opacity: 1; }
