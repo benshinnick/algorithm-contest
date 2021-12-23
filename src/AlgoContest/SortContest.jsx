@@ -61,13 +61,25 @@ export default class SortContest extends React.Component {
 
     removeContestant(contestantNum) {
         console.log(`removing contestant ${contestantNum}`);
-        //shift all algorithm types over then delete the last one
+        //shift all algorithm types over then deletes the last one
         for(let i = contestantNum - 1; i < this.state.numOfContestants; ++i) {
             this.algoContestantRefs[i].updateAlgorithmType(this.algoContestantRefs[i+1].getAlgorithmType());
         }
         const newNumOfContestants = this.state.numOfContestants - 1;
         this.algoContestantRefs[this.state.numOfContestants - 1].removeComponent();
         this.setState({...this.state, numOfContestants: newNumOfContestants});
+
+        // do animation
+        let animationStandIn = document.createElement("DIV");
+        animationStandIn.setAttribute("class", 'remove-element-animation-stand-in');
+        let sortVisualizers = document.getElementById('sort-visualizers');
+        let nextSortVisualizer = document.getElementById(`sort-visualizer-${contestantNum}`);
+
+        sortVisualizers.insertBefore(animationStandIn, nextSortVisualizer);
+        setTimeout(() => {
+            animationStandIn.remove();
+        }, 800);
+
     }
 
     startContest() {
@@ -388,7 +400,7 @@ export default class SortContest extends React.Component {
                     </div>
                     {/* <button onClick={() => console.log(this.state)}>Log Sort Contest State</button> */}
                 </div>
-                <div className='sort-visualizers'>
+                <div className='sort-visualizers' id='sort-visualizers'>
                     {ContestantNumbers.map(contestantNum => (
                         <SortVisualizer 
                             key={contestantNum}

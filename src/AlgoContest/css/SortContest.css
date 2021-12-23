@@ -179,6 +179,23 @@
     padding-top: 45px;
 }
 
+.remove-element-animation-stand-in {
+    white-space: nowrap;
+    background-color: white;
+    border-style: solid hidden hidden hidden;
+    border-width: 2px;
+    border-color: white;
+    height: 163px;
+    margin-left: 2px;
+    z-index: -1;
+    animation: remove-element-slide 0.8s;
+}
+
+@keyframes remove-element-slide {
+    from { height: 163px; }
+    to   { height: 0px; }
+  }
+
 @media only screen and (max-width: 752px) {
     #nearlysortedbutton {
         margin: 0 0.5%;
