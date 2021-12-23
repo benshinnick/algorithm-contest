@@ -36,23 +36,9 @@ export default class SortVisualizer extends React.Component {
         };
     }
 
-    componentDidUpdate(prevProps) {
-        if (this.props.isContestStarting !== prevProps.isContestStarting) {
-            if(this.props.isContestStarting === true) {
-                this.doSort();
-            }
-            else {
-                document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.backgroundColor = '#f7f7f7';
-            }
-        }
-    }
-
     static getDerivedStateFromProps(props, state) {
         if(props.array !== state.array){
             return{ array: props.array };
-        }
-        if(props.contestantNumber !== state.contestantNumber) {
-            return{ contestantNumber: props.contestantNumber }
         }
         return null;
     }
