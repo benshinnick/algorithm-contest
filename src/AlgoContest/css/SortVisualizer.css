@@ -142,15 +142,6 @@
   to   { opacity: 1; }
 }
 
-@keyframes fadeout {
-  0% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
-}
-
 @media only screen and (max-width: 752px) {
   .stats-label {
     width: 275px;

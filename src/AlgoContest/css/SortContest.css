@@ -125,6 +125,10 @@
     background-color: #0e7424;
 }
 
+#add-or-remove-contestant-controls {
+    display: inline-block;
+}
+
 .sticky {
     position: fixed;
     top: 0;

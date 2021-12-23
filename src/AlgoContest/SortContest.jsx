@@ -4,7 +4,8 @@ import './css/SortContest.css';
 
 const ARRAY_MIN_VALUE = 5;
 const ARRAY_MAX_VALUE = 130;
-const MAX_NUM_OF_CONTESTANTS = 7;
+const INITIAL_NUM_OF_CONTESTANTS = 7;
+const MAX_NUM_OF_CONTESTANTS = 10;
 
 const COUNTDOWN_DURATION_MS = SortVisualizer.ANIMATION_DELAY_MS;
 
@@ -24,7 +25,7 @@ export default class SortContest extends React.Component {
         super(props);
         this.state = {
             array: [],
-            numOfContestants: MAX_NUM_OF_CONTESTANTS,
+            numOfContestants: INITIAL_NUM_OF_CONTESTANTS,
             isPreContest: true,
             isRandomArray: true,
         };
@@ -36,6 +37,7 @@ export default class SortContest extends React.Component {
     };
 
     componentDidMount() {
+        this.removeExtraContestants();
         this.handlePageResize();
         this.disableDuringContestControlButtons();
         this.randomizeArray();
@@ -51,14 +53,14 @@ export default class SortContest extends React.Component {
     addContestant() {
         console.log('adding contestant');
         const newNumOfContestants = this.state.numOfContestants + 1;
-        this.algoContestantRefs[this.state.numOfContestants].renableComponent();
+        this.algoContestantRefs[this.state.numOfContestants].addComponent();
         this.setState({...this.state, numOfContestants: newNumOfContestants});
     }
 
     removeContestant() {
         console.log('removing contestant');
         const newNumOfContestants = this.state.numOfContestants - 1;
-        this.algoContestantRefs[this.state.numOfContestants - 1].disableComponent();
+        this.algoContestantRefs[this.state.numOfContestants - 1].removeComponent();
         this.setState({...this.state, numOfContestants: newNumOfContestants});
     }
 
@@ -258,6 +260,12 @@ export default class SortContest extends React.Component {
         this.handleContestIsNowFinished();
     }
 
+    removeExtraContestants() {
+        for(let i = INITIAL_NUM_OF_CONTESTANTS; i < MAX_NUM_OF_CONTESTANTS; ++i) {
+            this.algoContestantRefs[i].removeComponent();
+        }
+    }
+
     findAllPlaceInformation() {
 
         const allContestantPlaceInfo = [];
@@ -367,8 +375,11 @@ export default class SortContest extends React.Component {
                     <button id="nearlysortedbutton" onClick={() => this.genearateNearySortedArrayButtonOnClick()}>
                         Generate Nearly Sorted Array
                     </button>
-                    <button onClick={() => this.removeContestant()}>Remove Contestant</button>
-                    <button onClick={() => this.addContestant()}>Add Contestant</button>
+                    <div id="add-or-remove-contestant-controls">
+                        <button onClick={() => this.removeContestant()}>-</button>
+                        {this.state.numOfContestants}
+                        <button onClick={() => this.addContestant()}>+</button>
+                    </div>
                     {/* <button onClick={() => console.log(this.state)}>Log Sort Contest State</button> */}
                 </div>
                 <div className='sort-visualizers'>
