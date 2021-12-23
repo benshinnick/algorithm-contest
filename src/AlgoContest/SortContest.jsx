@@ -4,7 +4,7 @@ import './css/SortContest.css';
 
 const ARRAY_MIN_VALUE = 5;
 const ARRAY_MAX_VALUE = 130;
-const INITIAL_NUM_OF_CONTESTANTS = 7;
+const MAX_NUM_OF_CONTESTANTS = 7;
 
 const COUNTDOWN_DURATION_MS = SortVisualizer.ANIMATION_DELAY_MS;
 
@@ -24,10 +24,9 @@ export default class SortContest extends React.Component {
         super(props);
         this.state = {
             array: [],
-            numOfContestants: INITIAL_NUM_OF_CONTESTANTS,
+            numOfContestants: MAX_NUM_OF_CONTESTANTS,
             isPreContest: true,
             isRandomArray: true,
-            activeContestants: []
         };
         this.algoContestantRefs = [];
     }
@@ -37,22 +36,30 @@ export default class SortContest extends React.Component {
     };
 
     componentDidMount() {
-        const startingActiveContestantsNumbers = [];
-        for(let i = 0; i < this.state.numOfContestants; ++i) {
-            startingActiveContestantsNumbers.push(i+1);
-        }
-        this.setState({...this.state, activeContestants: startingActiveContestantsNumbers}, () => {
-            this.handlePageResize();
-            this.disableDuringContestControlButtons();
-            this.randomizeArray();
-            window.addEventListener('resize', this.handlePageResize);
-            window.addEventListener('scroll', this.addOrRemoveStickyEffectOnSortContestHeader);
-        });
+        this.handlePageResize();
+        this.disableDuringContestControlButtons();
+        this.randomizeArray();
+        window.addEventListener('resize', this.handlePageResize);
+        window.addEventListener('scroll', this.addOrRemoveStickyEffectOnSortContestHeader);
     }
     
     componentWillUnmount() {
         window.removeEventListener('resize', this.handlePageResize);
         window.addEventListener('scroll', this.addOrRemoveStickyEffectOnSortContestHeader);
+    }
+
+    addContestant() {
+        console.log('adding contestant');
+        const newNumOfContestants = this.state.numOfContestants + 1;
+        this.algoContestantRefs[this.state.numOfContestants].renableComponent();
+        this.setState({...this.state, numOfContestants: newNumOfContestants});
+    }
+
+    removeContestant() {
+        console.log('removing contestant');
+        const newNumOfContestants = this.state.numOfContestants - 1;
+        this.algoContestantRefs[this.state.numOfContestants - 1].disableComponent();
+        this.setState({...this.state, numOfContestants: newNumOfContestants});
     }
 
     startContest() {
@@ -344,6 +351,11 @@ export default class SortContest extends React.Component {
     }
 
     render() {
+        const ContestantNumbers = [];
+        for(let i = 0; i < MAX_NUM_OF_CONTESTANTS; ++i) {
+            ContestantNumbers.push(i+1);
+        }
+
         return (
             <div className='sortcontest'>
                 <div id="sortcontestheader">
@@ -355,15 +367,17 @@ export default class SortContest extends React.Component {
                     <button id="nearlysortedbutton" onClick={() => this.genearateNearySortedArrayButtonOnClick()}>
                         Generate Nearly Sorted Array
                     </button>
+                    <button onClick={() => this.removeContestant()}>Remove Contestant</button>
+                    <button onClick={() => this.addContestant()}>Add Contestant</button>
                     {/* <button onClick={() => console.log(this.state)}>Log Sort Contest State</button> */}
                 </div>
                 <div className='sort-visualizers'>
-                    {this.state.activeContestants.map(contestantNum => (
+                    {ContestantNumbers.map(contestantNum => (
                         <SortVisualizer 
                             key={contestantNum}
                             ref={this.setRef}
                             array={this.state.array}
-                            algorithmType={ALGORITHM_TYPES[contestantNum - 1]}
+                            algorithmType={ALGORITHM_TYPES[(contestantNum - 1) % ALGORITHM_TYPES.length]}
                             algorithmTypes={ALGORITHM_TYPES}
                             contestantNumber={contestantNum}
                         />

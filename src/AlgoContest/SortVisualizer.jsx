@@ -43,6 +43,18 @@ export default class SortVisualizer extends React.Component {
         return null;
     }
 
+    disableComponent() {
+        document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.animation = 'fadeout 0.5s';
+        setTimeout(() => {
+            document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.display = 'none';
+        }, 500);
+    }
+
+    renableComponent() {
+        document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.display = 'block';
+        document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.animation = 'fadein 0.4s';
+    }
+
     getSortAnimations() {
         let arrayCopy = this.state.array.map((value) => value);
 
