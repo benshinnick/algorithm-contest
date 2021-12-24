@@ -205,9 +205,11 @@
     float: left;
     border-style: hidden solid hidden hidden;
   }
+}
 
+@media only screen and (max-width: 480px) {
   .dropdown-content button {
     padding-top: 1px;
-    padding-bottom: 2px;
+    padding-bottom: 1px;
   }
 }

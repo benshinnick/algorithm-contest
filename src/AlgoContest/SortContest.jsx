@@ -445,12 +445,14 @@ export default class SortContest extends React.Component {
     }
 
     handlePageResize = () => {
-        if(this.state.isPreContest === true) {
-            if(this.state.isRandomArray === true) {
-                this.randomizeArray();
-            }
-            else {
-                this.generateNearlySortedArray();
+        if(this.getFullPageWidthArraySize() !== this.state.array.length) {
+            if(this.state.isPreContest === true) {
+                if(this.state.isRandomArray === true) {
+                    this.randomizeArray();
+                }
+                else {
+                    this.generateNearlySortedArray();
+                }
             }
         }
 

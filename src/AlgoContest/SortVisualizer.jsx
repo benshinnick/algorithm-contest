@@ -193,7 +193,7 @@ export default class SortVisualizer extends React.Component {
                     pivotLine.setAttribute("id", `pivot-line-${this.state.contestantNumber}`);
                     pivotLine.setAttribute("class", `pivot-line`);
                     pivotLine.style.width = `${((animationStepInfo[2] - animationStepInfo[1] + 1) * 4)-2}px`;
-                    pivotLine.style.bottom = `${animationStepInfo[3] + 4}px`;
+                    pivotLine.style.bottom = `${animationStepInfo[3] + 5}px`;
                     pivotLine.style.left = `${((animationStepInfo[1] + 1) * 4) + 2}px`;
                     arrayContainer.appendChild(pivotLine);
                 }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
