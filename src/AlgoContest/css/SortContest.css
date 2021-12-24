@@ -14,8 +14,9 @@
     display: inline-block;
     border: none;
     color: white;
-    padding-left: 10px;
-    padding-right: 10px;
+    width: 17%;
+    margin-left: 0.25%;
+    margin-right: 0.25%;
     padding-top: 9px;
     padding-bottom: 9px;
     text-align: center;
@@ -23,9 +24,7 @@
     font-size: 15px;
     transition-duration: 0.2s;
     border-radius: 1px;
-    margin-right: 4px;
     margin-top: 2px;
-    margin-left: 4px;
     margin-bottom: 2px;
 }
 
@@ -43,8 +42,9 @@
     display: inline-block;
     border: none;
     color: white;
-    padding-left: 10px;
-    padding-right: 10px;
+    width: 20%;
+    margin-left: 0.25%;
+    margin-right: 0.25%;
     padding-top: 9px;
     padding-bottom: 9px;
     text-align: center;
@@ -52,9 +52,7 @@
     font-size: 15px;
     transition-duration: 0.2s;
     border-radius: 1px;
-    margin-right: 4px;
     margin-top: 2px;
-    margin-left: 4px;
     margin-bottom: 2px;
 }
 
@@ -71,20 +69,19 @@
     background-color: #1ea33b;
     border: none;
     color: white;
+    float: left;
     width: 170px;
-    /* padding-left: 55px;
-    padding-right: 55px; */
+    width: 17%;
     padding-top: 9px;
     padding-bottom: 9px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
     font-size: 15px;
     transition-duration: 0.2s;
     border-radius: 1px;
-    margin-right: 7px;
+    margin-right: 0.25%;
     margin-top: 2px;
-    margin-left: 4px;
+    margin-left: 0.25%;
     margin-bottom: 2px;
 }
 
@@ -102,7 +99,8 @@
     float: right;
     border: none;
     color: white;
-    width: 19%;
+    width: 15%;
+    margin-left: 0.25%;
     padding-top: 9px;
     padding-bottom: 9px;
     text-align: center;
@@ -110,9 +108,8 @@
     font-size: 15px;
     transition-duration: 0.2s;
     border-radius: 1px;
-    margin-right: 7px;
+    margin-right: 0.25%;
     margin-top: 2px;
-    margin-left: 4px;
     margin-bottom: 2px;
 }
 
@@ -130,18 +127,17 @@
     background-color: #6c757d;
     border: none;
     color: white;
+    width: 16%;
+    margin-left: 0.25%;
+    margin-right: 0.25%;
     padding-top: 9px;
     padding-bottom: 9px;
-    padding-left: 15px;
-    padding-right: 15px;
     text-align: center;
     text-decoration: none;
     font-size: 15px;
     transition-duration: 0.2s;
     border-radius: 1px;
-    margin-right: 7px;
     margin-top: 2px;
-    margin-left: 4px;
     margin-bottom: 2px;
 }
 
@@ -150,6 +146,9 @@
     display: inline-block;
     border: none;
     color: white;
+    width: 12%;
+    margin-left: 0.25%;
+    margin-right: 0.25%;
     padding-left: 10px;
     padding-right: 10px;
     padding-top: 9px;
@@ -159,10 +158,15 @@
     font-size: 15px;
     transition-duration: 0.2s;
     border-radius: 1px;
-    margin-right: 4px;
+    /* margin-right: 4px; */
     margin-top: 2px;
-    margin-left: 4px;
+    /* margin-left: 4px; */
     margin-bottom: 2px;
+}
+
+#add-contestant-button:disabled,
+#add-contestant-button[disabled] {
+    background-color: #00458f;
 }
 
 #add-contestant-button:hover {
@@ -198,22 +202,36 @@
 
 @media only screen and (max-width: 752px) {
     #nearlysortedbutton {
-        margin: 0 0.5%;
-        width: 24%;
+        margin: 0 0.665%;
+        width: 32%;
     }
 
     #startcontestbutton {
-        margin: 0 0.5%;
-        width: 24%;
+        display: inline-block;
+        margin: 2px 0.665%;
+        width: 32%;
     }
 
     #randomizebutton {
-        margin: 0 0.5%;
-        width: 24%;
+        margin: 0 0.665%;
+        width: 32%;
     }
 
     #skip-to-finish-button {
-        margin: 0 0.5%;
-        width: 24%;
+        display: inline-block;
+        float: none;
+        width: 32%;
+        margin: 2px 0.665%;
+    }
+
+    #add-contestant-button {
+        width: 32%;
+        margin: 2px 0.665%
+    }
+
+    #num-of-contestants-label {
+        float: right;
+        margin: 2px 0.665%;
+        width: 32%;
     }
 }
