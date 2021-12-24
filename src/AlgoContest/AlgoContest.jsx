@@ -39,7 +39,7 @@ export default class AlgoContest extends React.Component {
         return (
             <div id='algo-contest'>
                 <div id='algo-contest-header'>
-                    <a href="http://localhost:3000/" id='algo-contest-header-link'>AlgorithmContest</a>
+                    <a href="http://benshinnick.github.io/algorithm-contest" id='algo-contest-header-link'>AlgorithmContest</a>
                     <button id='sort-contest-button' onClick={() => this.changePageContentToSortContest()}>Sorting</button>
                     <button id='pathfinding-contest-button' onClick={() => this.changePageContentToPathfindingContest()}>Pathfinding</button>
                 </div>

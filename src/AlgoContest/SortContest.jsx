@@ -492,7 +492,10 @@ export default class SortContest extends React.Component {
     // Referenced https://www.w3schools.com/howto/howto_js_sticky_header.asp
     addOrRemoveStickyEffectOnSortContestHeader = () => {
         let header = document.getElementById("sort-contest-header");
-        let sticky = header.offsetHeight;
+        let sticky = 45; //initial header.offsetTop();
+        if(window.innerWidth <= 480) {
+            sticky = 40; //initial header.offsetTop()
+        }
 
         if (window.pageYOffset > sticky) {
             header.classList.add("sticky");

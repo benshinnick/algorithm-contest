@@ -176,11 +176,11 @@
 .sticky {
     position: fixed;
     top: 0;
-    width: 100%
+    width: 100%;
 }
 
 .sticky + .sort-visualizers {
-    padding-top: 45px;
+    padding-top: 50px;
 }
 
 .remove-element-animation-stand-in {
@@ -233,5 +233,9 @@
         float: right;
         margin: 2px 0.665%;
         width: 32%;
+    }
+
+    .sticky + .sort-visualizers {
+        padding-top: 88px;
     }
 }
