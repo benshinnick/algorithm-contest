@@ -7,7 +7,7 @@ html, body {
     overflow-x: hidden;
 }
 
-#algocontestheader {
+#algo-contest-header {
     background-color: #3b3b3b;
     margin-top: 0;
     margin-bottom: 0;
@@ -16,9 +16,9 @@ html, body {
     padding-left: 5px;
 }
 
-#algocontestheader a:link,
-#algocontestheader a:visited,
-#algocontestheader a:hover {
+#algo-contest-header a:link,
+#algo-contest-header a:visited,
+#algo-contest-header a:hover {
     color: white;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
@@ -27,7 +27,7 @@ html, body {
     text-decoration: none;
 }
 
-#algocontestheader #sortcontestbutton {
+#algo-contest-header #sort-contest-button {
     background-color: transparent;
     border: none;
     float: right;
@@ -45,7 +45,7 @@ html, body {
     margin-bottom: 4px;
 }
 
-#algocontestheader #graphcontestbutton {
+#algo-contest-header #pathfinding-contest-button {
     background-color: transparent;
     border: none;
     color: white;

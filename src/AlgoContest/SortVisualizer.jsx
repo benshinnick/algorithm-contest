@@ -529,6 +529,14 @@ export default class SortVisualizer extends React.Component {
         }
     }
 
+    removeComponent() {
+        document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.display = 'none';
+    }
+
+    addComponent() {
+        document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.display = 'block';
+    }
+
     algorithmDropDownButtonOnClick(algorithmType) {
         this.destructAlgorithmPlaceLabel();
         this.destructAlgorithmStatsLabel();
@@ -539,7 +547,6 @@ export default class SortVisualizer extends React.Component {
     render() {
         return (
             <div className='sort-visualizer' id={`sort-visualizer-${this.state.contestantNumber}`}>
-
                 <div className="dropdown">
                     <div id='algorithm-dropdown-label'>{this.state.algorithmType}<div className='dropdown-arrow'>▼</div></div>
                     <div className="dropdown-content">
@@ -554,28 +561,18 @@ export default class SortVisualizer extends React.Component {
                         ))}
                     </div>
                 </div>
-
-                <div className='array-container' id={`array-container-${this.state.contestantNumber}`}>
-                    {this.state.array.map((value, index) => (
-                    <div className={`array-bar-${this.state.contestantNumber}`}
-                        key={`${index}-${this.contestantNumber}`}
-                        style={{
-                            backgroundColor: PRIMARY_COLOR,
-                            height: `${value}px`,
-                        }}></div>
-                    ))}
-                </div>
-
-                <button id='remove-button' className='remove' onClick={() => this.props.removeMe(this.state.contestantNumber)}>-</button>
+                    <div className='array-container' id={`array-container-${this.state.contestantNumber}`}>
+                        {this.state.array.map((value, index) => (
+                        <div className={`array-bar-${this.state.contestantNumber}`}
+                            key={`${index}-${this.contestantNumber}`}
+                            style={{
+                                backgroundColor: PRIMARY_COLOR,
+                                height: `${value}px`,
+                            }}></div>
+                        ))}
+                    </div>
+                    <button id='remove-button' className='remove' onClick={() => this.props.removeMe(this.state.contestantNumber)}>-</button>
             </div>
         );
-    }
-
-    removeComponent() {
-        document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.display = 'none';
-    }
-
-    addComponent() {
-        document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.display = 'block';
     }
 }

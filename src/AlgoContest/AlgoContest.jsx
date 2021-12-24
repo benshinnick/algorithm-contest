@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import SortContest from './SortContest.jsx';
-import GraphContest from './GraphContest.jsx';
+import PathfindingContest from './PathfindingContest.jsx';
 import './css/AlgoContest.css';
 
 export default class AlgoContest extends React.Component {
@@ -20,30 +20,30 @@ export default class AlgoContest extends React.Component {
     changePageContentToSortContest() {
         this.setState({ algorithmType: 'sort' });
 
-        document.querySelector('#sortcontestbutton').style.backgroundColor = '#6c757d';
-        document.querySelector('#graphcontestbutton').style.backgroundColor = 'transparent';
+        document.querySelector('#sort-contest-button').style.backgroundColor = '#6c757d';
+        document.querySelector('#pathfinding-contest-button').style.backgroundColor = 'transparent';
 
-        ReactDOM.render(<SortContest />, document.getElementById('maincontent'));
+        ReactDOM.render(<SortContest />, document.getElementById('main-content'));
     }
 
-    changePageContentToGraphContest() {
-        this.setState({ algorithmType: 'graph' });
+    changePageContentToPathfindingContest() {
+        this.setState({ algorithmType: 'pathfinding' });
 
-        document.querySelector('#sortcontestbutton').style.backgroundColor = 'transparent';
-        document.querySelector('#graphcontestbutton').style.backgroundColor = '#6c757d';
+        document.querySelector('#sort-contest-button').style.backgroundColor = 'transparent';
+        document.querySelector('#pathfinding-contest-button').style.backgroundColor = '#6c757d';
         
-        ReactDOM.render(<GraphContest />, document.getElementById('maincontent'));
+        ReactDOM.render(<PathfindingContest />, document.getElementById('main-content'));
     }
 
     render() {
         return (
-            <div id='algocontest'>
-                <div id='algocontestheader'>
-                    <a href="http://localhost:3000/">AlgoContest</a>
-                    <button id='sortcontestbutton' onClick={() => this.changePageContentToSortContest()}>Sorting</button>
-                    <button id='graphcontestbutton' onClick={() => this.changePageContentToGraphContest()}>Pathfinding</button>
+            <div id='algo-contest'>
+                <div id='algo-contest-header'>
+                    <a href="http://localhost:3000/" id='algo-contest-header-link'>AlgorithmContest</a>
+                    <button id='sort-contest-button' onClick={() => this.changePageContentToSortContest()}>Sorting</button>
+                    <button id='pathfinding-contest-button' onClick={() => this.changePageContentToPathfindingContest()}>Pathfinding</button>
                 </div>
-                <div id='maincontent'></div>
+                <div id='main-content'></div>
             </div>
         );
     }
