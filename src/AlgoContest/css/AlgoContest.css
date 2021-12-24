@@ -62,3 +62,52 @@ html, body {
     margin-top: 4px;
     margin-bottom: 4px;
 }
+
+@media only screen and (max-width: 460px) {
+    #algo-contest-header a:link,
+    #algo-contest-header a:visited,
+    #algo-contest-header a:hover {
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 30px;
+        text-align: left;
+        text-decoration: none;
+    }
+
+    #algo-contest-header #sort-contest-button {
+        background-color: transparent;
+        border: none;
+        float: right;
+        color: white;
+        padding: 4px 3px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 20px;
+        transition-duration: 0.7s;
+        border-radius: 10px;
+    
+        margin-left: 1px;
+        margin-right: 2px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+    }
+    
+    #algo-contest-header #pathfinding-contest-button {
+        background-color: transparent;
+        border: none;
+        color: white;
+        float: right;
+        padding: 4px 3px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 20px;
+        transition-duration: 0.7s;
+        border-radius: 10px;
+    
+        margin-left: 2px;
+        margin-right: 1px;
+        margin-top: 4px;
+        margin-bottom: 4px;
+    }
+}

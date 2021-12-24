@@ -494,7 +494,7 @@ export default class SortVisualizer extends React.Component {
     }
 
     setAnimationSpeed(animationSpeedMS) {
-        if(animationSpeedMS != this.state.animationSpeedMS) {
+        if(animationSpeedMS !== this.state.animationSpeedMS) {
             this.setState({...this.state, animationSpeedMS: animationSpeedMS});
         }
     }

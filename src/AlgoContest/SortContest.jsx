@@ -469,7 +469,7 @@ export default class SortContest extends React.Component {
         }
 
         let animationSpeedMS;
-        if(windowWidthSize < 400) {
+        if(windowWidthSize < 420) {
             animationSpeedMS = 5;
         }
         else if(windowWidthSize < 600) {
