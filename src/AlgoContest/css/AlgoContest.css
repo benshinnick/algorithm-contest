@@ -13,7 +13,7 @@ html, body {
     margin-bottom: 0;
     padding-top :0;
     padding-bottom: 5px;
-    padding-left: 5px;
+    padding-left: 7px;
 }
 
 #algo-contest-header a:link,
@@ -39,8 +39,8 @@ html, body {
     transition-duration: 0.7s;
     border-radius: 10px;
 
-    margin-left: 5px;
-    margin-right: 5px;
+    margin-left: 2px;
+    margin-right: 10px;
     margin-top: 4px;
     margin-bottom: 4px;
 }
@@ -57,8 +57,67 @@ html, body {
     transition-duration: 0.7s;
     border-radius: 10px;
 
-    margin-left: 5px;
-    margin-right: 5px;
+    margin-left: 2px;
+    margin-right: 2px;
     margin-top: 4px;
     margin-bottom: 4px;
+}
+
+@media only screen and (max-width: 480px) {
+    #algo-contest-header {
+        background-color: #3b3b3b;
+        margin-top: 0;
+        margin-bottom: 0;
+        padding-top :0;
+        padding-top: 2px;
+        padding-bottom: 3px;
+        padding-left: 5px;
+    }
+
+    #algo-contest-header a:link,
+    #algo-contest-header a:visited,
+    #algo-contest-header a:hover {
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: bold;
+        font-size: 30px;
+        text-align: left;
+        text-decoration: none;
+    }
+
+    #algo-contest-header #sort-contest-button {
+        background-color: transparent;
+        border: none;
+        float: right;
+        color: white;
+        padding: 3px 3px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 20px;
+        transition-duration: 0.7s;
+        border-radius: 5px;
+    
+        margin-left: 1px;
+        margin-right: 2px;
+        margin-top: 3px;
+        margin-bottom: 4px;
+    }
+    
+    #algo-contest-header #pathfinding-contest-button {
+        background-color: transparent;
+        border: none;
+        color: white;
+        float: right;
+        padding: 3px 3px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 20px;
+        transition-duration: 0.7s;
+        border-radius: 5px;
+    
+        margin-left: 2px;
+        margin-right: 1px;
+        margin-top: 3px;
+        margin-bottom: 4px;
+    }
 }

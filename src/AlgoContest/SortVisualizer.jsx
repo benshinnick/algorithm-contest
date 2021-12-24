@@ -20,12 +20,12 @@ const FINISHED_SORTING_BACKGROUND_COLOR = '#edfff2'; // light green
 
 export default class SortVisualizer extends React.Component {
 
-    static ANIMATION_SPEED_MS = 1.7;
     static ANIMATION_DELAY_MS = 3000;
 
     constructor(props) {
         super(props);
         this.state = {
+            animationSpeedMS: 2,
             array: this.props.array,
             algorithmType: this.props.algorithmType,
             allAlgorithmTypes: this.props.algorithmTypes,
@@ -110,14 +110,14 @@ export default class SortVisualizer extends React.Component {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = SECONDARY_COLOR;
                     barTwoStyle.backgroundColor = SECONDARY_COLOR;
-                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+                }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
                 return;
             }
             else if(animationCode === 'cf') {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = PRIMARY_COLOR;
                     barTwoStyle.backgroundColor = PRIMARY_COLOR;
-                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+                }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
                 return;
             }
         }
@@ -126,13 +126,13 @@ export default class SortVisualizer extends React.Component {
             if(animationCode === 'o') {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = SECONDARY_COLOR;
-                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+                }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
             }
             else if(animationCode === 'of') {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = PRIMARY_COLOR;
                     barOneStyle.height = `${animationStepInfo[2]}px`;
-                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+                }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
             }
             return;
         }
@@ -154,7 +154,7 @@ export default class SortVisualizer extends React.Component {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = SECONDARY_COLOR;
                     barTwoStyle.backgroundColor = SECONDARY_COLOR;
-                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+                }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
             }
             else if(animationCode === 'sf') {
                 setTimeout(() => {
@@ -162,7 +162,7 @@ export default class SortVisualizer extends React.Component {
                     barTwoStyle.backgroundColor = PRIMARY_COLOR;
                     barOneStyle.height = `${animationStepInfo[4]}px`;
                     barTwoStyle.height = `${animationStepInfo[3]}px`;
-                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+                }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
             }
         }
         // comparison cases
@@ -176,12 +176,12 @@ export default class SortVisualizer extends React.Component {
             if(animationCode === 'c') {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = SECONDARY_COLOR;
-                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+                }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
             }
             else if(animationCode === 'cf') {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = PRIMARY_COLOR;
-                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+                }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
             }
         }
         // pivot cases
@@ -193,17 +193,17 @@ export default class SortVisualizer extends React.Component {
                     pivotLine.setAttribute("id", `pivot-line-${this.state.contestantNumber}`);
                     pivotLine.setAttribute("class", `pivot-line`);
                     pivotLine.style.width = `${((animationStepInfo[2] - animationStepInfo[1] + 1) * 4)-2}px`;
-                    pivotLine.style.bottom = `${animationStepInfo[3] + 4}px`;
+                    pivotLine.style.bottom = `${animationStepInfo[3] + 5}px`;
                     pivotLine.style.left = `${((animationStepInfo[1] + 1) * 4) + 2}px`;
                     arrayContainer.appendChild(pivotLine);
-                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+                }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
                 return;
             }
             else if(animationCode === 'pf') {
                 setTimeout(() => {
                     let pivotLine = document.getElementById(`pivot-line-${this.state.contestantNumber}`);
                     pivotLine.remove();
-                }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+                }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
             }
         }
     }
@@ -220,20 +220,20 @@ export default class SortVisualizer extends React.Component {
             setTimeout(() => {
                 barOneStyle.backgroundColor = SECONDARY_COLOR;
                 barTwoStyle.backgroundColor = SECONDARY_COLOR;
-            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
         }
         else if(animationCode === 'cf') {
             setTimeout(() => {
                 barOneStyle.backgroundColor = PRIMARY_COLOR;
                 barTwoStyle.backgroundColor = PRIMARY_COLOR;
-            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
         }
         //swap cases
         else if(animationCode === 's') {
             setTimeout(() => {
                 barOneStyle.backgroundColor = SECONDARY_COLOR;
                 barTwoStyle.backgroundColor = SECONDARY_COLOR;
-            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
         }
         else if(animationCode === 'sf') {
             setTimeout(() => {
@@ -241,7 +241,7 @@ export default class SortVisualizer extends React.Component {
                 barTwoStyle.backgroundColor = PRIMARY_COLOR;
                 barOneStyle.height = `${animationStepInfo[4]}px`;
                 barTwoStyle.height = `${animationStepInfo[3]}px`;
-            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
         }
     }
 
@@ -260,20 +260,20 @@ export default class SortVisualizer extends React.Component {
             setTimeout(() => {
                 barOneStyle.backgroundColor = SECONDARY_COLOR;
                 barTwoStyle.backgroundColor = SECONDARY_COLOR;
-            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
         }
         else if(animationCode === 'cf') {
             setTimeout(() => {
                 barOneStyle.backgroundColor = PRIMARY_COLOR;
                 barTwoStyle.backgroundColor = PRIMARY_COLOR;
-            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
         }
         // swap case
         else if(animationCode === 's') {
             setTimeout(() => {
                 barOneStyle.height = `${animationStepInfo[4]}px`;
                 barTwoStyle.height = `${animationStepInfo[3]}px`;
-            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
         }
     }
 
@@ -289,20 +289,20 @@ export default class SortVisualizer extends React.Component {
             setTimeout(() => {
                 barOneStyle.backgroundColor = SECONDARY_COLOR;
                 barTwoStyle.backgroundColor = SECONDARY_COLOR;
-            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
         }
         else if(animationCode === 'cf') {
             setTimeout(() => {
                 barOneStyle.backgroundColor = PRIMARY_COLOR;
                 barTwoStyle.backgroundColor = PRIMARY_COLOR;
-            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
         }
         // swap cases
         else if(animationCode === 's') {
         setTimeout(() => {
                 barOneStyle.backgroundColor = SECONDARY_COLOR;
                 barTwoStyle.backgroundColor = SECONDARY_COLOR;
-            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
         }
         else if(animationCode === 'sf') {
             setTimeout(() => {
@@ -310,7 +310,7 @@ export default class SortVisualizer extends React.Component {
                 barTwoStyle.backgroundColor = PRIMARY_COLOR;
                 barOneStyle.height = `${animationStepInfo[4]}px`;
                 barTwoStyle.height = `${animationStepInfo[3]}px`;
-            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
         }
     }
 
@@ -326,12 +326,12 @@ export default class SortVisualizer extends React.Component {
             setTimeout(() => {
                 barOneStyle.backgroundColor = SECONDARY_COLOR;
                 barTwoStyle.backgroundColor = SECONDARY_COLOR;
-            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
         }
         else if(animationCode === 'cf') {
             setTimeout(() => {
                 barOneStyle.backgroundColor = PRIMARY_COLOR;
-            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
         }
         // swap case
         else if(animationCode === 's') {
@@ -340,7 +340,7 @@ export default class SortVisualizer extends React.Component {
             setTimeout(() => {
                 barOneStyle.backgroundColor = SECONDARY_COLOR;
                 barTwoStyle.backgroundColor = SECONDARY_COLOR;
-            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
         }
         else if(animationCode === 'sf') {
             const barTwoIndex = animationStepInfo[2];
@@ -350,13 +350,13 @@ export default class SortVisualizer extends React.Component {
                 barTwoStyle.backgroundColor = PRIMARY_COLOR;
                 barOneStyle.height = `${animationStepInfo[4]}px`;
                 barTwoStyle.height = `${animationStepInfo[3]}px`;
-            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
         }
         // finished with min case
         else if(animationCode === 'm') {
             setTimeout(() => {
                 barOneStyle.backgroundColor = PRIMARY_COLOR;
-            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
         }
     }
 
@@ -375,20 +375,20 @@ export default class SortVisualizer extends React.Component {
             setTimeout(() => {
                 barOneStyle.backgroundColor = SECONDARY_COLOR;
                 barTwoStyle.backgroundColor = SECONDARY_COLOR;
-            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
         }
         else if(animationCode === 'cf') {
             setTimeout(() => {
                 barOneStyle.backgroundColor = PRIMARY_COLOR;
                 barTwoStyle.backgroundColor = PRIMARY_COLOR;
-            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
         }
         //swap case
         else if(animationCode === 's') {
             setTimeout(() => {
                 barOneStyle.height = `${animationStepInfo[4]}px`;
                 barTwoStyle.height = `${animationStepInfo[3]}px`;
-            }, currentStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+            }, currentStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
         }
     }
 
@@ -405,7 +405,7 @@ export default class SortVisualizer extends React.Component {
     scheduleAlgorithmIsNowFinishedCommands(lastAnimationStepNumber, algorithmPlace) {
         setTimeout(() => {
             this.handleAlgorithmIsNowFinished(algorithmPlace);
-        }, lastAnimationStepNumber * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+        }, lastAnimationStepNumber * this.state.animationSpeedMS + SortVisualizer.ANIMATION_DELAY_MS);
     }
 
     handleAlgorithmIsNowFinished(algorithmPlace) {
@@ -491,6 +491,16 @@ export default class SortVisualizer extends React.Component {
         if(statsLabel !== null) {
             statsLabel.remove();
         }
+    }
+
+    setAnimationSpeed(animationSpeedMS) {
+        if(animationSpeedMS !== this.state.animationSpeedMS) {
+            this.setState({...this.state, animationSpeedMS: animationSpeedMS});
+        }
+    }
+
+    getAnimationSpeed() {
+        return this.state.animationSpeedMS;
     }
 
     updateAlgorithmType(algorithmType) {

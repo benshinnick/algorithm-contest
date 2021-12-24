@@ -176,7 +176,7 @@ export default class SortContest extends React.Component {
         const maxNumberOfAnimationSteps = Math.max(...allContestantMaxAnimationSteps);
         setTimeout(() => {
             this.handleContestIsNowFinished();
-        }, maxNumberOfAnimationSteps * SortVisualizer.ANIMATION_SPEED_MS + SortVisualizer.ANIMATION_DELAY_MS);
+        }, maxNumberOfAnimationSteps * this.algoContestantRefs[0].getAnimationSpeed() + SortVisualizer.ANIMATION_DELAY_MS);
     }
 
     handleContestIsNowFinished() {
@@ -445,32 +445,59 @@ export default class SortContest extends React.Component {
     }
 
     handlePageResize = () => {
-        if(window.innerWidth <= 1195) {
+        if(this.getFullPageWidthArraySize() !== this.state.array.length) {
+            if(this.state.isPreContest === true) {
+                if(this.state.isRandomArray === true) {
+                    this.randomizeArray();
+                }
+                else {
+                    this.generateNearlySortedArray();
+                }
+            }
+        }
+
+        let windowWidthSize = window.innerWidth;
+        if(windowWidthSize <= 1195) {
             document.querySelector('#algo-contest-header-link').textContent = 'AlgoContest';
             document.querySelector('#randomize-button').textContent = 'Randomize';
             document.querySelector('#nearly-sorted-button').textContent = 'Nearly Sorted';
             document.querySelector('#add-contestant-button').textContent = 'Add';
         }
-        if(window.innerWidth > 1195) {
+        if(windowWidthSize > 1195) {
             document.querySelector('#algo-contest-header-link').textContent = 'AlgorithmContest';
             document.querySelector('#randomize-button').textContent = 'Generate Random Array';
             document.querySelector('#nearly-sorted-button').textContent = 'Generate Nearly Sorted Array';
             document.querySelector('#add-contestant-button').textContent = 'Add Contestant';
         }
-        if(this.state.isPreContest === true) {
-            if(this.state.isRandomArray === true) {
-                this.randomizeArray();
-            }
-            else {
-                this.generateNearlySortedArray();
-            }
+
+        let animationSpeedMS;
+        if(windowWidthSize < 420) {
+            animationSpeedMS = 5;
+        }
+        else if(windowWidthSize < 600) {
+            animationSpeedMS = 4;
+        }
+        else if(windowWidthSize < 800) {
+            animationSpeedMS = 3;
+        }
+        else if(windowWidthSize < 1200) {
+            animationSpeedMS = 1.5;
+        }
+        else {
+            animationSpeedMS = 1;
+        }
+        for(let i = 0; i < MAX_NUM_OF_CONTESTANTS; ++i) {
+            this.algoContestantRefs[i].setAnimationSpeed(animationSpeedMS);
         }
     }
 
     // Referenced https://www.w3schools.com/howto/howto_js_sticky_header.asp
     addOrRemoveStickyEffectOnSortContestHeader = () => {
         let header = document.getElementById("sort-contest-header");
-        let sticky = header.offsetHeight;
+        let sticky = 45; //initial header.offsetTop();
+        if(window.innerWidth <= 480) {
+            sticky = 40; //initial header.offsetTop()
+        }
 
         if (window.pageYOffset > sticky) {
             header.classList.add("sticky");

@@ -67,14 +67,14 @@
 
 #remove-button {
   background-color: #dc3545;
-  width: 28px;
+  /* width: 28px; */
   border-radius: 4px;
   float: right;
   border: none;
   color: white;
-  /* padding-left: 15px; */
+  padding-left: 10px;
   padding-top: 4px;
-  /* padding-right: 15px; */
+  padding-right: 10px;
   padding-bottom: 4px;
   text-align: center;
   text-decoration: none;
@@ -115,6 +115,7 @@
 
 .dropdown-arrow {
   float: right;
+  font-size: 11pt;
   font-size: 9;
   transition-duration: 0.3s;
   background-color: transparent;
@@ -185,7 +186,7 @@
 
 @media only screen and (max-width: 752px) {
   .stats-label {
-    width: 275px;
+    width: 295px;
     padding-left: 2px;
     padding-right: 2px;
     margin-left: 0px;
@@ -195,5 +196,20 @@
     margin-right: 0px;
     padding-left: 5px;
     padding-right: 5px;
+  }
+}
+
+@media only screen and (max-width: 530px) {
+  .stats-label {
+    margin: 5px;
+    float: left;
+    border-style: hidden solid hidden hidden;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .dropdown-content button {
+    padding-top: 1px;
+    padding-bottom: 1px;
   }
 }
