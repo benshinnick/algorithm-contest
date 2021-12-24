@@ -67,14 +67,14 @@
 
 #remove-button {
   background-color: #dc3545;
-  width: 28px;
+  /* width: 28px; */
   border-radius: 4px;
   float: right;
   border: none;
   color: white;
-  /* padding-left: 15px; */
+  padding-left: 10px;
   padding-top: 4px;
-  /* padding-right: 15px; */
+  padding-right: 10px;
   padding-bottom: 4px;
   text-align: center;
   text-decoration: none;
