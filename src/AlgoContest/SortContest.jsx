@@ -5,6 +5,7 @@ import './css/SortContest.css';
 const ARRAY_MIN_VALUE = 5;
 const ARRAY_MAX_VALUE = 130;
 const INITIAL_NUM_OF_CONTESTANTS = 7;
+const MAX_NUM_OF_CONTESTANTS = 10;
 
 const COUNTDOWN_DURATION_MS = SortVisualizer.ANIMATION_DELAY_MS;
 
@@ -26,9 +27,10 @@ export default class SortContest extends React.Component {
             array: [],
             numOfContestants: INITIAL_NUM_OF_CONTESTANTS,
             isPreContest: true,
-            isRandomArray: true
+            isRandomArray: true,
         };
         this.algoContestantRefs = [];
+        this.removeContestant = this.removeContestant.bind(this);
     }
 
     setRef = (ref) => {
@@ -36,6 +38,7 @@ export default class SortContest extends React.Component {
     };
 
     componentDidMount() {
+        this.removeExtraContestants();
         this.handlePageResize();
         this.disableDuringContestControlButtons();
         this.randomizeArray();
@@ -46,6 +49,48 @@ export default class SortContest extends React.Component {
     componentWillUnmount() {
         window.removeEventListener('resize', this.handlePageResize);
         window.addEventListener('scroll', this.addOrRemoveStickyEffectOnSortContestHeader);
+    }
+
+    addContestant() {
+        const newNumOfContestants = this.state.numOfContestants + 1;
+        this.algoContestantRefs[this.state.numOfContestants].addComponent();
+        this.algoContestantRefs[this.state.numOfContestants].updateAlgorithmType(ALGORITHM_TYPES[randomIntFromInterval(0,4)]);
+        this.setState({...this.state, numOfContestants: newNumOfContestants}, this.resetSortContestPage());
+        if(newNumOfContestants === MAX_NUM_OF_CONTESTANTS) {
+            document.getElementById('add-contestant-button').disabled = true;
+            document.getElementById('add-contestant-button').innerText = 'MAX';
+        }
+        else {
+            document.getElementById('add-contestant-button').disabled = false;
+            document.getElementById('add-contestant-button').innerText = 'Add Contestant';
+        }
+    }
+
+    removeContestant(contestantNum) {
+        //shift all algorithm types over then removes the last one
+        for(let i = contestantNum - 1; i < this.state.numOfContestants - 1; ++i) {
+            this.algoContestantRefs[i].updateAlgorithmType(this.algoContestantRefs[i+1].getAlgorithmType());
+        }
+        const newNumOfContestants = this.state.numOfContestants - 1;
+        this.algoContestantRefs[this.state.numOfContestants - 1].removeComponent();
+        this.setState({...this.state, numOfContestants: newNumOfContestants}, this.resetSortContestPage());
+        // do remove animation
+        let animationStandIn = document.createElement("DIV");
+        animationStandIn.setAttribute("class", 'remove-element-animation-stand-in');
+        let sortVisualizers = document.getElementById('sort-visualizers');
+        let nextSortVisualizer = document.getElementById(`sort-visualizer-${contestantNum}`);
+
+        sortVisualizers.insertBefore(animationStandIn, nextSortVisualizer);
+        setTimeout(() => {
+            animationStandIn.remove();
+        }, 800);
+
+        if(newNumOfContestants === 2) {
+            this.disableRemoveContestantButtons();
+        }
+
+        document.getElementById('add-contestant-button').disabled = false;
+        document.getElementById('add-contestant-button').innerText = 'Add Contestant';
     }
 
     startContest() {
@@ -201,11 +246,17 @@ export default class SortContest extends React.Component {
         document.getElementById("startcontestbutton").disabled = true;
         document.getElementById("randomizebutton").disabled = true;
         document.getElementById("nearlysortedbutton").disabled = true;
+        document.getElementById('add-contestant-button').disabled = true;
 
         const algorithmDropDownButtons = document.getElementsByClassName('algorithm-dropdown-button');
         for(let i = 0; i < algorithmDropDownButtons.length; ++i) {
             algorithmDropDownButtons[i].disabled = true;
         }
+        const algorithmDropDownArrows = document.getElementsByClassName('dropdown-arrow');
+        for(let i = 0; i < algorithmDropDownArrows.length; ++i) {
+            algorithmDropDownArrows[i].style.visibility = 'hidden';
+        }
+        this.disableRemoveContestantButtons();
     }
 
     enablePreContestSetupButtons() {
@@ -213,10 +264,17 @@ export default class SortContest extends React.Component {
         document.getElementById("startcontestbutton").disabled = false;
         document.getElementById("randomizebutton").disabled = false;
         document.getElementById("nearlysortedbutton").disabled = false;
+        if(this.state.numOfContestants < MAX_NUM_OF_CONTESTANTS) {
+            document.getElementById('add-contestant-button').disabled = false;
+        }
 
         const algorithmDropDownButtons = document.getElementsByClassName('algorithm-dropdown-button');
         for(let i = 0; i < algorithmDropDownButtons.length; ++i) {
             algorithmDropDownButtons[i].disabled = false;
+        }
+        const algorithmDropDownArrows = document.getElementsByClassName('dropdown-arrow');
+        for(let i = 0; i < algorithmDropDownArrows.length; ++i) {
+            algorithmDropDownArrows[i].style.visibility = 'visible';
         }
     }
 
@@ -226,6 +284,22 @@ export default class SortContest extends React.Component {
 
     enableDuringContestControlButtons() {
         document.getElementById('skip-to-finish-button').disabled = false
+    }
+
+    disableRemoveContestantButtons() {
+        const removeAlgorithmButtons = document.getElementsByClassName('remove');
+        for(let i = 0; i < removeAlgorithmButtons.length; ++i) {
+            removeAlgorithmButtons[i].disabled = true;
+        }
+    }
+
+    enableRemoveContestantButtons() {
+        if(this.state.numOfContestants >= 2) {
+            const removeAlgorithmButtons = document.getElementsByClassName('remove');
+            for(let i = 0; i < removeAlgorithmButtons.length; ++i) {
+                removeAlgorithmButtons[i].disabled = false;
+            }
+        }
     }
 
     skipToFinishButtonOnClick() {
@@ -242,6 +316,12 @@ export default class SortContest extends React.Component {
             this.algoContestantRefs[i].resetArrayBarsToCorrectHeights();
         }
         this.handleContestIsNowFinished();
+    }
+
+    removeExtraContestants() {
+        for(let i = INITIAL_NUM_OF_CONTESTANTS; i < MAX_NUM_OF_CONTESTANTS; ++i) {
+            this.algoContestantRefs[i].removeComponent();
+        }
     }
 
     findAllPlaceInformation() {
@@ -316,6 +396,7 @@ export default class SortContest extends React.Component {
             this.enablePreContestSetupButtons();
             this.resetSortContestPage();
             this.randomizeArray();
+            this.enableRemoveContestantButtons();
         });
     }
 
@@ -326,44 +407,55 @@ export default class SortContest extends React.Component {
             this.enablePreContestSetupButtons();
             this.resetSortContestPage();
             this.generateNearlySortedArray();
+            this.enableRemoveContestantButtons();
         });
     }
 
     startContestButtonOnClick() {
-        this.enablePreContestSetupButtons();
         this.resetSortContestPage();
         this.startContest();
         this.setState({ ...this.state, isPreContest: false });
     }
 
+    addContestantOnClick() {
+        this.addContestant();
+        this.enableRemoveContestantButtons();
+    }
+
     render() {
-        const contestantNumbers = [];
-        for(let i = 0; i < this.state.numOfContestants; ++i) {
-            contestantNumbers.push(i+1);
+        const ContestantNumbers = [];
+        for(let i = 0; i < MAX_NUM_OF_CONTESTANTS; ++i) {
+            ContestantNumbers.push(i+1);
         }
 
         return (
             <div className='sortcontest'>
                 <div id="sortcontestheader">
-                    <button id="startcontestbutton" onClick={() => this.startContestButtonOnClick()}>Start</button>
-                    <button id="skip-to-finish-button" onClick={() => this.skipToFinishButtonOnClick()}>Skip To Finish</button>
                     <button id="randomizebutton" onClick={() => this.genearateRandomArrayButtonOnClick()}>
                         Generate Random Array
                     </button>
                     <button id="nearlysortedbutton" onClick={() => this.genearateNearySortedArrayButtonOnClick()}>
                         Generate Nearly Sorted Array
                     </button>
+                    {/* <button id='remove-contestant-button' onClick={() => this.removeContestant()}>-</button> */}
+                    <button id='add-contestant-button' onClick={() => this.addContestantOnClick()}>Add Contestant</button>
+                    <div id="num-of-contestants-label">
+                        {this.state.numOfContestants} Contestants
+                    </div>
+                    <button id="startcontestbutton" onClick={() => this.startContestButtonOnClick()}>Start</button>
+                    <button id="skip-to-finish-button" onClick={() => this.skipToFinishButtonOnClick()}>Skip To Finish</button>
                     {/* <button onClick={() => console.log(this.state)}>Log Sort Contest State</button> */}
                 </div>
-                <div className='sort-visualizers'>
-                    {contestantNumbers.map(contestantNum => (
+                <div className='sort-visualizers' id='sort-visualizers'>
+                    {ContestantNumbers.map(contestantNum => (
                         <SortVisualizer 
                             key={contestantNum}
                             ref={this.setRef}
                             array={this.state.array}
-                            algorithmType={ALGORITHM_TYPES[contestantNum - 1]}
+                            algorithmType={ALGORITHM_TYPES[(contestantNum - 1) % ALGORITHM_TYPES.length]}
                             algorithmTypes={ALGORITHM_TYPES}
                             contestantNumber={contestantNum}
+                            removeMe={this.removeContestant}
                         />
                     ))}
                 </div>
@@ -372,13 +464,15 @@ export default class SortContest extends React.Component {
     }
 
     handlePageResize = () => {
-        if(window.innerWidth <= 752) {
+        if(window.innerWidth <= 1195) {
             document.querySelector('#randomizebutton').textContent = 'Randomize';
             document.querySelector('#nearlysortedbutton').textContent = 'Nearly Sorted';
+            document.querySelector('#add-contestant-button').textContent = 'Add';
         }
-        if(window.innerWidth > 752) {
+        if(window.innerWidth > 1195) {
             document.querySelector('#randomizebutton').textContent = 'Generate Random Array';
             document.querySelector('#nearlysortedbutton').textContent = 'Generate Nearly Sorted Array';
+            document.querySelector('#add-contestant-button').textContent = 'Add Contestant';
         }
         if(this.state.isPreContest === true) {
             if(this.state.isRandomArray === true) {
@@ -391,7 +485,7 @@ export default class SortContest extends React.Component {
     }
 
     getFullPageWidthArraySize() {
-        const initialArraySize = Math.floor((window.innerWidth - 14) / 4);
+        const initialArraySize = Math.floor((window.innerWidth - 25) / 4);
         return initialArraySize;
     }
 

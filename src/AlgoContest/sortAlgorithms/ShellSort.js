@@ -33,8 +33,6 @@ function shellSort(array, animations) {
             }
 		}
 	}
-
-    console.log(array);
 }
 
 function swap(array, index1, index2) {
