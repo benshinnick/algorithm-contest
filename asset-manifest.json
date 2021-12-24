@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/algorithm-contest/static/css/main.c729804c.chunk.css",
+    "main.css": "/algorithm-contest/static/css/main.e882140e.chunk.css",
     "main.js": "/algorithm-contest/static/js/main.1bc9ab85.chunk.js",
     "main.js.map": "/algorithm-contest/static/js/main.1bc9ab85.chunk.js.map",
     "runtime-main.js": "/algorithm-contest/static/js/runtime-main.e52852b4.js",
@@ -10,13 +10,13 @@
     "static/js/3.7eb15edc.chunk.js": "/algorithm-contest/static/js/3.7eb15edc.chunk.js",
     "static/js/3.7eb15edc.chunk.js.map": "/algorithm-contest/static/js/3.7eb15edc.chunk.js.map",
     "index.html": "/algorithm-contest/index.html",
-    "static/css/main.c729804c.chunk.css.map": "/algorithm-contest/static/css/main.c729804c.chunk.css.map",
+    "static/css/main.e882140e.chunk.css.map": "/algorithm-contest/static/css/main.e882140e.chunk.css.map",
     "static/js/2.61c125bf.chunk.js.LICENSE.txt": "/algorithm-contest/static/js/2.61c125bf.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.e52852b4.js",
     "static/js/2.61c125bf.chunk.js",
-    "static/css/main.c729804c.chunk.css",
+    "static/css/main.e882140e.chunk.css",
     "static/js/main.1bc9ab85.chunk.js"
   ]
 }
