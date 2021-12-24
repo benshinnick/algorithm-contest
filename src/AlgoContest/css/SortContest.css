@@ -1,4 +1,4 @@
-#sortcontestheader {
+#sort-contest-header {
     background-color: #e6e6e6;
     margin-top: 0px;
     margin-bottom: 0px;
@@ -9,63 +9,7 @@
     padding-bottom: 5px;
 }
 
-#randomizebutton {
-    background-color: #007bff;
-    display: inline-block;
-    border: none;
-    color: white;
-    width: 17%;
-    margin-left: 0.25%;
-    margin-right: 0.25%;
-    padding-top: 9px;
-    padding-bottom: 9px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 15px;
-    transition-duration: 0.2s;
-    border-radius: 1px;
-    margin-top: 2px;
-    margin-bottom: 2px;
-}
-
-#randomizebutton:hover {
-    background-color: #0069d9;
-}
-
-#randomizebutton:disabled,
-#randomizebutton[disabled] {
-    background-color: #00458f;
-}
-
-#nearlysortedbutton {
-    background-color: #007bff;
-    display: inline-block;
-    border: none;
-    color: white;
-    width: 20%;
-    margin-left: 0.25%;
-    margin-right: 0.25%;
-    padding-top: 9px;
-    padding-bottom: 9px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 15px;
-    transition-duration: 0.2s;
-    border-radius: 1px;
-    margin-top: 2px;
-    margin-bottom: 2px;
-}
-
-#nearlysortedbutton:hover {
-    background-color: #0069d9;
-}
-
-#nearlysortedbutton:disabled,
-#nearlysortedbutton[disabled] {
-    background-color: #00458f;
-}
-
-#startcontestbutton {
+#start-contest-button {
     background-color: #1ea33b;
     border: none;
     color: white;
@@ -85,49 +29,21 @@
     margin-bottom: 2px;
 }
 
-#startcontestbutton:hover {
+#start-contest-button:hover {
     background-color: #118c2b;
 }
 
-#startcontestbutton:disabled,
-#startcontestbutton[disabled] {
+#start-contest-button:disabled,
+#start-contest-button[disabled] {
     background-color: #0e7424;
 }
 
-#skip-to-finish-button {
-    background-color: #1ea33b;
-    float: right;
-    border: none;
-    color: white;
-    width: 15%;
-    margin-left: 0.25%;
-    padding-top: 9px;
-    padding-bottom: 9px;
-    text-align: center;
-    text-decoration: none;
-    font-size: 15px;
-    transition-duration: 0.2s;
-    border-radius: 1px;
-    margin-right: 0.25%;
-    margin-top: 2px;
-    margin-bottom: 2px;
-}
-
-#skip-to-finish-button:hover {
-    background-color: #118c2b;
-}
-
-#skip-to-finish-button:disabled,
-#skip-to-finish-button[disabled] {
-    background-color: #0e7424;
-}
-
-#num-of-contestants-label {
+#randomize-button {
+    background-color: #007bff;
     display: inline-block;
-    background-color: #6c757d;
     border: none;
     color: white;
-    width: 16%;
+    width: 17%;
     margin-left: 0.25%;
     margin-right: 0.25%;
     padding-top: 9px;
@@ -139,6 +55,43 @@
     border-radius: 1px;
     margin-top: 2px;
     margin-bottom: 2px;
+}
+
+#randomize-button:hover {
+    background-color: #0069d9;
+}
+
+#randomize-button:disabled,
+#randomize-button[disabled] {
+    background-color: #00458f;
+}
+
+#nearly-sorted-button {
+    background-color: #007bff;
+    display: inline-block;
+    border: none;
+    color: white;
+    width: 20%;
+    margin-left: 0.25%;
+    margin-right: 0.25%;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    transition-duration: 0.2s;
+    border-radius: 1px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+#nearly-sorted-button:hover {
+    background-color: #0069d9;
+}
+
+#nearly-sorted-button:disabled,
+#nearly-sorted-button[disabled] {
+    background-color: #00458f;
 }
 
 #add-contestant-button {
@@ -173,6 +126,53 @@
     background-color: #00458f;
 }
 
+#num-of-contestants-label {
+    display: inline-block;
+    background-color: #5a6268;
+    border: none;
+    color: white;
+    width: 16%;
+    margin-left: 0.25%;
+    margin-right: 0.25%;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    transition-duration: 0.2s;
+    border-radius: 1px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+#skip-to-finish-button {
+    background-color: #1ea33b;
+    float: right;
+    border: none;
+    color: white;
+    width: 15%;
+    margin-left: 0.25%;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    transition-duration: 0.2s;
+    border-radius: 1px;
+    margin-right: 0.25%;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+#skip-to-finish-button:hover {
+    background-color: #118c2b;
+}
+
+#skip-to-finish-button:disabled,
+#skip-to-finish-button[disabled] {
+    background-color: #0e7424;
+}
+
 .sticky {
     position: fixed;
     top: 0;
@@ -201,18 +201,18 @@
   }
 
 @media only screen and (max-width: 752px) {
-    #nearlysortedbutton {
+    #nearly-sorted-button {
         margin: 0 0.665%;
         width: 32%;
     }
 
-    #startcontestbutton {
+    #start-contest-button {
         display: inline-block;
         margin: 2px 0.665%;
         width: 32%;
     }
 
-    #randomizebutton {
+    #randomize-button {
         margin: 0 0.665%;
         width: 32%;
     }

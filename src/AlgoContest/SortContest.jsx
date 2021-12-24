@@ -6,7 +6,6 @@ const ARRAY_MIN_VALUE = 5;
 const ARRAY_MAX_VALUE = 130;
 const INITIAL_NUM_OF_CONTESTANTS = 7;
 const MAX_NUM_OF_CONTESTANTS = 10;
-
 const COUNTDOWN_DURATION_MS = SortVisualizer.ANIMATION_DELAY_MS;
 
 const ALGORITHM_TYPES = [
@@ -48,21 +47,29 @@ export default class SortContest extends React.Component {
     
     componentWillUnmount() {
         window.removeEventListener('resize', this.handlePageResize);
-        window.addEventListener('scroll', this.addOrRemoveStickyEffectOnSortContestHeader);
+        window.removeEventListener('scroll', this.addOrRemoveStickyEffectOnSortContestHeader);
     }
 
     addContestant() {
         const newNumOfContestants = this.state.numOfContestants + 1;
         this.algoContestantRefs[this.state.numOfContestants].addComponent();
         this.algoContestantRefs[this.state.numOfContestants].updateAlgorithmType(ALGORITHM_TYPES[randomIntFromInterval(0,4)]);
-        this.setState({...this.state, numOfContestants: newNumOfContestants}, this.resetSortContestPage());
+        this.setState({...this.state, numOfContestants: newNumOfContestants}, () => {
+            this.resetSortContestPage();
+            this.enableRemoveContestantButtons();
+        });
         if(newNumOfContestants === MAX_NUM_OF_CONTESTANTS) {
             document.getElementById('add-contestant-button').disabled = true;
             document.getElementById('add-contestant-button').innerText = 'MAX';
         }
         else {
             document.getElementById('add-contestant-button').disabled = false;
-            document.getElementById('add-contestant-button').innerText = 'Add Contestant';
+            if(window.innerWidth <= 1195) {
+                document.getElementById('add-contestant-button').innerText = 'Add';
+            }
+            else {
+                document.getElementById('add-contestant-button').innerText = 'Add Contestant';
+            }
         }
     }
 
@@ -79,25 +86,34 @@ export default class SortContest extends React.Component {
         animationStandIn.setAttribute("class", 'remove-element-animation-stand-in');
         let sortVisualizers = document.getElementById('sort-visualizers');
         let nextSortVisualizer = document.getElementById(`sort-visualizer-${contestantNum}`);
-
         sortVisualizers.insertBefore(animationStandIn, nextSortVisualizer);
         setTimeout(() => {
             animationStandIn.remove();
         }, 800);
-
         if(newNumOfContestants === 2) {
             this.disableRemoveContestantButtons();
         }
-
+        //renable the remove contestant since we know we no longer have the maximum number of contestants
         document.getElementById('add-contestant-button').disabled = false;
-        document.getElementById('add-contestant-button').innerText = 'Add Contestant';
+        if(window.innerWidth <= 1195) {
+            document.getElementById('add-contestant-button').innerText = 'Add';
+        }
+        else {
+            document.getElementById('add-contestant-button').innerText = 'Add Contestant';
+        }
+        
     }
 
     startContest() {
         this.disablePreContestButtons();
         this.enableDuringContestControlButtons()
         this.startCountdown();
+        const allContestantAnimationData = this.getAllContestantAnimationDataAndSetAlgorithmStatInfo();
+        this.runContestAnimations(allContestantAnimationData);
+        this.scheduleContestFinishedCommands(allContestantAnimationData);
+    }
 
+    getAllContestantAnimationDataAndSetAlgorithmStatInfo() {
         const allContestantAnimationData = [];
         for(let i = 0; i < this.state.numOfContestants; ++i) {
             allContestantAnimationData[i] = this.algoContestantRefs[i].getSortAnimations();
@@ -115,6 +131,10 @@ export default class SortContest extends React.Component {
             this.algoContestantRefs[i].setAllAlgorithmStatInfo(allContestantAnimationData[i].length / 2, numOfComparisons, numOfSwapsOrOverwrites);
         }
 
+        return allContestantAnimationData;
+    }
+
+    runContestAnimations(allContestantAnimationData) {
         let stepCounter = 0;
         let numOfFinishedContestants = 0;
         let placeNumber = 0;
@@ -145,8 +165,6 @@ export default class SortContest extends React.Component {
             }
             stepCounter++;
         }
-
-        this.scheduleContestFinishedCommands(allContestantAnimationData);
     }
 
     scheduleContestFinishedCommands(allContestantAnimationData) {
@@ -177,12 +195,12 @@ export default class SortContest extends React.Component {
         let numOfCountdownSeconds = COUNTDOWN_DURATION_MS / 1000;
         for(let i = 0; i < numOfCountdownSeconds; ++i) {
             setTimeout(() => {
-                document.getElementById("startcontestbutton").innerHTML = `${numOfCountdownSeconds - i}`;
+                document.getElementById("start-contest-button").innerHTML = `${numOfCountdownSeconds - i}`;
             }, i * 1000);
         }
 
         setTimeout(() => {
-            document.getElementById("startcontestbutton").innerHTML = 'GO!';
+            document.getElementById("start-contest-button").innerHTML = 'GO!';
         }, COUNTDOWN_DURATION_MS); 
     }
 
@@ -243,9 +261,9 @@ export default class SortContest extends React.Component {
     }
 
     disablePreContestButtons() {
-        document.getElementById("startcontestbutton").disabled = true;
-        document.getElementById("randomizebutton").disabled = true;
-        document.getElementById("nearlysortedbutton").disabled = true;
+        document.getElementById("start-contest-button").disabled = true;
+        document.getElementById("randomize-button").disabled = true;
+        document.getElementById("nearly-sorted-button").disabled = true;
         document.getElementById('add-contestant-button').disabled = true;
 
         const algorithmDropDownButtons = document.getElementsByClassName('algorithm-dropdown-button');
@@ -260,10 +278,10 @@ export default class SortContest extends React.Component {
     }
 
     enablePreContestSetupButtons() {
-        document.getElementById("startcontestbutton").innerHTML = 'Start';
-        document.getElementById("startcontestbutton").disabled = false;
-        document.getElementById("randomizebutton").disabled = false;
-        document.getElementById("nearlysortedbutton").disabled = false;
+        document.getElementById("start-contest-button").innerHTML = 'Start';
+        document.getElementById("start-contest-button").disabled = false;
+        document.getElementById("randomize-button").disabled = false;
+        document.getElementById("nearly-sorted-button").disabled = false;
         if(this.state.numOfContestants < MAX_NUM_OF_CONTESTANTS) {
             document.getElementById('add-contestant-button').disabled = false;
         }
@@ -294,7 +312,7 @@ export default class SortContest extends React.Component {
     }
 
     enableRemoveContestantButtons() {
-        if(this.state.numOfContestants >= 2) {
+        if(this.state.numOfContestants > 2) {
             const removeAlgorithmButtons = document.getElementsByClassName('remove');
             for(let i = 0; i < removeAlgorithmButtons.length; ++i) {
                 removeAlgorithmButtons[i].disabled = false;
@@ -419,7 +437,46 @@ export default class SortContest extends React.Component {
 
     addContestantOnClick() {
         this.addContestant();
-        this.enableRemoveContestantButtons();
+    }
+
+    getFullPageWidthArraySize() {
+        const initialArraySize = Math.floor((window.innerWidth - 25) / 4);
+        return initialArraySize;
+    }
+
+    handlePageResize = () => {
+        if(window.innerWidth <= 1195) {
+            document.querySelector('#algo-contest-header-link').textContent = 'AlgoContest';
+            document.querySelector('#randomize-button').textContent = 'Randomize';
+            document.querySelector('#nearly-sorted-button').textContent = 'Nearly Sorted';
+            document.querySelector('#add-contestant-button').textContent = 'Add';
+        }
+        if(window.innerWidth > 1195) {
+            document.querySelector('#algo-contest-header-link').textContent = 'AlgorithmContest';
+            document.querySelector('#randomize-button').textContent = 'Generate Random Array';
+            document.querySelector('#nearly-sorted-button').textContent = 'Generate Nearly Sorted Array';
+            document.querySelector('#add-contestant-button').textContent = 'Add Contestant';
+        }
+        if(this.state.isPreContest === true) {
+            if(this.state.isRandomArray === true) {
+                this.randomizeArray();
+            }
+            else {
+                this.generateNearlySortedArray();
+            }
+        }
+    }
+
+    // Referenced https://www.w3schools.com/howto/howto_js_sticky_header.asp
+    addOrRemoveStickyEffectOnSortContestHeader = () => {
+        let header = document.getElementById("sort-contest-header");
+        let sticky = header.offsetHeight;
+
+        if (window.pageYOffset > sticky) {
+            header.classList.add("sticky");
+        } else {
+            header.classList.remove("sticky");
+        }
     }
 
     render() {
@@ -429,22 +486,20 @@ export default class SortContest extends React.Component {
         }
 
         return (
-            <div className='sortcontest'>
-                <div id="sortcontestheader">
-                    <button id="randomizebutton" onClick={() => this.genearateRandomArrayButtonOnClick()}>
+            <div className='sort-contest'>
+                <div id="sort-contest-header">
+                    <button id="randomize-button" onClick={() => this.genearateRandomArrayButtonOnClick()}>
                         Generate Random Array
                     </button>
-                    <button id="nearlysortedbutton" onClick={() => this.genearateNearySortedArrayButtonOnClick()}>
+                    <button id="nearly-sorted-button" onClick={() => this.genearateNearySortedArrayButtonOnClick()}>
                         Generate Nearly Sorted Array
                     </button>
-                    {/* <button id='remove-contestant-button' onClick={() => this.removeContestant()}>-</button> */}
                     <button id='add-contestant-button' onClick={() => this.addContestantOnClick()}>Add Contestant</button>
                     <div id="num-of-contestants-label">
                         {this.state.numOfContestants} Contestants
                     </div>
-                    <button id="startcontestbutton" onClick={() => this.startContestButtonOnClick()}>Start</button>
+                    <button id="start-contest-button" onClick={() => this.startContestButtonOnClick()}>Start</button>
                     <button id="skip-to-finish-button" onClick={() => this.skipToFinishButtonOnClick()}>Skip To Finish</button>
-                    {/* <button onClick={() => console.log(this.state)}>Log Sort Contest State</button> */}
                 </div>
                 <div className='sort-visualizers' id='sort-visualizers'>
                     {ContestantNumbers.map(contestantNum => (
@@ -461,44 +516,6 @@ export default class SortContest extends React.Component {
                 </div>
             </div>
         );
-    }
-
-    handlePageResize = () => {
-        if(window.innerWidth <= 1195) {
-            document.querySelector('#randomizebutton').textContent = 'Randomize';
-            document.querySelector('#nearlysortedbutton').textContent = 'Nearly Sorted';
-            document.querySelector('#add-contestant-button').textContent = 'Add';
-        }
-        if(window.innerWidth > 1195) {
-            document.querySelector('#randomizebutton').textContent = 'Generate Random Array';
-            document.querySelector('#nearlysortedbutton').textContent = 'Generate Nearly Sorted Array';
-            document.querySelector('#add-contestant-button').textContent = 'Add Contestant';
-        }
-        if(this.state.isPreContest === true) {
-            if(this.state.isRandomArray === true) {
-                this.randomizeArray();
-            }
-            else {
-                this.generateNearlySortedArray();
-            }
-        }
-    }
-
-    getFullPageWidthArraySize() {
-        const initialArraySize = Math.floor((window.innerWidth - 25) / 4);
-        return initialArraySize;
-    }
-
-    // Referenced https://www.w3schools.com/howto/howto_js_sticky_header.asp
-    addOrRemoveStickyEffectOnSortContestHeader = () => {
-        let header = document.getElementById("sortcontestheader");
-        let sticky = header.offsetHeight;
-
-        if (window.pageYOffset > sticky) {
-            header.classList.add("sticky");
-        } else {
-            header.classList.remove("sticky");
-        }
     }
 }
 
