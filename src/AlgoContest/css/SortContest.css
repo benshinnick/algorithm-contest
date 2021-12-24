@@ -164,13 +164,13 @@
     margin-bottom: 2px;
 }
 
+#add-contestant-button:hover {
+    background-color: #0069d9;
+}
+
 #add-contestant-button:disabled,
 #add-contestant-button[disabled] {
     background-color: #00458f;
-}
-
-#add-contestant-button:hover {
-    background-color: #0069d9;
 }
 
 .sticky {

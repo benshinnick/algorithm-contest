@@ -52,24 +52,29 @@ export default class SortContest extends React.Component {
     }
 
     addContestant() {
-        console.log('adding contestant');
         const newNumOfContestants = this.state.numOfContestants + 1;
         this.algoContestantRefs[this.state.numOfContestants].addComponent();
         this.algoContestantRefs[this.state.numOfContestants].updateAlgorithmType(ALGORITHM_TYPES[randomIntFromInterval(0,4)]);
-        this.setState({...this.state, numOfContestants: newNumOfContestants});
+        this.setState({...this.state, numOfContestants: newNumOfContestants}, this.resetSortContestPage());
+        if(newNumOfContestants === MAX_NUM_OF_CONTESTANTS) {
+            document.getElementById('add-contestant-button').disabled = true;
+            document.getElementById('add-contestant-button').innerText = 'MAX';
+        }
+        else {
+            document.getElementById('add-contestant-button').disabled = false;
+            document.getElementById('add-contestant-button').innerText = 'Add Contestant';
+        }
     }
 
     removeContestant(contestantNum) {
-        console.log(`removing contestant ${contestantNum}`);
-        //shift all algorithm types over then deletes the last one
-        for(let i = contestantNum - 1; i < this.state.numOfContestants; ++i) {
+        //shift all algorithm types over then removes the last one
+        for(let i = contestantNum - 1; i < this.state.numOfContestants - 1; ++i) {
             this.algoContestantRefs[i].updateAlgorithmType(this.algoContestantRefs[i+1].getAlgorithmType());
         }
         const newNumOfContestants = this.state.numOfContestants - 1;
         this.algoContestantRefs[this.state.numOfContestants - 1].removeComponent();
-        this.setState({...this.state, numOfContestants: newNumOfContestants});
-
-        // do animation
+        this.setState({...this.state, numOfContestants: newNumOfContestants}, this.resetSortContestPage());
+        // do remove animation
         let animationStandIn = document.createElement("DIV");
         animationStandIn.setAttribute("class", 'remove-element-animation-stand-in');
         let sortVisualizers = document.getElementById('sort-visualizers');
@@ -80,6 +85,12 @@ export default class SortContest extends React.Component {
             animationStandIn.remove();
         }, 800);
 
+        if(newNumOfContestants === 2) {
+            this.disableRemoveContestantButtons();
+        }
+
+        document.getElementById('add-contestant-button').disabled = false;
+        document.getElementById('add-contestant-button').innerText = 'Add Contestant';
     }
 
     startContest() {
@@ -241,6 +252,10 @@ export default class SortContest extends React.Component {
         for(let i = 0; i < algorithmDropDownButtons.length; ++i) {
             algorithmDropDownButtons[i].disabled = true;
         }
+        const algorithmDropDownArrows = document.getElementsByClassName('dropdown-arrow');
+        for(let i = 0; i < algorithmDropDownArrows.length; ++i) {
+            algorithmDropDownArrows[i].style.visibility = 'hidden';
+        }
         this.disableRemoveContestantButtons();
     }
 
@@ -249,11 +264,17 @@ export default class SortContest extends React.Component {
         document.getElementById("startcontestbutton").disabled = false;
         document.getElementById("randomizebutton").disabled = false;
         document.getElementById("nearlysortedbutton").disabled = false;
-        document.getElementById('add-contestant-button').disabled = false;
+        if(this.state.numOfContestants < MAX_NUM_OF_CONTESTANTS) {
+            document.getElementById('add-contestant-button').disabled = false;
+        }
 
         const algorithmDropDownButtons = document.getElementsByClassName('algorithm-dropdown-button');
         for(let i = 0; i < algorithmDropDownButtons.length; ++i) {
             algorithmDropDownButtons[i].disabled = false;
+        }
+        const algorithmDropDownArrows = document.getElementsByClassName('dropdown-arrow');
+        for(let i = 0; i < algorithmDropDownArrows.length; ++i) {
+            algorithmDropDownArrows[i].style.visibility = 'visible';
         }
     }
 
@@ -273,9 +294,11 @@ export default class SortContest extends React.Component {
     }
 
     enableRemoveContestantButtons() {
-        const removeAlgorithmButtons = document.getElementsByClassName('remove');
-        for(let i = 0; i < removeAlgorithmButtons.length; ++i) {
-            removeAlgorithmButtons[i].disabled = false;
+        if(this.state.numOfContestants >= 2) {
+            const removeAlgorithmButtons = document.getElementsByClassName('remove');
+            for(let i = 0; i < removeAlgorithmButtons.length; ++i) {
+                removeAlgorithmButtons[i].disabled = false;
+            }
         }
     }
 
@@ -396,7 +419,6 @@ export default class SortContest extends React.Component {
 
     addContestantOnClick() {
         this.addContestant();
-        this.resetSortContestPage();
         this.enableRemoveContestantButtons();
     }
 
@@ -445,12 +467,12 @@ export default class SortContest extends React.Component {
         if(window.innerWidth <= 1195) {
             document.querySelector('#randomizebutton').textContent = 'Randomize';
             document.querySelector('#nearlysortedbutton').textContent = 'Nearly Sorted';
-            document.querySelector('#add-contestant-button').textContent = 'Add'
+            document.querySelector('#add-contestant-button').textContent = 'Add';
         }
         if(window.innerWidth > 1195) {
             document.querySelector('#randomizebutton').textContent = 'Generate Random Array';
             document.querySelector('#nearlysortedbutton').textContent = 'Generate Nearly Sorted Array';
-            document.querySelector('#add-contestant-button').textContent = 'Add Contestant'
+            document.querySelector('#add-contestant-button').textContent = 'Add Contestant';
         }
         if(this.state.isPreContest === true) {
             if(this.state.isRandomArray === true) {

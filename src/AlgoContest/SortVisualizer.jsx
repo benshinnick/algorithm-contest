@@ -9,7 +9,7 @@ import { getSelectionSortAnimations } from './sortAlgorithms/SelectionSort.js';
 import './css/SortVisualizer.css';
 
 // main color of the array bars: dark blue
-const PRIMARY_COLOR = '#292cff'; 
+const PRIMARY_COLOR = '#292cff';
 // color of array bars that are being compared or swapped
 const SECONDARY_COLOR = 'red';
 // color of all the array bars once sorting has finished
@@ -20,7 +20,7 @@ const FINISHED_SORTING_BACKGROUND_COLOR = '#edfff2'; // light green
 
 export default class SortVisualizer extends React.Component {
 
-    static ANIMATION_SPEED_MS = 2;
+    static ANIMATION_SPEED_MS = 1.7;
     static ANIMATION_DELAY_MS = 3000;
 
     constructor(props) {
@@ -541,7 +541,7 @@ export default class SortVisualizer extends React.Component {
             <div className='sort-visualizer' id={`sort-visualizer-${this.state.contestantNumber}`}>
 
                 <div className="dropdown">
-                    <p id='algorithm-dropdown-label'>{this.state.algorithmType}</p>
+                    <div id='algorithm-dropdown-label'>{this.state.algorithmType}<div className='dropdown-arrow'>▼</div></div>
                     <div className="dropdown-content">
                         {this.state.allAlgorithmTypes.map((algorithmType) => (
                         (algorithmType !== this.state.algorithmType) ?
@@ -566,7 +566,7 @@ export default class SortVisualizer extends React.Component {
                     ))}
                 </div>
 
-                <button id='remove-button' class='remove' onClick={() => this.props.removeMe(this.state.contestantNumber)}>-</button>
+                <button id='remove-button' className='remove' onClick={() => this.props.removeMe(this.state.contestantNumber)}>-</button>
             </div>
         );
     }
