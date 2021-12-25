@@ -67,7 +67,6 @@
 
 #remove-button {
   background-color: #dc3545;
-  /* width: 28px; */
   border-radius: 4px;
   float: right;
   border: none;
@@ -80,7 +79,7 @@
   text-decoration: none;
   font-size: 15px;
   transition-duration: 0.2s;
-  margin: 0px 7px;
+  margin: 0px 15px;
   animation: fadein 0.4s;
 }
 

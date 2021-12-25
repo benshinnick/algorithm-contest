@@ -440,7 +440,7 @@ export default class SortContest extends React.Component {
     }
 
     getFullPageWidthArraySize() {
-        const initialArraySize = Math.floor((window.innerWidth - 25) / 4);
+        const initialArraySize = Math.floor((window.innerWidth - 22) / 4);
         return initialArraySize;
     }
 
