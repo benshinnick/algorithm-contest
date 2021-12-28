@@ -6,8 +6,27 @@ export default class PathfindingContest extends React.Component {
         super(props);
 
         this.state = {
-            array: []
+            grid: []
         };
+    }
+
+    componentDidMount() {
+        window.addEventListener('resize', this.handlePageResize);
+    }
+    
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.handlePageResize);
+    }
+
+    handlePageResize = () => {
+        let windowWidthSize = window.innerWidth;
+        
+        if(windowWidthSize <= 700) {
+            document.querySelector('#algo-contest-header-link').textContent = 'AlgoContest';
+        }
+        else {
+            document.querySelector('#algo-contest-header-link').textContent = 'AlgorithmContest';
+        }
     }
 
     render() {
@@ -15,7 +34,7 @@ export default class PathfindingContest extends React.Component {
             <div id='pathfinding-contest'>
                 <p className="placeholder-text">Pathfinding Contest (Placeholder)</p>
                 <p className="placeholder-text">Future Project</p>
-                <p className="placeholder-text">Not Implemented Yet</p>
+                <p className="placeholder-text">Now In Development</p>
             </div>
         );
     }

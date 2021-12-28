@@ -1,12 +1,12 @@
 import React from 'react';
-import SortVisualizer from './SortVisualizer.jsx';
+import SortVisualizerContestant from './SortVisualizerContestant.jsx';
 import './css/SortContest.css';
 
 const ARRAY_MIN_VALUE = 5;
 const ARRAY_MAX_VALUE = 130;
 const INITIAL_NUM_OF_CONTESTANTS = 7;
 const MAX_NUM_OF_CONTESTANTS = 10;
-const COUNTDOWN_DURATION_MS = SortVisualizer.ANIMATION_DELAY_MS;
+const COUNTDOWN_DURATION_MS = SortVisualizerContestant.ANIMATION_DELAY_MS;
 
 const ALGORITHM_TYPES = [
     'merge',
@@ -84,9 +84,9 @@ export default class SortContest extends React.Component {
         // do remove animation
         let animationStandIn = document.createElement("DIV");
         animationStandIn.setAttribute("class", 'remove-element-animation-stand-in');
-        let sortVisualizers = document.getElementById('sort-visualizers');
-        let nextSortVisualizer = document.getElementById(`sort-visualizer-${contestantNum}`);
-        sortVisualizers.insertBefore(animationStandIn, nextSortVisualizer);
+        let sortVisualizerContestants = document.getElementById('sort-visualizers');
+        let nextSortVisualizerContestant = document.getElementById(`sort-visualizer-${contestantNum}`);
+        sortVisualizerContestants.insertBefore(animationStandIn, nextSortVisualizerContestant);
         setTimeout(() => {
             animationStandIn.remove();
         }, 800);
@@ -176,7 +176,7 @@ export default class SortContest extends React.Component {
         const maxNumberOfAnimationSteps = Math.max(...allContestantMaxAnimationSteps);
         setTimeout(() => {
             this.handleContestIsNowFinished();
-        }, maxNumberOfAnimationSteps * this.algoContestantRefs[0].getAnimationSpeed() + SortVisualizer.ANIMATION_DELAY_MS);
+        }, maxNumberOfAnimationSteps * this.algoContestantRefs[0].getAnimationSpeed() + SortVisualizerContestant.ANIMATION_DELAY_MS);
     }
 
     handleContestIsNowFinished() {
@@ -458,16 +458,21 @@ export default class SortContest extends React.Component {
 
         let windowWidthSize = window.innerWidth;
         if(windowWidthSize <= 1195) {
-            document.querySelector('#algo-contest-header-link').textContent = 'AlgoContest';
             document.querySelector('#randomize-button').textContent = 'Randomize';
             document.querySelector('#nearly-sorted-button').textContent = 'Nearly Sorted';
             document.querySelector('#add-contestant-button').textContent = 'Add';
         }
-        if(windowWidthSize > 1195) {
-            document.querySelector('#algo-contest-header-link').textContent = 'AlgorithmContest';
+        else {
             document.querySelector('#randomize-button').textContent = 'Generate Random Array';
             document.querySelector('#nearly-sorted-button').textContent = 'Generate Nearly Sorted Array';
             document.querySelector('#add-contestant-button').textContent = 'Add Contestant';
+        }
+        
+        if(windowWidthSize <= 700) {
+            document.querySelector('#algo-contest-header-link').textContent = 'AlgoContest';
+        }
+        else {
+            document.querySelector('#algo-contest-header-link').textContent = 'AlgorithmContest';
         }
 
         let animationSpeedMS;
@@ -530,7 +535,7 @@ export default class SortContest extends React.Component {
                 </div>
                 <div className='sort-visualizers' id='sort-visualizers'>
                     {ContestantNumbers.map(contestantNum => (
-                        <SortVisualizer 
+                        <SortVisualizerContestant 
                             key={contestantNum}
                             ref={this.setRef}
                             array={this.state.array}
