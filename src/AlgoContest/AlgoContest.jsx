@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import SortContest from './SortContest.jsx';
-import PathfindingContest from './PathfindingContest.jsx';
-import './css/AlgoContest.css';
+import SortContest from './SortContest/SortContest.jsx';
+import PathfindingContest from './PathfindingContest/PathfindingContest.jsx';
+import './AlgoContest.css';
 
 export default class AlgoContest extends React.Component {
     constructor(props) {

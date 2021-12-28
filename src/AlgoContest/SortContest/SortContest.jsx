@@ -93,7 +93,7 @@ export default class SortContest extends React.Component {
         if(newNumOfContestants === 2) {
             this.disableRemoveContestantButtons();
         }
-        //renable the remove contestant since we know we no longer have the maximum number of contestants
+        //renable the remove contestant since we know we do not have the maximum number of contestants
         document.getElementById('add-contestant-button').disabled = false;
         if(window.innerWidth <= 1195) {
             document.getElementById('add-contestant-button').innerText = 'Add';
