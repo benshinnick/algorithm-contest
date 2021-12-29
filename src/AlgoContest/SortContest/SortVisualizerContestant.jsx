@@ -1,11 +1,11 @@
 import React from 'react';
-import { getInsertionSortAnimations } from './SortContest/sortAlgorithms/InsertionSort.js';
-import { getMergeSortAnimations } from './SortContest/sortAlgorithms/MergeSort.js';
-import { getQuicksortAnimations } from './SortContest/sortAlgorithms/Quicksort.js';
-import { getBubbleSortAnimations } from './SortContest/sortAlgorithms/BubbleSort.js';
-import { getHeapSortAnimations } from './SortContest/sortAlgorithms/HeapSort.js';
-import { getShellSortAnimations } from './SortContest/sortAlgorithms/ShellSort.js';
-import { getSelectionSortAnimations } from './SortContest/sortAlgorithms/SelectionSort.js';
+import { getInsertionSortAnimations } from './sortAlgorithms/InsertionSort.js';
+import { getMergeSortAnimations } from './sortAlgorithms/MergeSort.js';
+import { getQuicksortAnimations } from './sortAlgorithms/Quicksort.js';
+import { getBubbleSortAnimations } from './sortAlgorithms/BubbleSort.js';
+import { getHeapSortAnimations } from './sortAlgorithms/HeapSort.js';
+import { getShellSortAnimations } from './sortAlgorithms/ShellSort.js';
+import { getSelectionSortAnimations } from './sortAlgorithms/SelectionSort.js';
 import './css/SortVisualizerContestant.css';
 
 // main color of the array bars: dark blue
