@@ -18,15 +18,15 @@ export default class PathfindingVisualizerContestant extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            grid: []
         };
     }
 
     static getDerivedStateFromProps(props, state) {
-        // if(props.array !== state.array){
-        //     return{ array: props.array };
-        // }
-        // return null;
+        if(props.grid !== state.grid){
+            return{ grid: props.grid };
+        }
+        return null;
     }
 
     render() {

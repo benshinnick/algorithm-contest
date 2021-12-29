@@ -1,6 +1,14 @@
 import React from 'react';
 import './css/PathfindingContest.css';
 
+const ALGORITHM_TYPES = [
+    'Dijkstra',
+    'A* Search',
+    'Greedy Best-first Search',
+    'Breath-first Search',
+    'Depth-first Search',
+]
+
 export default class PathfindingContest extends React.Component {
     constructor(props) {
         super(props);
