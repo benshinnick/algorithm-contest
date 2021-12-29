@@ -1,4 +1,114 @@
-.placeholder-text {
+#pathfinding-contest-header {
+    background-color: #e6e6e6;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+    z-index: 1;
+    padding-top :5px;
+    padding-bottom: 5px;
+}
+
+#path-start-contest-button {
+    background-color: #1ea33b;
+    border: none;
+    color: white;
+    float: left;
+    width: 170px;
+    width: 17%;
+    padding-top: 9px;
+    padding-bottom: 9px;
     text-align: center;
-    font-size:  36px;
+    text-decoration: none;
+    font-size: 15px;
+    transition-duration: 0.2s;
+    border-radius: 1px;
+    margin-right: 0.25%;
+    margin-top: 2px;
+    margin-left: 0.25%;
+    margin-bottom: 2px;
+}
+
+#path-start-contest-button:hover {
+    background-color: #118c2b;
+}
+
+#path-start-contest-button:disabled,
+#path-start-contest-button[disabled] {
+    background-color: #0e7424;
+}
+
+#path-num-of-contestants-label {
+    display: inline-block;
+    background-color: #5a6268;
+    border: none;
+    color: white;
+    width: 16%;
+    margin-left: 0.25%;
+    margin-right: 0.25%;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    transition-duration: 0.2s;
+    border-radius: 1px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+#path-skip-to-finish-button {
+    background-color: #1ea33b;
+    float: right;
+    border: none;
+    color: white;
+    width: 15%;
+    margin-left: 0.25%;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    transition-duration: 0.2s;
+    border-radius: 1px;
+    margin-right: 0.25%;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+#path-skip-to-finish-button:hover {
+    background-color: #118c2b;
+}
+
+#path-skip-to-finish-button:disabled,
+#path-skip-to-finish-button[disabled] {
+    background-color: #0e7424;
+}
+
+#reset-grid-button {
+    background-color: #007bff;
+    display: inline-block;
+    border: none;
+    color: white;
+    width: 20%;
+    margin-left: 0.25%;
+    margin-right: 0.25%;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    transition-duration: 0.2s;
+    border-radius: 1px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+#reset-grid-button:hover {
+    background-color: #0069d9;
+}
+
+#reset-grid-button:disabled,
+#reset-grid-button[disabled] {
+    background-color: #00458f;
 }

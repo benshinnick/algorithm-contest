@@ -18,11 +18,11 @@ function quicksort(array, lowIndex, highIndex, animations) {
 
 function quicksortPartition(array, lowIndex, highIndex, animations) {
     // Animation codes:
-    //  'p' denotes that a pivot was chosen
     //  'c' denotes a comparison between the pivot
     //  'cf' denotes that a comparison is finished
     //  's' denotes a swap between two indexes
     //  'sf' denotes a swap is finished
+    //  'p' denotes that a pivot was chosen
     //  'pf' denotes that we are finished using the last pivot
 
     // I choose a value at a valid random index to serve as our pivot value

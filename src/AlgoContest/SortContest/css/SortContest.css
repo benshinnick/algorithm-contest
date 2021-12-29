@@ -9,7 +9,7 @@
     padding-bottom: 5px;
 }
 
-#start-contest-button {
+#sort-start-contest-button {
     background-color: #1ea33b;
     border: none;
     color: white;
@@ -29,12 +29,12 @@
     margin-bottom: 2px;
 }
 
-#start-contest-button:hover {
+#sort-start-contest-button:hover {
     background-color: #118c2b;
 }
 
-#start-contest-button:disabled,
-#start-contest-button[disabled] {
+#sort-start-contest-button:disabled,
+#sort-start-contest-button[disabled] {
     background-color: #0e7424;
 }
 
@@ -94,7 +94,7 @@
     background-color: #00458f;
 }
 
-#add-contestant-button {
+#sort-add-contestant-button {
     background-color: #007bff;
     display: inline-block;
     border: none;
@@ -117,16 +117,16 @@
     margin-bottom: 2px;
 }
 
-#add-contestant-button:hover {
+#sort-add-contestant-button:hover {
     background-color: #0069d9;
 }
 
-#add-contestant-button:disabled,
-#add-contestant-button[disabled] {
+#sort-add-contestant-button:disabled,
+#sort-add-contestant-button[disabled] {
     background-color: #00458f;
 }
 
-#num-of-contestants-label {
+#sort-num-of-contestants-label {
     display: inline-block;
     background-color: #5a6268;
     border: none;
@@ -145,7 +145,7 @@
     margin-bottom: 2px;
 }
 
-#skip-to-finish-button {
+#sort-skip-to-finish-button {
     background-color: #1ea33b;
     float: right;
     border: none;
@@ -164,12 +164,12 @@
     margin-bottom: 2px;
 }
 
-#skip-to-finish-button:hover {
+#sort-skip-to-finish-button:hover {
     background-color: #118c2b;
 }
 
-#skip-to-finish-button:disabled,
-#skip-to-finish-button[disabled] {
+#sort-skip-to-finish-button:disabled,
+#sort-skip-to-finish-button[disabled] {
     background-color: #0e7424;
 }
 
@@ -206,7 +206,7 @@
         width: 32%;
     }
 
-    #start-contest-button {
+    #sort-start-contest-button {
         display: inline-block;
         margin: 2px 0.665%;
         width: 32%;
@@ -217,19 +217,19 @@
         width: 32%;
     }
 
-    #skip-to-finish-button {
+    #sort-skip-to-finish-button {
         display: inline-block;
         float: none;
         width: 32%;
         margin: 2px 0.665%;
     }
 
-    #add-contestant-button {
+    #sort-add-contestant-button {
         width: 32%;
         margin: 2px 0.665%
     }
 
-    #num-of-contestants-label {
+    #sort-num-of-contestants-label {
         float: right;
         margin: 2px 0.665%;
         width: 32%;
