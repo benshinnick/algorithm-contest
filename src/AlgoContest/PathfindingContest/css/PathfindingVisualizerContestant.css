@@ -1,11 +1,28 @@
 .pathfinding-visualizer-contestant {
     white-space: nowrap;
-    background-color: #f7f7f7;;
+    background-color: #f7f7f7;
     border-style: solid hidden hidden hidden;
     border-width: 2px;
     border-color: white;
-    height: 235px;
+    height: 245px;
     margin-left: 2px;
+}
+
+.grid-container {
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    border: 2px solid #3b3b3b;
+    margin-top: 1px;
+    margin-right: 5px;
+}
+
+.grid-row {
+    display: flex;
+    flex-grow: 1;
+    height: auto;
+    flex-direction: row;
+    pointer-events: none;
 }
 
 /* Algorithm Dropdown Styling */
