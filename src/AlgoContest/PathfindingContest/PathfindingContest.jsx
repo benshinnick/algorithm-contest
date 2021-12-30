@@ -30,10 +30,12 @@ export default class PathfindingContest extends React.Component {
     componentDidMount() {
         const initialGrid = getEmptyGrid();
         this.setState({...this.state, grid: initialGrid, gridCols: initialGrid[0].length});
+        // window.addEventListener('mousedown', this.handleMouseDown);
         window.addEventListener('resize', this.handlePageResize);
     }
     
     componentWillUnmount() {
+        // window.removeEventListener('mousedown', this.handleMouseDown);
         window.removeEventListener('resize', this.handlePageResize);
     }
 
@@ -100,7 +102,7 @@ export default class PathfindingContest extends React.Component {
 }
 
 const getFullPageWidthGridNumCols = () => {
-    return Math.ceil(window.innerWidth / 16);
+    return Math.ceil((window.innerWidth - 16) / 16);
 }
 
 const getEmptyGrid = () => {

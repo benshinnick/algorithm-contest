@@ -23,6 +23,18 @@ export default class PathfindingVisualizerContestant extends React.Component {
         return null;
     }
 
+    handleMouseDown(row, col) {
+        console.log(`Mouse is down on row=${row} col=${col}`);
+    }
+
+    handleMouseEnter(row, col) {
+        console.log(`Mouse is entering on row=${row} col=${col}`);
+    }
+
+    handleMouseUp() {
+        console.log('Mouse is up');
+    }
+
     updateAlgorithmType(algorithmType) {
         this.setState({...this.state, algorithmType: algorithmType});
     }
@@ -33,7 +45,7 @@ export default class PathfindingVisualizerContestant extends React.Component {
 
     render() {
         return (
-            <div>
+            <>
             <div className='pathfinding-visualizer-contestant' id={`pathfinding-visualizer-${this.state.contestantNumber}`}>
                 <div className="path-dropdown">
                     <div id='path-algorithm-dropdown-label'>{this.state.algorithmType}<div className='dropdown-arrow'>▼</div></div>
@@ -58,13 +70,19 @@ export default class PathfindingVisualizerContestant extends React.Component {
                                 return (
                                     <Node
                                     key={nodeIdx}
+                                    contestantNumber={this.state.contestantNumber}
                                     row={row}
                                     col={col}
                                     isFinish={isFinish}
                                     isStart={isStart}
                                     isWall={isWall}
                                     isLastRow={isLastRow}
-                                    isLastColumn={isLastColumn}></Node>
+                                    isLastColumn={isLastColumn}
+                                    onMouseDown={(row, col) => this.handleMouseDown(row, col)}
+                                    onMouseEnter={(row, col) =>
+                                        this.handleMouseEnter(row, col)
+                                    }
+                                    onMouseUp={() => this.handleMouseUp()}></Node>
                                 );
                             })}
                         </div>
@@ -73,7 +91,7 @@ export default class PathfindingVisualizerContestant extends React.Component {
                 </div>
                 {/* <button id='remove-button' className='remove' onClick={() => this.props.removeMe(this.state.contestantNumber)}>-</button> */}
                 </div>
-            </div>
+            </>
         );
     }
 }

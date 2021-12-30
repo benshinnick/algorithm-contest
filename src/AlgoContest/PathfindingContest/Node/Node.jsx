@@ -4,6 +4,7 @@ import './node.css';
 export default class Node extends Component {
   render() {
     const {
+      contestantNumber,
       col,
       row,
       isFinish,
@@ -11,7 +12,11 @@ export default class Node extends Component {
       isWall,
       isLastRow,
       isLastColumn,
+      onMouseDown,
+      onMouseEnter,
+      onMouseUp
     } = this.props;
+
     const extraClassName = isFinish
       ? ' node-finish'
       : isStart
@@ -30,8 +35,11 @@ export default class Node extends Component {
 
     return (
       <div
-        id={`node-${row}-${col}`}
-        className={`node${extraClassName}${isLastRowClassName}${isLastColumnClassName}`}></div>
+        id={`${contestantNumber}-node-${row}-${col}`}
+        className={`node${extraClassName}${isLastRowClassName}${isLastColumnClassName}`}
+        onMouseDown={() => onMouseDown(row, col)}
+        onMouseEnter={() => onMouseEnter(row, col)}
+        onMouseUp={() => onMouseUp()}></div>
     );
   }
 }
