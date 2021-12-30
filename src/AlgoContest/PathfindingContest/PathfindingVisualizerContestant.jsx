@@ -27,19 +27,19 @@ export default class PathfindingVisualizerContestant extends React.Component {
     handleMouseDown(row, col) {
         this.setState({...this.state, isMousePressed: true});
         this.props.updateGridNodeWeight(row, col, Infinity);
-        console.log(`Mouse is down on row=${row} col=${col}`);
+        // console.log(`Mouse is down on row=${row} col=${col}`);
     }
 
     handleMouseEnter(row, col) {
         if(this.state.isMousePressed === true) {
             this.props.updateGridNodeWeight(row, col, Infinity);
-            console.log(`Mouse is entering on row=${row} col=${col}`);
+            // console.log(`Mouse is entering on row=${row} col=${col}`);
         }
     }
 
     handleMouseUp(row, col) {
-        this.setState({...this.state, isMousePressed: false});
-        console.log(`Mouse is up on row=${row} col=${col}`);
+        // this.setState({...this.state, isMousePressed: false});
+        // console.log(`Mouse is up on row=${row} col=${col}`);
     }
 
     updateAlgorithmType(algorithmType) {
@@ -50,10 +50,15 @@ export default class PathfindingVisualizerContestant extends React.Component {
         this.updateAlgorithmType(algorithmType);
     }
 
+    resetIsMousedPressed() {
+        this.setState({...this.state, isMousePressed: false});
+    }
+
     render() {
         return (
             <>
-            <div className='pathfinding-visualizer-contestant' id={`pathfinding-visualizer-${this.state.contestantNumber}`}>
+            <div className='pathfinding-visualizer-contestant' id={`pathfinding-visualizer-${this.state.contestantNumber}`}
+                onMouseEnter={() => this.resetIsMousedPressed()} onMouseUp={() => this.resetIsMousedPressed()}>
                 <div className="path-dropdown">
                     <div id='path-algorithm-dropdown-label'>{this.state.algorithmType}<div className='dropdown-arrow'>▼</div></div>
                     <div className="path-dropdown-content">
