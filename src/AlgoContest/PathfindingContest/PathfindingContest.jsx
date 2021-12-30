@@ -29,7 +29,13 @@ export default class PathfindingContest extends React.Component {
             finishNodeRow: -1,
             finsihNodeColumn: -1
         };
+        this.setNewGridWithNodeWeightUpdated = this.setNewGridWithNodeWeightUpdated.bind(this);
+        this.algoContestantRefs = [];
     }
+
+    setRef = (ref) => {
+        this.algoContestantRefs.push(ref);
+    };
 
     componentDidMount() {
         this.setEmptyGrid();
@@ -59,6 +65,11 @@ export default class PathfindingContest extends React.Component {
         });
     }
 
+    setNewGridWithNodeWeightUpdated(row, col, newWeight) {
+        const newGrid = getNewGridWithNodeWeightUpdated(this.state.grid, row, col, newWeight);
+        this.setState({...this.state, grid: newGrid});
+    }
+
     handlePageResize = () => {
         if(getFullPageWidthGridNumCols() !== this.state.numCols) {
             if(this.state.isEmptyGrid) {
@@ -81,6 +92,7 @@ export default class PathfindingContest extends React.Component {
 
     resetGridButtonOnClick() {
         console.log("Grid Reseting");
+        this.setEmptyGrid();
     }
 
     skipToFinishButtonOnClick() {
@@ -113,12 +125,17 @@ export default class PathfindingContest extends React.Component {
                             algorithmType={ALGORITHM_TYPES[(contestantNum - 1) % ALGORITHM_TYPES.length]}
                             algorithmTypes={ALGORITHM_TYPES}
                             contestantNumber={contestantNum}
+                            updateGridNodeWeight={this.setNewGridWithNodeWeightUpdated}
                         />
                     ))}
                 </div>
             </div>
         );
     }
+}
+
+const getFullPageWidthGridNumCols = () => {
+    return Math.ceil((window.innerWidth - 16) / 16);
 }
 
 const getEmptyGrid = () => {
@@ -155,6 +172,13 @@ const createNode = (col, row, totRows, totCols, startRow, startCol, finRow, finC
     };
 };
 
-const getFullPageWidthGridNumCols = () => {
-    return Math.ceil((window.innerWidth - 16) / 16);
-}
+const getNewGridWithNodeWeightUpdated = (grid, row, col, newWeight) => {
+    const newGrid = grid.slice();
+    const node = newGrid[row][col];
+    const newNode = {
+      ...node,
+      weight: newWeight,
+    };
+    newGrid[row][col] = newNode;
+    return newGrid;
+};

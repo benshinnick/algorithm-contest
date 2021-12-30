@@ -7,6 +7,7 @@ export default class Node extends Component {
       contestantNumber,
       col,
       row,
+      weight,
       isFinish,
       isStart,
       isWall,
@@ -36,7 +37,7 @@ export default class Node extends Component {
     return (
       <div
         id={`${contestantNumber}-node-${row}-${col}`}
-        className={`node${extraClassName}${isLastRowClassName}${isLastColumnClassName}`}
+        className={`node${extraClassName}${isLastRowClassName}${isLastColumnClassName} weight-${weight}`}
         onMouseDown={() => onMouseDown(row, col)}
         onMouseEnter={() => onMouseEnter(row, col)}
         onMouseUp={() => onMouseUp(row, col)}></div>

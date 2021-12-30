@@ -26,11 +26,13 @@ export default class PathfindingVisualizerContestant extends React.Component {
 
     handleMouseDown(row, col) {
         this.setState({...this.state, isMousePressed: true});
+        this.props.updateGridNodeWeight(row, col, Infinity);
         console.log(`Mouse is down on row=${row} col=${col}`);
     }
 
     handleMouseEnter(row, col) {
         if(this.state.isMousePressed === true) {
+            this.props.updateGridNodeWeight(row, col, Infinity);
             console.log(`Mouse is entering on row=${row} col=${col}`);
         }
     }
@@ -71,13 +73,14 @@ export default class PathfindingVisualizerContestant extends React.Component {
                         return (
                         <div className='grid-row' key={rowIdx}>
                             {row.map((node, nodeIdx) => {
-                                const {row, col, isFinish, isStart, isWall, isLastRow, isLastColumn} = node;
+                                const {row, col, weight, isFinish, isStart, isWall, isLastRow, isLastColumn} = node;
                                 return (
                                     <Node
                                     key={nodeIdx}
                                     contestantNumber={this.state.contestantNumber}
                                     row={row}
                                     col={col}
+                                    weight={weight}
                                     isFinish={isFinish}
                                     isStart={isStart}
                                     isWall={isWall}
