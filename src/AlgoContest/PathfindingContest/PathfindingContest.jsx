@@ -2,8 +2,10 @@ import React from 'react';
 import PathfindingVisualizerContestant from './PathfindingVisualizerContestant';
 import './css/PathfindingContest.css';
 
+const NUM_ROWS = 13;
 const INITIAL_NUM_OF_CONTESTANTS = 3;
 const MAX_NUM_OF_CONTESTANTS = 3;
+
 const ALGORITHM_TYPES = [
     'Dijkstra',
     'A* Search',
@@ -17,12 +19,17 @@ export default class PathfindingContest extends React.Component {
         super(props);
         this.state = {
             grid: [],
+            gridRows: NUM_ROWS,
+            gridCols: -1,
             numOfContestants: INITIAL_NUM_OF_CONTESTANTS,
-            isPreContest: true
+            isPreContest: true,
+            isEmptyGrid: true
         };
     }
 
     componentDidMount() {
+        const initialGrid = getEmptyGrid();
+        this.setState({...this.state, grid: initialGrid, gridCols: initialGrid[0].length});
         window.addEventListener('resize', this.handlePageResize);
     }
     
@@ -31,8 +38,14 @@ export default class PathfindingContest extends React.Component {
     }
 
     handlePageResize = () => {
+        if(getFullPageWidthGridNumCols() !== this.state.numCols) {
+            if(this.state.isEmptyGrid) {
+                const emptyGrid = getEmptyGrid();
+                this.setState({...this.state, grid: emptyGrid, gridCols: emptyGrid[0].length});
+            }
+        }
+
         let windowWidthSize = window.innerWidth;
-        
         if(windowWidthSize <= 700) {
             document.querySelector('#algo-contest-header-link').textContent = 'AlgoContest';
         }
@@ -74,7 +87,7 @@ export default class PathfindingContest extends React.Component {
                         <PathfindingVisualizerContestant
                             key={contestantNum}
                             ref={this.setRef}
-                            array={this.state.array}
+                            grid={this.state.grid}
                             algorithmType={ALGORITHM_TYPES[(contestantNum - 1) % ALGORITHM_TYPES.length]}
                             algorithmTypes={ALGORITHM_TYPES}
                             contestantNumber={contestantNum}
@@ -85,3 +98,32 @@ export default class PathfindingContest extends React.Component {
         );
     }
 }
+
+const getFullPageWidthGridNumCols = () => {
+    return Math.ceil(window.innerWidth / 16);
+}
+
+const getEmptyGrid = () => {
+    const grid = [];
+    const numCols = getFullPageWidthGridNumCols();
+    for (let row = 0; row < NUM_ROWS; row++) {
+        const currentRow = [];
+        for (let col = 0; col < numCols; col++) {
+            currentRow.push(createNode(col, row, numCols));
+        }
+        grid.push(currentRow);
+    }
+    return grid;
+};
+
+const createNode = (col, row, numColumns) => {
+    return {
+        row,
+        col,
+        isStart: row === 3 && col === 3,
+        isFinish: row === (NUM_ROWS - 4) && (col === numColumns - 4),
+        isWall: false,
+        isLastRow: row === NUM_ROWS - 1,
+        isLastColumn: col === numColumns - 1
+    };
+  };

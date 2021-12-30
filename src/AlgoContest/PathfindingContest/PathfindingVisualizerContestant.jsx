@@ -1,4 +1,5 @@
 import React from 'react';
+import Node from './Node/Node.jsx';
 import './css/PathfindingVisualizerContestant.css';
 
 export default class PathfindingVisualizerContestant extends React.Component {
@@ -48,17 +49,29 @@ export default class PathfindingVisualizerContestant extends React.Component {
                         ))}
                     </div>
                 </div>
-                    <div className='grid-container' id={`grid-container-${this.state.contestantNumber}`}>
-                        {/* {this.state.array.map((value, index) => (
-                        <div className={`array-bar-${this.state.contestantNumber}`}
-                            key={`${index}-${this.contestantNumber}`}
-                            style={{
-                                backgroundColor: PRIMARY_COLOR,
-                                height: `${value}px`,
-                            }}></div>
-                        ))} */}
-                    </div>
-                    {/* <button id='remove-button' className='remove' onClick={() => this.props.removeMe(this.state.contestantNumber)}>-</button> */}
+                <div className='grid-container' id={`grid-container-${this.state.contestantNumber}`}>
+                    {this.state.grid.map((row, rowIdx) => {
+                        return (
+                        <div className='grid-row' key={rowIdx}>
+                            {row.map((node, nodeIdx) => {
+                                const {row, col, isFinish, isStart, isWall, isLastRow, isLastColumn} = node;
+                                return (
+                                    <Node
+                                    key={nodeIdx}
+                                    row={row}
+                                    col={col}
+                                    isFinish={isFinish}
+                                    isStart={isStart}
+                                    isWall={isWall}
+                                    isLastRow={isLastRow}
+                                    isLastColumn={isLastColumn}></Node>
+                                );
+                            })}
+                        </div>
+                        );
+                    })}
+                </div>
+                {/* <button id='remove-button' className='remove' onClick={() => this.props.removeMe(this.state.contestantNumber)}>-</button> */}
                 </div>
             </div>
         );

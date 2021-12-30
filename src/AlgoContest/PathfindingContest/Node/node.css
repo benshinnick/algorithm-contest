@@ -1,0 +1,25 @@
+.node {
+    background-color: white;
+    width: 15px;
+    height: 15px;
+    border-right: 1px solid rgb(175, 200, 250);
+    border-bottom: 1px solid rgb(175, 200, 250);
+    display: flex;
+    margin: 0;
+  }
+
+.last-row {
+    border-bottom: 0px;
+  }
+
+.last-column {
+      border-right: 0px;
+  }
+  
+  .node-finish {
+    background-color: red;
+  }
+  
+  .node-start {
+    background-color: green;
+  }
