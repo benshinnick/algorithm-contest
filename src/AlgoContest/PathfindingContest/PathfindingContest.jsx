@@ -2,7 +2,7 @@ import React from 'react';
 import PathfindingVisualizerContestant from './PathfindingVisualizerContestant';
 import './css/PathfindingContest.css';
 
-const NUM_ROWS = 13;
+const GRID_NUM_ROWS = 13;
 const INITIAL_NUM_OF_CONTESTANTS = 3;
 const MAX_NUM_OF_CONTESTANTS = 3;
 
@@ -19,31 +19,50 @@ export default class PathfindingContest extends React.Component {
         super(props);
         this.state = {
             grid: [],
-            gridRows: NUM_ROWS,
-            gridCols: -1,
+            gridNumRows: GRID_NUM_ROWS,
+            gridNumCols: -1,
             numOfContestants: INITIAL_NUM_OF_CONTESTANTS,
             isPreContest: true,
-            isEmptyGrid: true
+            isEmptyGrid: true,
+            startNodeRow: -1,
+            startNodeColumn: -1,
+            finishNodeRow: -1,
+            finsihNodeColumn: -1
         };
     }
 
     componentDidMount() {
-        const initialGrid = getEmptyGrid();
-        this.setState({...this.state, grid: initialGrid, gridCols: initialGrid[0].length});
-        // window.addEventListener('mousedown', this.handleMouseDown);
+        this.setEmptyGrid();
         window.addEventListener('resize', this.handlePageResize);
     }
     
     componentWillUnmount() {
-        // window.removeEventListener('mousedown', this.handleMouseDown);
         window.removeEventListener('resize', this.handlePageResize);
+    }
+
+    setEmptyGrid() {
+        const emptyGrid = getEmptyGrid();
+        const totCols = getFullPageWidthGridNumCols();
+        const totRows = this.state.gridNumRows;
+        const startRow = 3;
+        const startCol = 3;
+        const finRow = totRows - 4;
+        const finCol = totCols - 4;
+        this.setState({
+            ...this.state,
+            grid: emptyGrid,
+            gridNumCols: totCols,
+            startNodeRow: startRow,
+            startNodeColumn: startCol,
+            finishNodeRow: finRow,
+            finsihNodeColumn: finCol
+        });
     }
 
     handlePageResize = () => {
         if(getFullPageWidthGridNumCols() !== this.state.numCols) {
             if(this.state.isEmptyGrid) {
-                const emptyGrid = getEmptyGrid();
-                this.setState({...this.state, grid: emptyGrid, gridCols: emptyGrid[0].length});
+                this.setEmptyGrid();
             }
         }
 
@@ -82,6 +101,7 @@ export default class PathfindingContest extends React.Component {
                     <div id="path-num-of-contestants-label">
                         {this.state.numOfContestants} Contestants
                     </div>
+                    <button onClick={() => console.log(this.state)}>Log State</button>
                     <button id="path-skip-to-finish-button" onClick={() => this.skipToFinishButtonOnClick()}>Skip To Finish</button>
                 </div>
                 <div className='pathfinding-visualizers'>
@@ -101,31 +121,40 @@ export default class PathfindingContest extends React.Component {
     }
 }
 
-const getFullPageWidthGridNumCols = () => {
-    return Math.ceil((window.innerWidth - 16) / 16);
-}
-
 const getEmptyGrid = () => {
     const grid = [];
-    const numCols = getFullPageWidthGridNumCols();
-    for (let row = 0; row < NUM_ROWS; row++) {
+    const totCols = getFullPageWidthGridNumCols();
+    const totRows = GRID_NUM_ROWS;
+    const startRow = 3;
+    const startCol = 3;
+    const finRow = totRows - 4;
+    const finCol = totCols - 4;
+
+    //empty, start, and finish nodes all have weight of one
+    const startingNodeWeight = 1;
+
+    for (let row = 0; row < totRows; row++) {
         const currentRow = [];
-        for (let col = 0; col < numCols; col++) {
-            currentRow.push(createNode(col, row, numCols));
+        for (let col = 0; col < totCols; col++) {
+            currentRow.push(createNode(col, row, totRows, totCols, startRow, startCol, finRow, finCol, startingNodeWeight));
         }
         grid.push(currentRow);
     }
     return grid;
 };
 
-const createNode = (col, row, numColumns) => {
+const createNode = (col, row, totRows, totCols, startRow, startCol, finRow, finCol, weight) => {
     return {
         row,
         col,
-        isStart: row === 3 && col === 3,
-        isFinish: row === (NUM_ROWS - 4) && (col === numColumns - 4),
-        isWall: false,
-        isLastRow: row === NUM_ROWS - 1,
-        isLastColumn: col === numColumns - 1
+        weight,
+        isStart: row === startRow && col === startCol,
+        isFinish: row === finRow && col === finCol,
+        isLastRow: row === totRows - 1,
+        isLastColumn: col === totCols - 1
     };
-  };
+};
+
+const getFullPageWidthGridNumCols = () => {
+    return Math.ceil((window.innerWidth - 16) / 16);
+}

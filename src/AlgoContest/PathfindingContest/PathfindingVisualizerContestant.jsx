@@ -12,7 +12,8 @@ export default class PathfindingVisualizerContestant extends React.Component {
             grid: [],
             algorithmType: this.props.algorithmType,
             allAlgorithmTypes: this.props.algorithmTypes,
-            contestantNumber: this.props.contestantNumber
+            contestantNumber: this.props.contestantNumber,
+            isMousePressed: false
         };
     }
 
@@ -24,15 +25,19 @@ export default class PathfindingVisualizerContestant extends React.Component {
     }
 
     handleMouseDown(row, col) {
+        this.setState({...this.state, isMousePressed: true});
         console.log(`Mouse is down on row=${row} col=${col}`);
     }
 
     handleMouseEnter(row, col) {
-        console.log(`Mouse is entering on row=${row} col=${col}`);
+        if(this.state.isMousePressed === true) {
+            console.log(`Mouse is entering on row=${row} col=${col}`);
+        }
     }
 
-    handleMouseUp() {
-        console.log('Mouse is up');
+    handleMouseUp(row, col) {
+        this.setState({...this.state, isMousePressed: false});
+        console.log(`Mouse is up on row=${row} col=${col}`);
     }
 
     updateAlgorithmType(algorithmType) {
@@ -82,7 +87,7 @@ export default class PathfindingVisualizerContestant extends React.Component {
                                     onMouseEnter={(row, col) =>
                                         this.handleMouseEnter(row, col)
                                     }
-                                    onMouseUp={() => this.handleMouseUp()}></Node>
+                                    onMouseUp={(row, col) => this.handleMouseUp(row, col)}></Node>
                                 );
                             })}
                         </div>
