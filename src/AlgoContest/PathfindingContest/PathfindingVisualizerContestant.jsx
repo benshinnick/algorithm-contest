@@ -54,15 +54,17 @@ export default class PathfindingVisualizerContestant extends React.Component {
                         return (
                         <div className='grid-row' key={rowIdx}>
                             {row.map((node, nodeIdx) => {
-                                const {row, col, isFinish, isStart, isWall} = node;
+                                const {row, col, isFinish, isStart, isWall, isLastRow, isLastColumn} = node;
                                 return (
                                     <Node
                                     key={nodeIdx}
+                                    row={row}
                                     col={col}
                                     isFinish={isFinish}
                                     isStart={isStart}
                                     isWall={isWall}
-                                    row={row}></Node>
+                                    isLastRow={isLastRow}
+                                    isLastColumn={isLastColumn}></Node>
                                 );
                             })}
                         </div>

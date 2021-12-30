@@ -8,13 +8,13 @@
     margin: 0;
   }
 
-  /* .node .last-row {
-    border-bottom: none;
+.last-row {
+    border-bottom: 0px;
   }
 
-  .node .last-column {
-      border-right: none;
-  } */
+.last-column {
+      border-right: 0px;
+  }
   
   .node-finish {
     background-color: red;

@@ -5,23 +5,33 @@ export default class Node extends Component {
   render() {
     const {
       col,
+      row,
       isFinish,
       isStart,
       isWall,
-      row,
+      isLastRow,
+      isLastColumn,
     } = this.props;
     const extraClassName = isFinish
-      ? 'node-finish'
+      ? ' node-finish'
       : isStart
-      ? 'node-start'
+      ? ' node-start'
       : isWall
-      ? 'node-wall'
+      ? ' node-wall'
       : '';
+
+    const isLastRowClassName = isLastRow
+        ? ' last-row'
+        : '';
+    
+    const isLastColumnClassName = isLastColumn
+        ? ' last-column'
+        : '';
 
     return (
       <div
         id={`node-${row}-${col}`}
-        className={`node ${extraClassName}`}></div>
+        className={`node${extraClassName}${isLastRowClassName}${isLastColumnClassName}`}></div>
     );
   }
 }

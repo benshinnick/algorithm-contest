@@ -3,16 +3,9 @@ import PathfindingVisualizerContestant from './PathfindingVisualizerContestant';
 import './css/PathfindingContest.css';
 
 const NUM_ROWS = 13;
-
-const START_NODE_ROW = 4;
-const START_NODE_COL = 4;
-
-//temporary
-const FINISH_NODE_ROW = 4;
-const FINISH_NODE_COL = 8;
-
 const INITIAL_NUM_OF_CONTESTANTS = 3;
 const MAX_NUM_OF_CONTESTANTS = 3;
+
 const ALGORITHM_TYPES = [
     'Dijkstra',
     'A* Search',
@@ -29,12 +22,13 @@ export default class PathfindingContest extends React.Component {
             gridRows: NUM_ROWS,
             gridCols: -1,
             numOfContestants: INITIAL_NUM_OF_CONTESTANTS,
-            isPreContest: true
+            isPreContest: true,
+            isEmptyGrid: true
         };
     }
 
     componentDidMount() {
-        const initialGrid = getInitialGrid();
+        const initialGrid = getEmptyGrid();
         this.setState({...this.state, grid: initialGrid, gridCols: initialGrid[0].length});
         window.addEventListener('resize', this.handlePageResize);
     }
@@ -44,9 +38,11 @@ export default class PathfindingContest extends React.Component {
     }
 
     handlePageResize = () => {
-        if(getFullPageWidthGridNumCols() != this.state.numCols) {
-            const initialGrid = getInitialGrid();
-            this.setState({...this.state, grid: initialGrid, gridCols: initialGrid[0].length});
+        if(getFullPageWidthGridNumCols() !== this.state.numCols) {
+            if(this.state.isEmptyGrid) {
+                const emptyGrid = getEmptyGrid();
+                this.setState({...this.state, grid: emptyGrid, gridCols: emptyGrid[0].length});
+            }
         }
 
         let windowWidthSize = window.innerWidth;
@@ -104,28 +100,30 @@ export default class PathfindingContest extends React.Component {
 }
 
 const getFullPageWidthGridNumCols = () => {
-    return Math.ceil((window.innerWidth) / 16);
+    return Math.ceil(window.innerWidth / 16);
 }
 
-const getInitialGrid = () => {
+const getEmptyGrid = () => {
     const grid = [];
     const numCols = getFullPageWidthGridNumCols();
     for (let row = 0; row < NUM_ROWS; row++) {
         const currentRow = [];
         for (let col = 0; col < numCols; col++) {
-            currentRow.push(createNode(col, row));
+            currentRow.push(createNode(col, row, numCols));
         }
         grid.push(currentRow);
     }
     return grid;
 };
 
-const createNode = (col, row) => {
+const createNode = (col, row, numColumns) => {
     return {
-      col,
-      isStart: row === START_NODE_ROW && col === START_NODE_COL,
-      isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
-      isWall: false,
-      row
+        row,
+        col,
+        isStart: row === 3 && col === 3,
+        isFinish: row === (NUM_ROWS - 4) && (col === numColumns - 4),
+        isWall: false,
+        isLastRow: row === NUM_ROWS - 1,
+        isLastColumn: col === numColumns - 1
     };
   };
