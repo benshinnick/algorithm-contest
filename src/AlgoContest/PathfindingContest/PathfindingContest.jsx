@@ -3,8 +3,8 @@ import PathfindingVisualizerContestant from './PathfindingVisualizerContestant';
 import './css/PathfindingContest.css';
 
 const GRID_NUM_ROWS = 13;
-const INITIAL_NUM_OF_CONTESTANTS = 3;
-const MAX_NUM_OF_CONTESTANTS = 3;
+const INITIAL_NUM_OF_CONTESTANTS = 5;
+const MAX_NUM_OF_CONTESTANTS = 5;
 
 const ALGORITHM_TYPES = [
     'Dijkstra',

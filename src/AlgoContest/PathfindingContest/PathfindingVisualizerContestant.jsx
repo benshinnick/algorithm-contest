@@ -1,5 +1,6 @@
 import React from 'react';
 import Node from './Node/Node.jsx';
+import { getLinePixelCoordinates } from './gridDrawingHelperFiles/BresenhamLineDrawAlgo.js';
 import './css/PathfindingVisualizerContestant.css';
 
 export default class PathfindingVisualizerContestant extends React.Component {
@@ -13,7 +14,8 @@ export default class PathfindingVisualizerContestant extends React.Component {
             algorithmType: this.props.algorithmType,
             allAlgorithmTypes: this.props.algorithmTypes,
             contestantNumber: this.props.contestantNumber,
-            isMousePressed: false
+            isMousePressed: false,
+            lastUpdatedNode: []
         };
     }
 
@@ -25,7 +27,7 @@ export default class PathfindingVisualizerContestant extends React.Component {
     }
 
     handleMouseDown(row, col) {
-        this.setState({...this.state, isMousePressed: true});
+        this.setState({...this.state, isMousePressed: true, lastUpdatedNode: [row, col]});
         this.props.updateGridNodeWeight(row, col, Infinity);
         // console.log(`Mouse is down on row=${row} col=${col}`);
     }
@@ -33,7 +35,32 @@ export default class PathfindingVisualizerContestant extends React.Component {
     handleMouseEnter(row, col) {
         if(this.state.isMousePressed === true) {
             this.props.updateGridNodeWeight(row, col, Infinity);
+            if(!this.isLastUpdatedNodeAdjacentToCurrentNode(row, col)) {
+                this.fillInSkippedNodes(row, col);
+            }
+            this.setState({...this.state, lastUpdatedNode: [row, col]});
             // console.log(`Mouse is entering on row=${row} col=${col}`);
+        }
+    }
+
+    isLastUpdatedNodeAdjacentToCurrentNode(currentRow, currentCol) {
+        return (Math.abs(currentRow - this.state.lastUpdatedNode[0]) <= 1)
+                    && (Math.abs(currentCol - this.state.lastUpdatedNode[1]) <= 1);
+    }
+
+    fillInSkippedNodes(currRow, currCol) {
+
+        const x1 = this.state.lastUpdatedNode[1];
+        const y1 = this.state.lastUpdatedNode[0];
+        const x2 = currCol;
+        const y2 = currRow;
+
+        //draw a line between the skipped nodes in our grid
+        const lineCoordinates = getLinePixelCoordinates(x1, y1, x2, y2);
+        for(let i = 0; i < lineCoordinates.length; ++i) {
+            const row = lineCoordinates[i][1];
+            const col = lineCoordinates[i][0];
+            this.props.updateGridNodeWeight(row, col, Infinity);
         }
     }
 
@@ -73,6 +100,7 @@ export default class PathfindingVisualizerContestant extends React.Component {
                         ))}
                     </div>
                 </div>
+                <button onClick={() => console.log(this.state)}>Log State</button>
                 <div className='grid-container' id={`grid-container-${this.state.contestantNumber}`}>
                     {this.state.grid.map((row, rowIdx) => {
                         return (
