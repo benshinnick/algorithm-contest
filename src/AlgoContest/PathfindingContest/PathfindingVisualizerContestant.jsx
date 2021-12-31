@@ -28,19 +28,27 @@ export default class PathfindingVisualizerContestant extends React.Component {
 
     handleMouseDown(row, col) {
         this.setState({...this.state, isMousePressed: true, lastUpdatedNode: [row, col]});
-        this.props.updateGridNodeWeight(row, col, Infinity);
+        if(!this.isStartOrEndNode(row, col)) {
+            this.props.updateGridNodeWeight(row, col, Infinity);
+        }
         // console.log(`Mouse is down on row=${row} col=${col}`);
     }
 
     handleMouseEnter(row, col) {
         if(this.state.isMousePressed === true) {
-            this.props.updateGridNodeWeight(row, col, Infinity);
-            if(!this.isLastUpdatedNodeAdjacentToCurrentNode(row, col)) {
-                this.fillInSkippedNodes(row, col);
+            if(!this.isStartOrEndNode(row, col)) {
+                this.props.updateGridNodeWeight(row, col, Infinity);
+                if(!this.isLastUpdatedNodeAdjacentToCurrentNode(row, col)) {
+                    this.fillInSkippedNodes(row, col);
+                }
+                this.setState({...this.state, lastUpdatedNode: [row, col]});
             }
-            this.setState({...this.state, lastUpdatedNode: [row, col]});
             // console.log(`Mouse is entering on row=${row} col=${col}`);
         }
+    }
+
+    isStartOrEndNode(row, col) {
+        return this.state.grid[row][col].isStart || this.state.grid[row][col].isFinish;
     }
 
     isLastUpdatedNodeAdjacentToCurrentNode(currentRow, currentCol) {
@@ -60,7 +68,9 @@ export default class PathfindingVisualizerContestant extends React.Component {
         for(let i = 0; i < lineCoordinates.length; ++i) {
             const row = lineCoordinates[i][1];
             const col = lineCoordinates[i][0];
-            this.props.updateGridNodeWeight(row, col, Infinity);
+            if(!this.isStartOrEndNode(row, col)) {
+                this.props.updateGridNodeWeight(row, col, Infinity);
+            }
         }
     }
 

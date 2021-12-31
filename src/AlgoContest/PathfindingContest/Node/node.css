@@ -14,6 +14,7 @@
 .weight-Infinity {
   background-color: #3b3b3b;
   border-color: #606060;
+  animation: nodeGrowEnter 0.1s;
 }
 
 .last-row {
@@ -26,8 +27,17 @@
   
 .node-finish {
   background-color: red;
+  border-color: #fe6e6e;
+  animation: nodeGrowEnter 0.1s;
 }
   
 .node-start {
   background-color: green;
+  border-color: #1ec21e;
+  animation: nodeGrowEnter 0.1s;
+}
+
+@keyframes nodeGrowEnter {
+  from { transform: scale(0.4); }
+  to { transform: scale(1); }
 }

@@ -79,14 +79,13 @@ export default class PathfindingContest extends React.Component {
         const totCols = getFullPageWidthGridNumCols();
         let resizedGrid = getResizedGridWithUpdatedNodesCopied(grid);
 
+        //move start and end nodes to be in grid if necessary
         const lastResizedGridIndex = resizedGrid[0].length - 1;
         if(startCol > lastResizedGridIndex) {
-            console.log('moving start node');
             resizedGrid = this.moveStartNodeToBeInGrid(resizedGrid, startRow);
         }
         
         if(finCol > lastResizedGridIndex) {
-            console.log('moving finish node');
             resizedGrid = this.moveFinishNodeToBeInGrid(resizedGrid, finRow);
         }
 
