@@ -31,9 +31,11 @@ export default class PathfindingContest extends React.Component {
             startNodeRow: -1,
             startNodeColumn: -1,
             finishNodeRow: -1,
-            finsihNodeColumn: -1
+            finishNodeColumn: -1
         };
         this.setNewGridWithNodeWeightUpdated = this.setNewGridWithNodeWeightUpdated.bind(this);
+        this.setNewGridWithStartNodeUpdated = this.setNewGridWithStartNodeUpdated.bind(this);
+        this.setNewGridWithFinishNodeUpdated = this.setNewGridWithFinishNodeUpdated.bind(this);
         this.algoContestantRefs = [];
     }
 
@@ -65,7 +67,7 @@ export default class PathfindingContest extends React.Component {
             startNodeRow: startRow,
             startNodeColumn: startCol,
             finishNodeRow: finRow,
-            finsihNodeColumn: finCol,
+            finishNodeColumn: finCol,
             isEmptyGrid: true
         });
     }
@@ -75,7 +77,7 @@ export default class PathfindingContest extends React.Component {
         const startRow = this.state.startNodeRow;
         const startCol = this.state.startNodeColumn;
         const finRow = this.state.finishNodeRow;
-        const finCol = this.state.finsihNodeColumn;
+        const finCol = this.state.finishNodeColumn;
         const totCols = getFullPageWidthGridNumCols();
         let resizedGrid = getResizedGridWithUpdatedNodesCopied(grid);
 
@@ -131,7 +133,7 @@ export default class PathfindingContest extends React.Component {
         this.setState({
             ...this.state,
             finishNodeRow: finRow,
-            finsihNodeColumn: lastResizedGridCol
+            finishNodeColumn: lastResizedGridCol
         });
 
         return grid;
@@ -139,7 +141,38 @@ export default class PathfindingContest extends React.Component {
 
     setNewGridWithNodeWeightUpdated(row, col, newWeight) {
         const newGrid = getNewGridWithNodeWeightUpdated(this.state.grid, row, col, newWeight);
-        this.setState({...this.state, grid: newGrid, isEmptyGrid: false});
+        this.setState({
+            ...this.state,
+            grid: newGrid,
+            isEmptyGrid: false
+        });
+    }
+
+    setNewGridWithStartNodeUpdated(row, col) {
+        const prevStartNodeRow = this.state.startNodeRow;
+        const prevStartNodeCol = this.state.startNodeColumn;
+        const newGrid = getNewGridWithStartNodeUpdated(this.state.grid, row, col, prevStartNodeRow, prevStartNodeCol);
+        this.setState({
+            ...this.state,
+            grid: newGrid,
+            isEmptyGrid: false,
+            startNodeRow: row,
+            startNodeColumn: col    
+        });
+    }
+
+    setNewGridWithFinishNodeUpdated(row, col) {
+        console.log(`${row}-${col}`)
+        const prevFinishNodeRow = this.state.finishNodeRow;
+        const prevFinishNodeCol = this.state.finishNodeColumn;
+        const newGrid = getNewGridWithFinishNodeUpdated(this.state.grid, row, col, prevFinishNodeRow, prevFinishNodeCol);
+        this.setState({
+            ...this.state,
+            grid: newGrid,
+            isEmptyGrid: false,
+            finishNodeRow: row,
+            finishNodeColumn: col 
+        });
     }
 
     handlePageResize = () => {
@@ -201,6 +234,8 @@ export default class PathfindingContest extends React.Component {
                             algorithmTypes={ALGORITHM_TYPES}
                             contestantNumber={contestantNum}
                             updateGridNodeWeight={this.setNewGridWithNodeWeightUpdated}
+                            updateStartNode={this.setNewGridWithStartNodeUpdated}
+                            updateFinishNode={this.setNewGridWithFinishNodeUpdated}
                         />
                     ))}
                 </div>
@@ -269,6 +304,48 @@ const getNewGridWithNodeWeightUpdated = (grid, row, col, newWeight) => {
     newGrid[row][col] = newNode;
     return newGrid;
 };
+
+const getNewGridWithStartNodeUpdated = (grid, row, col, prevRow, prevCol) => {
+    const newGrid = grid.slice();
+    const startNodeWeight = 1;
+    const emptyNodeWeight = 1;
+    const node = newGrid[row][col];
+    const newNode = {
+      ...node,
+      weight: startNodeWeight,
+      isStart: true
+    };
+    const prevNode = {
+        ...node,
+        weight: emptyNodeWeight,
+        isStart: false
+    }
+    newGrid[row][col] = newNode;
+    newGrid[prevRow][prevCol] = prevNode;
+    return newGrid;
+}
+
+const getNewGridWithFinishNodeUpdated = (grid, row, col, prevRow, prevCol) => {
+    const newGrid = grid.slice();
+    const finishNodeWeight = 1;
+    const emptyNodeWeight = 1;
+    const node = newGrid[row][col];
+    const newNode = {
+      ...node,
+      weight: finishNodeWeight,
+      isFinish: true
+    };
+    const prevNode = {
+        ...node,
+        weight: emptyNodeWeight,
+        isFinish: false
+    }
+    newGrid[row][col] = newNode;
+    newGrid[prevRow][prevCol] = prevNode;
+    return newGrid;
+}
+
+
 
 const getResizedGridWithUpdatedNodesCopied = (grid) => {
     const resizedGrid = [];

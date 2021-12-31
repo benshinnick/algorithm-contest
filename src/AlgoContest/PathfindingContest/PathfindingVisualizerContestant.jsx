@@ -15,6 +15,8 @@ export default class PathfindingVisualizerContestant extends React.Component {
             allAlgorithmTypes: this.props.algorithmTypes,
             contestantNumber: this.props.contestantNumber,
             isMousePressed: false,
+            isStartNodeSelected: false,
+            isFinishNodeSelected: false,
             lastUpdatedNode: []
         };
     }
@@ -31,6 +33,14 @@ export default class PathfindingVisualizerContestant extends React.Component {
         if(!this.isStartOrEndNode(row, col)) {
             this.props.updateGridNodeWeight(row, col, Infinity);
         }
+        else {
+            if(this.state.grid[row][col].isStart) {
+                this.setState({...this.state, isStartNodeSelected: true});
+            }
+            else {
+                this.setState({...this.state, isFinishNodeSelected: true});
+            }
+        }
         // console.log(`Mouse is down on row=${row} col=${col}`);
     }
 
@@ -45,6 +55,20 @@ export default class PathfindingVisualizerContestant extends React.Component {
             }
             // console.log(`Mouse is entering on row=${row} col=${col}`);
         }
+    }
+
+    handleMouseUp(row, col) {
+        if(this.state.isStartNodeSelected) {
+            if(!this.isStartOrEndNode(row, col)) {
+                this.props.updateStartNode(row, col);
+            }
+        }
+        else if(this.state.isFinishNodeSelected) {
+            if(!this.isStartOrEndNode(row, col)) {
+                this.props.updateFinishNode(row, col);
+            }
+        }
+        // console.log(`Mouse is up on row=${row} col=${col}`);
     }
 
     isStartOrEndNode(row, col) {
@@ -74,11 +98,6 @@ export default class PathfindingVisualizerContestant extends React.Component {
         }
     }
 
-    handleMouseUp(row, col) {
-        // this.setState({...this.state, isMousePressed: false});
-        // console.log(`Mouse is up on row=${row} col=${col}`);
-    }
-
     updateAlgorithmType(algorithmType) {
         this.setState({...this.state, algorithmType: algorithmType});
     }
@@ -88,7 +107,12 @@ export default class PathfindingVisualizerContestant extends React.Component {
     }
 
     resetIsMousedPressed() {
-        this.setState({...this.state, isMousePressed: false});
+        this.setState({
+            ...this.state,
+            isMousePressed: false,
+            isStartNodeSelected: false,
+            isFinishNodeSelected: false
+        });
     }
 
     render() {
