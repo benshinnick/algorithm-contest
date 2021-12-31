@@ -37,6 +37,12 @@
   animation: nodeGrowEnter 0.1s;
 }
 
+.node-start-selected {
+  background-color: green;
+  border-color: #16a716;
+  transform: scale(0.6);
+}
+
 @keyframes nodeGrowEnter {
   from { transform: scale(0.4); }
   to { transform: scale(1); }

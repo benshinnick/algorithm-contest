@@ -86,7 +86,6 @@ export default class PathfindingContest extends React.Component {
         if(startCol > lastResizedGridIndex) {
             resizedGrid = this.moveStartNodeToBeInGrid(resizedGrid, startRow);
         }
-        
         if(finCol > lastResizedGridIndex) {
             resizedGrid = this.moveFinishNodeToBeInGrid(resizedGrid, finRow);
         }
@@ -162,7 +161,6 @@ export default class PathfindingContest extends React.Component {
     }
 
     setNewGridWithFinishNodeUpdated(row, col) {
-        console.log(`${row}-${col}`)
         const prevFinishNodeRow = this.state.finishNodeRow;
         const prevFinishNodeCol = this.state.finishNodeColumn;
         const newGrid = getNewGridWithFinishNodeUpdated(this.state.grid, row, col, prevFinishNodeRow, prevFinishNodeCol);
@@ -310,18 +308,22 @@ const getNewGridWithStartNodeUpdated = (grid, row, col, prevRow, prevCol) => {
     const startNodeWeight = 1;
     const emptyNodeWeight = 1;
     const node = newGrid[row][col];
-    const newNode = {
-      ...node,
-      weight: startNodeWeight,
-      isStart: true
-    };
     const prevNode = {
         ...node,
+        row: prevRow,
+        col: prevCol,
         weight: emptyNodeWeight,
         isStart: false
     }
-    newGrid[row][col] = newNode;
+    const newNode = {
+      ...node,
+      row: row,
+      col: col,
+      weight: startNodeWeight,
+      isStart: true
+    };
     newGrid[prevRow][prevCol] = prevNode;
+    newGrid[row][col] = newNode;
     return newGrid;
 }
 
@@ -330,18 +332,22 @@ const getNewGridWithFinishNodeUpdated = (grid, row, col, prevRow, prevCol) => {
     const finishNodeWeight = 1;
     const emptyNodeWeight = 1;
     const node = newGrid[row][col];
-    const newNode = {
-      ...node,
-      weight: finishNodeWeight,
-      isFinish: true
-    };
     const prevNode = {
         ...node,
+        row: prevRow,
+        col: prevCol,
         weight: emptyNodeWeight,
         isFinish: false
     }
-    newGrid[row][col] = newNode;
+    const newNode = {
+      ...node,
+      row: row,
+      col: col,
+      weight: finishNodeWeight,
+      isFinish: true
+    };
     newGrid[prevRow][prevCol] = prevNode;
+    newGrid[row][col] = newNode;
     return newGrid;
 }
 

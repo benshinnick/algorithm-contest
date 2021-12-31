@@ -29,50 +29,75 @@ export default class PathfindingVisualizerContestant extends React.Component {
     }
 
     handleMouseDown(row, col) {
-        this.setState({...this.state, isMousePressed: true, lastUpdatedNode: [row, col]});
+        // console.log(this.state.grid[row][col]);
         if(!this.isStartOrEndNode(row, col)) {
             this.props.updateGridNodeWeight(row, col, Infinity);
+            this.setState({
+                ...this.state,
+                isMousePressed: true,
+                lastUpdatedNode: [row, col]
+            });
         }
         else {
             if(this.state.grid[row][col].isStart) {
-                this.setState({...this.state, isStartNodeSelected: true});
+                this.setState({
+                    ...this.state,
+                    isStartNodeSelected: true,
+                    isMousePressed: true,
+                    lastUpdatedNode: [row, col]
+                });
             }
             else {
-                this.setState({...this.state, isFinishNodeSelected: true});
+                this.setState({
+                    ...this.state,
+                    isFinishNodeSelected: true,
+                    isMousePressed: true,
+                    lastUpdatedNode: [row, col]
+                });
             }
         }
-        // console.log(`Mouse is down on row=${row} col=${col}`);
     }
 
     handleMouseEnter(row, col) {
         if(this.state.isMousePressed === true) {
-            if(!this.isStartOrEndNode(row, col)) {
-                this.props.updateGridNodeWeight(row, col, Infinity);
-                if(!this.isLastUpdatedNodeAdjacentToCurrentNode(row, col)) {
-                    this.fillInSkippedNodes(row, col);
-                }
-                this.setState({...this.state, lastUpdatedNode: [row, col]});
+            if(this.state.isStartNodeSelected) {
+                // hover update start node animation
             }
+            else if(this.state.isFinishNodeSelected) {
+                // hover update finish node animation
+            }
+            else {
+                if(!this.isStartOrEndNode(row, col)) {
+                    this.props.updateGridNodeWeight(row, col, Infinity);
+                    if(!this.isLastUpdatedNodeAdjacentToCurrentNode(row, col)) {
+                        this.fillInSkippedNodes(row, col);
+                    }
+                }
+            }
+            this.setState({...this.state, lastUpdatedNode: [row, col]});
             // console.log(`Mouse is entering on row=${row} col=${col}`);
         }
     }
 
     handleMouseUp(row, col) {
         if(this.state.isStartNodeSelected) {
+            console.log(`updating start node to ${row}-${col}`);
             if(!this.isStartOrEndNode(row, col)) {
                 this.props.updateStartNode(row, col);
             }
         }
         else if(this.state.isFinishNodeSelected) {
+            console.log(`updating finish node to ${row}-${col}`);
             if(!this.isStartOrEndNode(row, col)) {
                 this.props.updateFinishNode(row, col);
             }
         }
-        // console.log(`Mouse is up on row=${row} col=${col}`);
+        this.setState({...this.state, lastUpdatedNode: [row, col]});
     }
 
     isStartOrEndNode(row, col) {
-        return this.state.grid[row][col].isStart || this.state.grid[row][col].isFinish;
+        const node = this.state.grid[row][col];
+        return (node.isStart || node.isFinish);
     }
 
     isLastUpdatedNodeAdjacentToCurrentNode(currentRow, currentCol) {
