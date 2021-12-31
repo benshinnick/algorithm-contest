@@ -3,8 +3,12 @@ import PathfindingVisualizerContestant from './PathfindingVisualizerContestant';
 import './css/PathfindingContest.css';
 
 const GRID_NUM_ROWS = 13;
+
 const INITIAL_NUM_OF_CONTESTANTS = 5;
 const MAX_NUM_OF_CONTESTANTS = 5;
+
+const EMPTY_GRID_START_NODE_ROW = 3;
+const EMPTY_GRID_START_NODE_COL = 3;
 
 const ALGORITHM_TYPES = [
     'Dijkstra',
@@ -50,8 +54,8 @@ export default class PathfindingContest extends React.Component {
         const emptyGrid = getEmptyGrid();
         const totCols = getFullPageWidthGridNumCols();
         const totRows = this.state.gridNumRows;
-        const startRow = 3;
-        const startCol = 3;
+        const startRow = EMPTY_GRID_START_NODE_ROW;
+        const startCol = EMPTY_GRID_START_NODE_COL;
         const finRow = totRows - 4;
         const finCol = totCols - 4;
         this.setState({
@@ -61,19 +65,91 @@ export default class PathfindingContest extends React.Component {
             startNodeRow: startRow,
             startNodeColumn: startCol,
             finishNodeRow: finRow,
-            finsihNodeColumn: finCol
+            finsihNodeColumn: finCol,
+            isEmptyGrid: true
         });
+    }
+
+    setResizedGridWithUpdatedNodesCopied() {
+        const grid = this.state.grid;
+        const startRow = this.state.startNodeRow;
+        const startCol = this.state.startNodeColumn;
+        const finRow = this.state.finishNodeRow;
+        const finCol = this.state.finsihNodeColumn;
+        const totCols = getFullPageWidthGridNumCols();
+        let resizedGrid = getResizedGridWithUpdatedNodesCopied(grid);
+
+        const lastResizedGridIndex = resizedGrid[0].length - 1;
+        if(startCol > lastResizedGridIndex) {
+            console.log('moving start node');
+            resizedGrid = this.moveStartNodeToBeInGrid(resizedGrid, startRow);
+        }
+        
+        if(finCol > lastResizedGridIndex) {
+            console.log('moving finish node');
+            resizedGrid = this.moveFinishNodeToBeInGrid(resizedGrid, finRow);
+        }
+
+        this.setState({
+            ...this.state,
+            grid: resizedGrid,
+            gridNumCols: totCols,
+            isEmptyGrid: false
+        });
+    }
+
+    moveStartNodeToBeInGrid(resizedGrid, startRow) {
+        let grid = resizedGrid.slice();
+        let lastResizedGridCol = resizedGrid[0].length - 1;
+        const node = grid[startRow][lastResizedGridCol];
+        const newStartNode = {
+            ...node,
+            weight: 1,
+            isStart: true
+        };
+        grid[startRow][lastResizedGridCol] = newStartNode;
+
+        this.setState({
+            ...this.state,
+            startNodeRow: startRow,
+            startNodeColumn: lastResizedGridCol
+        });
+
+        return grid;
+    }
+
+    moveFinishNodeToBeInGrid(resizedGrid, finRow) {
+        let grid = resizedGrid.slice();
+        let lastResizedGridCol = resizedGrid[0].length - 1;
+        const node = grid[finRow][lastResizedGridCol];
+        const newFinishNode = {
+            ...node,
+            weight: 1,
+            isFinish: true
+        };
+        grid[finRow][lastResizedGridCol] = newFinishNode;
+
+        this.setState({
+            ...this.state,
+            finishNodeRow: finRow,
+            finsihNodeColumn: lastResizedGridCol
+        });
+
+        return grid;
     }
 
     setNewGridWithNodeWeightUpdated(row, col, newWeight) {
         const newGrid = getNewGridWithNodeWeightUpdated(this.state.grid, row, col, newWeight);
-        this.setState({...this.state, grid: newGrid});
+        this.setState({...this.state, grid: newGrid, isEmptyGrid: false});
     }
 
     handlePageResize = () => {
         if(getFullPageWidthGridNumCols() !== this.state.numCols) {
             if(this.state.isEmptyGrid) {
                 this.setEmptyGrid();
+            }
+            else {
+                this.setResizedGridWithUpdatedNodesCopied();
             }
         }
 
@@ -142,25 +218,25 @@ const getEmptyGrid = () => {
     const grid = [];
     const totCols = getFullPageWidthGridNumCols();
     const totRows = GRID_NUM_ROWS;
-    const startRow = 3;
-    const startCol = 3;
+    const startRow = EMPTY_GRID_START_NODE_ROW;
+    const startCol = EMPTY_GRID_START_NODE_COL;
     const finRow = totRows - 4;
     const finCol = totCols - 4;
 
     //empty, start, and finish nodes all have weight of one
-    const startingNodeWeight = 1;
+    const initialNodeWeight = 1;
 
     for (let row = 0; row < totRows; row++) {
         const currentRow = [];
         for (let col = 0; col < totCols; col++) {
-            currentRow.push(createNode(col, row, totRows, totCols, startRow, startCol, finRow, finCol, startingNodeWeight));
+            currentRow.push(createInitialNode(row, col, totRows, totCols, startRow, startCol, finRow, finCol, initialNodeWeight));
         }
         grid.push(currentRow);
     }
     return grid;
 };
 
-const createNode = (col, row, totRows, totCols, startRow, startCol, finRow, finCol, weight) => {
+const createInitialNode = (row, col, totRows, totCols, startRow, startCol, finRow, finCol, weight) => {
     return {
         row,
         col,
@@ -172,6 +248,18 @@ const createNode = (col, row, totRows, totCols, startRow, startCol, finRow, finC
     };
 };
 
+const createNode = (row, col, totRows, totCols, weight) => {
+    return {
+        row,
+        col,
+        weight,
+        isStart: false,
+        isFinish: false,
+        isLastRow: row === totRows - 1,
+        isLastColumn: col === totCols - 1
+    };
+}
+
 const getNewGridWithNodeWeightUpdated = (grid, row, col, newWeight) => {
     const newGrid = grid.slice();
     const node = newGrid[row][col];
@@ -182,3 +270,36 @@ const getNewGridWithNodeWeightUpdated = (grid, row, col, newWeight) => {
     newGrid[row][col] = newNode;
     return newGrid;
 };
+
+const getResizedGridWithUpdatedNodesCopied = (grid) => {
+    const resizedGrid = [];
+    const totCols = getFullPageWidthGridNumCols();
+    const totRows = GRID_NUM_ROWS;
+    const prevLastColIndex = grid[0].length - 1;
+    const initialNodeWeight = 1;
+
+    for (let row = 0; row < totRows; row++) {
+        const currentRow = [];
+        for (let col = 0; col < totCols; col++) {
+            if(col < grid[row].length) {
+                if(col === prevLastColIndex) {
+                    const node = grid[row][col];
+                    const updatedNode = {
+                      ...node,
+                      isLastColumn: false,
+                    };
+                    currentRow.push(updatedNode);
+                }
+                else {
+                    currentRow.push(grid[row][col]);
+                }
+            }
+            else {
+                currentRow.push(createNode(row, col, totRows, totCols, initialNodeWeight));
+            }
+        }
+        resizedGrid.push(currentRow);
+    }
+
+    return resizedGrid;
+}

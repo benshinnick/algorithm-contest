@@ -1,6 +1,6 @@
 import React from 'react';
 import Node from './Node/Node.jsx';
-import { getLinePixelCoordinates } from './gridDrawingHelperFiles/BresenhamLineDrawAlgo.js';
+import { getLinePixelCoordinates } from './gridDrawingAlgorithms/BresenhamLineDrawAlgo.js';
 import './css/PathfindingVisualizerContestant.css';
 
 export default class PathfindingVisualizerContestant extends React.Component {
