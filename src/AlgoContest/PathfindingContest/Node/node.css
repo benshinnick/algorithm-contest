@@ -1,0 +1,33 @@
+.node {
+    background-color: white;
+    width: 15px;
+    height: 15px;
+    border-right: 1px solid rgb(175, 200, 250);
+    border-bottom: 1px solid rgb(175, 200, 250);
+    margin: 0;
+}
+
+.weight-1 {
+  background-color: white;
+}
+
+.weight-Infinity {
+  background-color: #3b3b3b;
+  border-color: #606060;
+}
+
+.last-row {
+    border-bottom: 0px;
+}
+
+.last-column {
+  border-right: 0px;
+}
+  
+.node-finish {
+  background-color: red;
+}
+  
+.node-start {
+  background-color: green;
+}

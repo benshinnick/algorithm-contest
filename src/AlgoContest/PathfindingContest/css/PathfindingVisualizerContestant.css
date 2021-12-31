@@ -1,0 +1,112 @@
+.pathfinding-visualizer-contestant {
+    white-space: nowrap;
+    background-color: #f7f7f7;
+    border-style: solid hidden hidden hidden;
+    border-width: 2px;
+    border-color: white;
+    height: 245px;
+    margin-left: 2px;
+}
+
+.grid-container {
+    border: 2px solid #3b3b3b;
+    margin-top: 1px;
+    margin-right: 10px;
+}
+
+.grid-row {
+    display: flex;
+    flex-grow: 1;
+    height: auto;
+    flex-direction: row;
+}
+
+/* Algorithm Dropdown Styling */
+
+#path-algorithm-dropdown-label {
+    display: inline-block;
+    transition-duration: 0.3s;
+    background-color: #3b3b3b;
+    text-align: center;
+    color: white;
+    border-right: solid #f7f7f7 1px;
+    border-bottom: solid #f7f7f7 1px; 
+    width: 215px;
+    font-size: 16px;
+    padding-left: 15px;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+}
+
+.dropdown-arrow {
+    float: right;
+    font-size: 11pt;
+    font-size: 9;
+    transition-duration: 0.3s;
+    background-color: transparent;
+    text-align: center;
+    color: white;
+    padding: 0;
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+}
+  
+#path-algorithm-dropdown-label:hover {
+    background-color: rgb(36, 36, 36);
+}
+  
+.path-dropdown {
+    position: relative;
+    display: inline-block;
+}
+  
+.path-dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    width: 236px;
+    margin: 0px;
+    z-index: 1;
+}
+
+.path-dropdown-content button {
+    color: black;
+    background-color: #f8f9fa;
+    text-align: center;
+    border: none;
+    width: 236px;
+    font-size: 16px;
+    padding-left: 15px;
+    padding-top: 5px;
+    padding-right: 15px;
+    padding-bottom: 5px;
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    text-decoration: none;
+    display: block;
+}
+  
+  
+.path-algorithm-dropdown-button:disabled,
+.path-algorithm-dropdown-button[disabled] {
+    display:none;
+}
+  
+.path-dropdown-content button:hover {
+    background-color: #e2e6ea;
+}
+  
+.path-dropdown:hover .path-dropdown-content {
+    display: block;
+}
+
+  /* Algorithm Dropdown Styling */
