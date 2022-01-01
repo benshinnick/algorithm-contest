@@ -47,6 +47,7 @@ export default class PathfindingContest extends React.Component {
         this.setNewGridWithNodeWeightUpdated = this.setNewGridWithNodeWeightUpdated.bind(this);
         this.setNewGridWithStartNodeUpdated = this.setNewGridWithStartNodeUpdated.bind(this);
         this.setNewGridWithFinishNodeUpdated = this.setNewGridWithFinishNodeUpdated.bind(this);
+        this.setNewGridWithMultipleWeightNodesUpdated = this.setNewGridWithMultipleWeightNodesUpdated.bind(this);
         this.algoContestantRefs = [];
     }
 
@@ -159,6 +160,16 @@ export default class PathfindingContest extends React.Component {
         });
     }
 
+    setNewGridWithMultipleWeightNodesUpdated(updatedNodesCoordinates, newWeight) {
+        const newGrid = getNewGridWithMultipleNodeWeightsUpdated(this.state.grid, updatedNodesCoordinates, newWeight);
+        this.setState({
+            ...this.state,
+            grid: newGrid,
+            isEmptyGrid: false
+        });
+    }
+
+
     setNewGridWithStartNodeUpdated(row, col) {
         const prevStartNodeRow = this.state.startNodeRow;
         const prevStartNodeCol = this.state.startNodeColumn;
@@ -268,6 +279,7 @@ export default class PathfindingContest extends React.Component {
                                 ))}
                             </div>
                     </div>
+                    <button id='path-add-contestant-button' onClick={() => this.addContestantOnClick()}>Add Contestant</button>
                     <div id="path-num-of-contestants-label">{this.state.numOfContestants} Contestants</div>
                     {/* <button onClick={() => console.log(this.state)}>Log State</button> */}
                     <button id="path-skip-to-finish-button" onClick={() => this.skipToFinishButtonOnClick()}>Skip To Finish</button>
@@ -283,6 +295,7 @@ export default class PathfindingContest extends React.Component {
                             algorithmTypes={ALGORITHM_TYPES}
                             contestantNumber={contestantNum}
                             updateGridNodeWeight={this.setNewGridWithNodeWeightUpdated}
+                            updateMultipleNodeWeights={this.setNewGridWithMultipleWeightNodesUpdated}
                             updateStartNode={this.setNewGridWithStartNodeUpdated}
                             updateFinishNode={this.setNewGridWithFinishNodeUpdated}
                         />
@@ -365,6 +378,25 @@ const getNewGridWithNodeWeightUpdated = (grid, row, col, newWeight) => {
       weight: newWeight,
     };
     newGrid[row][col] = newNode;
+    return newGrid;
+};
+
+const getNewGridWithMultipleNodeWeightsUpdated = (grid, updatedNodesCoordinates, newWeight) => {
+    const newGrid = grid.slice();
+    for(let i = 0; i < updatedNodesCoordinates.length; ++i) {
+        const row = updatedNodesCoordinates[i][0];
+        const col = updatedNodesCoordinates[i][1]
+        const node = newGrid[row][col];
+        const newNode = {
+          ...node,
+          row: row,
+          col: col,
+          isStart: false,
+          isFinish: false,
+          weight: newWeight,
+        };
+        newGrid[row][col] = newNode;
+    }
     return newGrid;
 };
 

@@ -125,6 +125,8 @@ export default class PathfindingVisualizerContestant extends React.Component {
 
     fillInSkippedNodes(currRow, currCol) {
 
+        const updatedNodesCoordinates = [];
+
         const x1 = this.state.lastUpdatedNode[1];
         const y1 = this.state.lastUpdatedNode[0];
         const x2 = currCol;
@@ -136,9 +138,11 @@ export default class PathfindingVisualizerContestant extends React.Component {
             const row = lineCoordinates[i][1];
             const col = lineCoordinates[i][0];
             if(!this.isStartOrFinishNode(row, col)) {
-                this.props.updateGridNodeWeight(row, col, this.state.selectedNodeWeight);
+                updatedNodesCoordinates.push([row, col]);
             }
         }
+
+        this.props.updateMultipleNodeWeights(updatedNodesCoordinates, this.state.selectedNodeWeight);
     }
 
     updateAlgorithmType(algorithmType) {
@@ -185,7 +189,7 @@ export default class PathfindingVisualizerContestant extends React.Component {
                         ))}
                     </div>
                 </div>
-                <button onClick={() => console.log(this.state)}>Log State</button>
+                {/* <button onClick={() => console.log(this.state)}>Log State</button> */}
                 <div className='grid-container' id={`grid-container-${this.state.contestantNumber}`}>
                     {this.state.grid.map((row, rowIdx) => {
                         return (
