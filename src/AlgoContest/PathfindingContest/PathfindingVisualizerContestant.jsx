@@ -15,6 +15,8 @@ export default class PathfindingVisualizerContestant extends React.Component {
             allAlgorithmTypes: this.props.algorithmTypes,
             contestantNumber: this.props.contestantNumber,
             isMousePressed: false,
+            isStartNodeSelected: false,
+            isFinishNodeSelected: false,
             lastUpdatedNode: []
         };
     }
@@ -27,20 +29,89 @@ export default class PathfindingVisualizerContestant extends React.Component {
     }
 
     handleMouseDown(row, col) {
-        this.setState({...this.state, isMousePressed: true, lastUpdatedNode: [row, col]});
-        this.props.updateGridNodeWeight(row, col, Infinity);
-        // console.log(`Mouse is down on row=${row} col=${col}`);
+        // console.log(this.state.grid[row][col]);
+        if(!this.isStartOrFinishNode(row, col)) {
+            this.props.updateGridNodeWeight(row, col, Infinity);
+            this.setState({
+                ...this.state,
+                isMousePressed: true,
+                lastUpdatedNode: [row, col]
+            });
+        }
+        else {
+            if(this.state.grid[row][col].isStart) {
+                this.setState({
+                    ...this.state,
+                    isStartNodeSelected: true,
+                    isMousePressed: true,
+                    lastUpdatedNode: [row, col]
+                });
+                const allStartNodes = document.getElementsByClassName(`node-${row}-${col}`);
+                for(let i = 0; i < allStartNodes.length; ++i) {
+                    allStartNodes[i].classList.remove('node-start');
+                }
+                this.addHoverStylingToAllGridNodes(row, col, 'selected-start');
+            }
+            else {
+                this.setState({
+                    ...this.state,
+                    isFinishNodeSelected: true,
+                    isMousePressed: true,
+                    lastUpdatedNode: [row, col]
+                });
+                const allFinishNodes = document.getElementsByClassName(`node-${row}-${col}`);
+                for(let i = 0; i < allFinishNodes.length; ++i) {
+                    allFinishNodes[i].classList.remove('node-finish');
+                }
+                this.addHoverStylingToAllGridNodes(row, col, 'selected-finish');
+            }
+        }
     }
 
     handleMouseEnter(row, col) {
         if(this.state.isMousePressed === true) {
-            this.props.updateGridNodeWeight(row, col, Infinity);
-            if(!this.isLastUpdatedNodeAdjacentToCurrentNode(row, col)) {
-                this.fillInSkippedNodes(row, col);
+            if(this.state.isStartNodeSelected) {
+                this.addHoverStylingToAllGridNodes(row, col, 'selected-start');
+            }
+            else if(this.state.isFinishNodeSelected) {
+                this.addHoverStylingToAllGridNodes(row, col, 'selected-finish');
+            }
+            else {
+                if(!this.isStartOrFinishNode(row, col)) {
+                    this.props.updateGridNodeWeight(row, col, Infinity);
+                    if(!this.isLastUpdatedNodeAdjacentToCurrentNode(row, col)) {
+                        this.fillInSkippedNodes(row, col);
+                    }
+                }
             }
             this.setState({...this.state, lastUpdatedNode: [row, col]});
             // console.log(`Mouse is entering on row=${row} col=${col}`);
         }
+    }
+
+    handleMouseUp(row, col) {
+        if(this.state.isStartNodeSelected) {
+            this.props.updateStartNode(row, col);
+            this.removeHoverStylingFromLastUpdatedNode('selected-start');
+            const allStartNodes = document.getElementsByClassName(`node-${row}-${col}`);
+            for(let i = 0; i < allStartNodes.length; ++i) {
+                allStartNodes[i].classList.add('node-start');
+            }
+        }
+        else if(this.state.isFinishNodeSelected) {
+            this.props.updateFinishNode(row, col);
+            this.removeHoverStylingFromLastUpdatedNode('selected-finish');
+            const allFinishNodes = document.getElementsByClassName(`node-${row}-${col}`);
+            for(let i = 0; i < allFinishNodes.length; ++i) {
+                allFinishNodes[i].classList.add('node-finish');
+            }
+        }
+        this.setState({...this.state, lastUpdatedNode: [row, col]});
+    }
+
+    isStartOrFinishNode(row, col) {
+        const node = this.state.grid[row][col];
+        return (node.isStart || node.isFinish);
     }
 
     isLastUpdatedNodeAdjacentToCurrentNode(currentRow, currentCol) {
@@ -60,13 +131,10 @@ export default class PathfindingVisualizerContestant extends React.Component {
         for(let i = 0; i < lineCoordinates.length; ++i) {
             const row = lineCoordinates[i][1];
             const col = lineCoordinates[i][0];
-            this.props.updateGridNodeWeight(row, col, Infinity);
+            if(!this.isStartOrFinishNode(row, col)) {
+                this.props.updateGridNodeWeight(row, col, Infinity);
+            }
         }
-    }
-
-    handleMouseUp(row, col) {
-        // this.setState({...this.state, isMousePressed: false});
-        // console.log(`Mouse is up on row=${row} col=${col}`);
     }
 
     updateAlgorithmType(algorithmType) {
@@ -77,15 +145,28 @@ export default class PathfindingVisualizerContestant extends React.Component {
         this.updateAlgorithmType(algorithmType);
     }
 
-    resetIsMousedPressed() {
-        this.setState({...this.state, isMousePressed: false});
+    resetMouseEvents() {
+        if(this.state.isStartNodeSelected) {
+            this.removeHoverStylingFromLastUpdatedNode('selected-start');
+            this.setStartNodeAtLastUpdatedNode();
+        }
+        if(this.state.isFinishNodeSelected) {
+            this.removeHoverStylingFromLastUpdatedNode('selected-finish');
+            this.setFinishNodeAtLastUpdatedNode();
+        }
+        this.setState({
+            ...this.state,
+            isMousePressed: false,
+            isStartNodeSelected: false,
+            isFinishNodeSelected: false
+        });
     }
 
     render() {
         return (
             <>
             <div className='pathfinding-visualizer-contestant' id={`pathfinding-visualizer-${this.state.contestantNumber}`}
-                onMouseEnter={() => this.resetIsMousedPressed()} onMouseUp={() => this.resetIsMousedPressed()}>
+                onMouseEnter={() => this.resetMouseEvents()} onMouseUp={() => this.resetMouseEvents()}>
                 <div className="path-dropdown">
                     <div id='path-algorithm-dropdown-label'>{this.state.algorithmType}<div className='dropdown-arrow'>▼</div></div>
                     <div className="path-dropdown-content">
@@ -134,5 +215,34 @@ export default class PathfindingVisualizerContestant extends React.Component {
                 </div>
             </>
         );
+    }
+
+    addHoverStylingToAllGridNodes(row, col, hoverType) {
+        this.removeHoverStylingFromLastUpdatedNode(hoverType);
+        const allStartSelectedNodes = document.getElementsByClassName(`node-${row}-${col}`);
+        for(let i = 0; i < allStartSelectedNodes.length; ++i) {
+            allStartSelectedNodes[i].classList.add(`${hoverType}-hover`);
+        }
+    }
+
+    removeHoverStylingFromLastUpdatedNode(hoverType) {
+        const prevNodeRow = this.state.lastUpdatedNode[0];
+        const prevNodeCol = this.state.lastUpdatedNode[1];
+        const allPrevStartSelectedNodes = document.getElementsByClassName(`node-${prevNodeRow}-${prevNodeCol}`);
+        for(let i = 0; i < allPrevStartSelectedNodes.length; ++i) {
+            allPrevStartSelectedNodes[i].classList.remove(`${hoverType}-hover`);
+        }
+    }
+
+    setStartNodeAtLastUpdatedNode() {
+        const prevNodeRow = this.state.lastUpdatedNode[0];
+        const prevNodeCol = this.state.lastUpdatedNode[1];
+        this.props.updateStartNode(prevNodeRow, prevNodeCol);
+    }
+
+    setFinishNodeAtLastUpdatedNode() {
+        const prevNodeRow = this.state.lastUpdatedNode[0];
+        const prevNodeCol = this.state.lastUpdatedNode[1];
+        this.props.updateFinishNode(prevNodeRow, prevNodeCol);
     }
 }

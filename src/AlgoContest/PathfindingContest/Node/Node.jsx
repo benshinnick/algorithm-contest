@@ -37,7 +37,7 @@ export default class Node extends Component {
     return (
       <div
         id={`${contestantNumber}-node-${row}-${col}`}
-        className={`node${extraClassName}${isLastRowClassName}${isLastColumnClassName} weight-${weight}`}
+        className={`node node-${row}-${col}${extraClassName}${isLastRowClassName}${isLastColumnClassName} weight-${weight}`}
         onMouseDown={() => onMouseDown(row, col)}
         onMouseEnter={() => onMouseEnter(row, col)}
         onMouseUp={() => onMouseUp(row, col)}></div>
