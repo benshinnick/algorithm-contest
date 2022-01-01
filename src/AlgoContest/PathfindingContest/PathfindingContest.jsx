@@ -297,6 +297,10 @@ const getNewGridWithNodeWeightUpdated = (grid, row, col, newWeight) => {
     const node = newGrid[row][col];
     const newNode = {
       ...node,
+      row: row,
+      col: col,
+      isStart: false,
+      isFinish: false,
       weight: newWeight,
     };
     newGrid[row][col] = newNode;
@@ -305,6 +309,8 @@ const getNewGridWithNodeWeightUpdated = (grid, row, col, newWeight) => {
 
 const getNewGridWithStartNodeUpdated = (grid, row, col, prevRow, prevCol) => {
     const newGrid = grid.slice();
+    const totRows = grid.length;
+    const totCols = grid[0].length;
     const startNodeWeight = 1;
     const emptyNodeWeight = 1;
     const node = newGrid[row][col];
@@ -313,14 +319,18 @@ const getNewGridWithStartNodeUpdated = (grid, row, col, prevRow, prevCol) => {
         row: prevRow,
         col: prevCol,
         weight: emptyNodeWeight,
-        isStart: false
+        isStart: false,
+        isLastRow: prevRow === totRows - 1,
+        isLastColumn: prevCol === totCols - 1
     }
     const newNode = {
-      ...node,
-      row: row,
-      col: col,
-      weight: startNodeWeight,
-      isStart: true
+        ...node,
+        row: row,
+        col: col,
+        weight: startNodeWeight,
+        isStart: true,
+        isLastRow: row === totRows - 1,
+        isLastColumn: col === totCols - 1
     };
     newGrid[prevRow][prevCol] = prevNode;
     newGrid[row][col] = newNode;
@@ -329,6 +339,8 @@ const getNewGridWithStartNodeUpdated = (grid, row, col, prevRow, prevCol) => {
 
 const getNewGridWithFinishNodeUpdated = (grid, row, col, prevRow, prevCol) => {
     const newGrid = grid.slice();
+    const totRows = grid.length;
+    const totCols = grid[0].length;
     const finishNodeWeight = 1;
     const emptyNodeWeight = 1;
     const node = newGrid[row][col];
@@ -337,21 +349,23 @@ const getNewGridWithFinishNodeUpdated = (grid, row, col, prevRow, prevCol) => {
         row: prevRow,
         col: prevCol,
         weight: emptyNodeWeight,
-        isFinish: false
+        isFinish: false,
+        isLastRow: prevRow === totRows - 1,
+        isLastColumn: prevCol === totCols - 1
     }
     const newNode = {
-      ...node,
-      row: row,
-      col: col,
-      weight: finishNodeWeight,
-      isFinish: true
+        ...node,
+        row: row,
+        col: col,
+        weight: finishNodeWeight,
+        isFinish: true,
+        isLastRow: row === totRows - 1,
+        isLastColumn: col === totCols - 1
     };
     newGrid[prevRow][prevCol] = prevNode;
     newGrid[row][col] = newNode;
     return newGrid;
 }
-
-
 
 const getResizedGridWithUpdatedNodesCopied = (grid) => {
     const resizedGrid = [];
