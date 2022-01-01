@@ -134,7 +134,10 @@
 #selected-node-display {
     width: 15px;
     height: 15px;
-    margin: 0px 8px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    margin-left: 8px;
+    margin-right: 0px;
     -moz-user-select: -moz-none;
     -khtml-user-select: none;
     -webkit-user-select: none;
@@ -143,34 +146,55 @@
     float: left;
 }
 
-.display-node-Weighted-Infinity {
+.display-node-Weight-Inf {
     background-color: #3b3b3b;
     border: 1px solid #606060;
 }
 
-.display-node-Weighted-1 {
+.display-node-Weight-1 {
     background-color: white;
-    border: 1px solid rgb(175, 200, 250);;
+    border: 1px solid rgb(175, 200, 250);
 }
 
-.display-node-Weighted-2 {
-    background-color: #eeeeee;
-    border: 1px solid #cdcdcd;
+.display-node-Weight-2 {
+    /* background-color: #eeeeee;
+    border: 1px solid #cdcdcd; */
+    background-color: #d7bd87;
+    border: 1px solid #b8a682;
 }
 
-.display-node-Weighted-5 {
-    background-color: #dfdfdf;
-    border: 1px solid #b8b8b8;
+.display-node-Weight-5 {
+    /* background-color: #dfdfdf;
+    border: 1px solid #b8b8b8; */
+    background-color: #78e18e;
+    border: 1px solid #27d54c;
 }
 
-.display-node-Weighted-10 {
-    background-color: #c2c2c2;
-    border: 1px solid #989898;
+.display-node-Weight-10 {
+    /* background-color: #c2c2c2;
+    border: 1px solid #989898; */
+    background-color: #f7c65b;
+    border: 1px solid #d3a540;
 }
 
-.display-node-Weighted-15 {
-    background-color: #858585;
-    border: 1px solid #505050;
+.display-node-Weight-15 {
+    /* background-color: #858585;
+    border: 1px solid #505050; */
+    background-color: #0069d9;
+    border: 1px solid #00458f;
+}
+
+#node-selection-dropdown-button-node-type-name {
+    float: left;
+    margin-left: 5%;
+    text-align: center;
+    width: 35%;
+}
+
+#node-selection-dropdown-button-node-type-weight {
+    float: right;
+    text-align: center;
+    width: 45%;
 }
 
 #select-node-type-dropdown {
@@ -247,7 +271,7 @@
     font-size: 16px;
     padding-left: 1px;
     padding-top: 5px;
-    padding-right: 30px;
+    padding-right: 5px;
     padding-bottom: 5px;
     margin-left: 0px;
     margin-top: 0px;

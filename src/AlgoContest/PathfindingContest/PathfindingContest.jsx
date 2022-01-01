@@ -19,12 +19,12 @@ const ALGORITHM_TYPES = [
 ]
 
 const NODE_TYPES = [
-    'Weighted-1',
-    'Weighted-2',
-    'Weighted-5',
-    'Weighted-10',
-    'Weighted-15',
-    'Weighted-Infinity'
+    ['Empty','Weight-1'],
+    ['Path','Weight-2'],
+    ['Grass','Weight-5'],
+    ['Sand','Weight-10'],
+    ['Water','Weight-15'],
+    ['Wall','Weight-Inf']
 ]
 
 export default class PathfindingContest extends React.Component {
@@ -37,7 +37,7 @@ export default class PathfindingContest extends React.Component {
             numOfContestants: INITIAL_NUM_OF_CONTESTANTS,
             isPreContest: true,
             isEmptyGrid: true,
-            selectedNodeType: 'Weighted-Infinity',
+            selectedNodeType: 'Weight-Inf',
             selectedNodeWeight: Infinity,
             startNodeRow: -1,
             startNodeColumn: -1,
@@ -223,7 +223,11 @@ export default class PathfindingContest extends React.Component {
     }
 
     nodeSelectionDropdownButtonOnClick(nodeType) {
-        const nodeTypeWeight = parseFloat(nodeType.split('-')[1]);
+        const nodeTypeInfo = nodeType.split('-');
+        let nodeTypeWeight = nodeTypeInfo[1];
+        if(nodeTypeWeight === 'Inf') {
+            nodeTypeWeight = 'Infinity';
+        }
         this.setState({...this.state, selectedNodeType: nodeType, selectedNodeWeight: nodeTypeWeight});
         toggleSelectNodeTypeDropdownButtons();
     }
@@ -250,12 +254,15 @@ export default class PathfindingContest extends React.Component {
                             {/* node selection dropdown content */}
                             <div id="node-selection-dropdown-content">
                                 {NODE_TYPES.map((nodeType) => (
-                                (nodeType !== this.state.selectedNodeType) ?
+                                (nodeType[1] !== this.state.selectedNodeType) ?
                                     <button
-                                        key={nodeType}
+                                        key={nodeType[1]}
                                         id='node-selection-dropdown-button'
-                                        onClick={() => this.nodeSelectionDropdownButtonOnClick(nodeType)}
-                                    ><div id="selected-node-display" className={`display-node-${nodeType}`}></div>{nodeType}</button>
+                                        onClick={() => this.nodeSelectionDropdownButtonOnClick(nodeType[1])}
+                                    ><div id="selected-node-display" className={`display-node-${nodeType[1]}`}></div>
+                                    <div id='node-selection-dropdown-button-node-type-name'>{nodeType[0]}</div>
+                                    <div id='node-selection-dropdown-button-node-type-weight'>{nodeType[1]}</div>
+                                    </button>
                                     : null
                                     
                                 ))}

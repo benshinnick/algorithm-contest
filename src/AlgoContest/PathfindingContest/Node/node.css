@@ -18,26 +18,26 @@
 }
 
 .weight-2 {
-  background-color: #eeeeee;
-  border-color: #cdcdcd;
+  background-color: #d7bd87;
+  border-color: #b8a682;
   animation: nodeGrowEnter 0.1s;
 }
 
 .weight-5 {
-  background-color: #dfdfdf;
-  border-color: #b8b8b8;
+  background-color: #78e18e;
+  border-color: #27d54c;
   animation: nodeGrowEnter 0.1s;
 }
 
 .weight-10 {
-  background-color: #c2c2c2;
-  border-color: #989898;
+  background-color: #f7c65b;
+  border-color: #d3a540;
   animation: nodeGrowEnter 0.1s;
 }
 
 .weight-15 {
-  background-color: #858585;
-  border-color: #505050;
+  background-color: #0069d9;
+  border-color: #00458f;
   animation: nodeGrowEnter 0.1s;
 }
 
