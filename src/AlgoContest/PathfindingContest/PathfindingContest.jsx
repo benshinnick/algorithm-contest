@@ -243,7 +243,7 @@ export default class PathfindingContest extends React.Component {
 }
 
 const getFullPageWidthGridNumCols = () => {
-    return Math.ceil((window.innerWidth - 16) / 16);
+    return Math.floor((window.innerWidth - 16) / 16);
 }
 
 const getEmptyGrid = () => {

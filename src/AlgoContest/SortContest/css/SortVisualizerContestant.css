@@ -125,6 +125,7 @@
   margin-top: 0px;
   margin-right: 0px;
   margin-bottom: 0px;
+  transform: scale(0.8);
 }
 
 #algorithm-dropdown-label:hover {
