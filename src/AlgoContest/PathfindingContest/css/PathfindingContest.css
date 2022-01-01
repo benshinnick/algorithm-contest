@@ -24,8 +24,8 @@
     transition-duration: 0.2s;
     border-radius: 1px;
     margin-right: 0.25%;
-    margin-top: 2px;
-    margin-left: 0.25%;
+    margin-top: 3px;
+    margin-left: 0.5%;
     margin-bottom: 2px;
 }
 
@@ -71,7 +71,7 @@
     font-size: 15px;
     transition-duration: 0.2s;
     border-radius: 1px;
-    margin-right: 0.25%;
+    margin-right: 0.5%;
     margin-top: 2px;
     margin-bottom: 2px;
 }
