@@ -17,6 +17,36 @@
   background-color: white;
 }
 
+.weight-2 {
+  background-color: #d7bd87;
+  border-color: #b8a682;
+  animation: nodeGrowEnter 0.1s;
+}
+
+.weight-5 {
+  background-color: #78e18e;
+  border-color: #27d54c;
+  animation: nodeGrowEnter 0.1s;
+}
+
+.weight-10 {
+  background-color: #f7c65b;
+  border-color: #d3a540;
+  animation: nodeGrowEnter 0.1s;
+}
+
+.weight-15 {
+  background-color: #0069d9;
+  border-color: #00458f;
+  animation: nodeGrowEnter 0.1s;
+}
+
+.weight-Infinity {
+  background-color: #3b3b3b;
+  border-color: #606060;
+  animation: nodeGrowEnter 0.1s;
+}
+
 .weight-Infinity {
   background-color: #3b3b3b;
   border-color: #606060;

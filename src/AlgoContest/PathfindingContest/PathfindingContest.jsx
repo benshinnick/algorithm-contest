@@ -18,6 +18,15 @@ const ALGORITHM_TYPES = [
     'Depth-first Search',
 ]
 
+const NODE_TYPES = [
+    ['Empty','Weight-1'],
+    ['Path','Weight-2'],
+    ['Grass','Weight-5'],
+    ['Sand','Weight-10'],
+    ['Water','Weight-15'],
+    ['Wall','Weight-Inf']
+]
+
 export default class PathfindingContest extends React.Component {
     constructor(props) {
         super(props);
@@ -28,6 +37,8 @@ export default class PathfindingContest extends React.Component {
             numOfContestants: INITIAL_NUM_OF_CONTESTANTS,
             isPreContest: true,
             isEmptyGrid: true,
+            selectedNodeType: 'Weight-Inf',
+            selectedNodeWeight: Infinity,
             startNodeRow: -1,
             startNodeColumn: -1,
             finishNodeRow: -1,
@@ -36,6 +47,7 @@ export default class PathfindingContest extends React.Component {
         this.setNewGridWithNodeWeightUpdated = this.setNewGridWithNodeWeightUpdated.bind(this);
         this.setNewGridWithStartNodeUpdated = this.setNewGridWithStartNodeUpdated.bind(this);
         this.setNewGridWithFinishNodeUpdated = this.setNewGridWithFinishNodeUpdated.bind(this);
+        this.setNewGridWithMultipleWeightNodesUpdated = this.setNewGridWithMultipleWeightNodesUpdated.bind(this);
         this.algoContestantRefs = [];
     }
 
@@ -45,6 +57,7 @@ export default class PathfindingContest extends React.Component {
 
     componentDidMount() {
         this.setEmptyGrid();
+        document.getElementById('node-selection-dropdown-content').style.display = 'none';
         window.addEventListener('resize', this.handlePageResize);
     }
     
@@ -147,6 +160,16 @@ export default class PathfindingContest extends React.Component {
         });
     }
 
+    setNewGridWithMultipleWeightNodesUpdated(updatedNodesCoordinates, newWeight) {
+        const newGrid = getNewGridWithMultipleNodeWeightsUpdated(this.state.grid, updatedNodesCoordinates, newWeight);
+        this.setState({
+            ...this.state,
+            grid: newGrid,
+            isEmptyGrid: false
+        });
+    }
+
+
     setNewGridWithStartNodeUpdated(row, col) {
         const prevStartNodeRow = this.state.startNodeRow;
         const prevStartNodeCol = this.state.startNodeColumn;
@@ -205,6 +228,21 @@ export default class PathfindingContest extends React.Component {
         console.log("Contest Being Skipped");
     }
 
+    selectNodeTypeDropdownOnClick() {
+        console.log("Select Node Type Dropdown On Click");
+        toggleSelectNodeTypeDropdownButtons();
+    }
+
+    nodeSelectionDropdownButtonOnClick(nodeType) {
+        const nodeTypeInfo = nodeType.split('-');
+        let nodeTypeWeight = nodeTypeInfo[1];
+        if(nodeTypeWeight === 'Inf') {
+            nodeTypeWeight = 'Infinity';
+        }
+        this.setState({...this.state, selectedNodeType: nodeType, selectedNodeWeight: nodeTypeWeight});
+        toggleSelectNodeTypeDropdownButtons();
+    }
+
     render() {
         const ContestantNumbers = [];
         for(let i = 0; i < MAX_NUM_OF_CONTESTANTS; ++i) {
@@ -216,10 +254,34 @@ export default class PathfindingContest extends React.Component {
                 <div id="pathfinding-contest-header">
                     <button id="path-start-contest-button" onClick={() => this.startContestButtonOnClick()}>Start</button>
                     <button id="reset-grid-button" onClick={() => this.resetGridButtonOnClick()}>Reset Grid</button>
-                    <div id="path-num-of-contestants-label">
-                        {this.state.numOfContestants} Contestants
+                    <div id="select-node-type-dropdown">
+                        <button id="select-node-type-dropdown-button" onClick={() => this.selectNodeTypeDropdownOnClick()}>
+                            <div id="selected-node-display-container">
+                                <div id="selected-node-display" className={`display-node-${this.state.selectedNodeType}`}></div>
+                            </div>
+                            <div id="select-node-type-button-text">Select Node Type</div>
+                            <div id='node-selection-dropdown-arrow'>▼</div>
+                        </button>
+                            {/* node selection dropdown content */}
+                            <div id="node-selection-dropdown-content">
+                                {NODE_TYPES.map((nodeType) => (
+                                (nodeType[1] !== this.state.selectedNodeType) ?
+                                    <button
+                                        key={nodeType[1]}
+                                        id='node-selection-dropdown-button'
+                                        onClick={() => this.nodeSelectionDropdownButtonOnClick(nodeType[1])}
+                                    ><div id="selected-node-display" className={`display-node-${nodeType[1]}`}></div>
+                                    <div id='node-selection-dropdown-button-node-type-name'>{nodeType[0]}</div>
+                                    <div id='node-selection-dropdown-button-node-type-weight'>{nodeType[1]}</div>
+                                    </button>
+                                    : null
+                                    
+                                ))}
+                            </div>
                     </div>
-                    <button onClick={() => console.log(this.state)}>Log State</button>
+                    <button id='path-add-contestant-button' onClick={() => this.addContestantOnClick()}>Add Contestant</button>
+                    <div id="path-num-of-contestants-label">{this.state.numOfContestants} Contestants</div>
+                    {/* <button onClick={() => console.log(this.state)}>Log State</button> */}
                     <button id="path-skip-to-finish-button" onClick={() => this.skipToFinishButtonOnClick()}>Skip To Finish</button>
                 </div>
                 <div className='pathfinding-visualizers'>
@@ -228,10 +290,12 @@ export default class PathfindingContest extends React.Component {
                             key={contestantNum}
                             ref={this.setRef}
                             grid={this.state.grid}
+                            selectedNodeWeight={this.state.selectedNodeWeight}
                             algorithmType={ALGORITHM_TYPES[(contestantNum - 1) % ALGORITHM_TYPES.length]}
                             algorithmTypes={ALGORITHM_TYPES}
                             contestantNumber={contestantNum}
                             updateGridNodeWeight={this.setNewGridWithNodeWeightUpdated}
+                            updateMultipleNodeWeights={this.setNewGridWithMultipleWeightNodesUpdated}
                             updateStartNode={this.setNewGridWithStartNodeUpdated}
                             updateFinishNode={this.setNewGridWithFinishNodeUpdated}
                         />
@@ -242,8 +306,18 @@ export default class PathfindingContest extends React.Component {
     }
 }
 
+const toggleSelectNodeTypeDropdownButtons = () => {
+    const selectNodeTypeDropdownButtonContainer = document.getElementById('node-selection-dropdown-content');
+    if(selectNodeTypeDropdownButtonContainer.style.display === 'none') {
+        selectNodeTypeDropdownButtonContainer.style.display = 'block';
+    }
+    else {
+        selectNodeTypeDropdownButtonContainer.style.display = 'none';
+    }
+}
+
 const getFullPageWidthGridNumCols = () => {
-    return Math.ceil((window.innerWidth - 16) / 16);
+    return Math.floor((window.innerWidth - 16) / 16);
 }
 
 const getEmptyGrid = () => {
@@ -304,6 +378,25 @@ const getNewGridWithNodeWeightUpdated = (grid, row, col, newWeight) => {
       weight: newWeight,
     };
     newGrid[row][col] = newNode;
+    return newGrid;
+};
+
+const getNewGridWithMultipleNodeWeightsUpdated = (grid, updatedNodesCoordinates, newWeight) => {
+    const newGrid = grid.slice();
+    for(let i = 0; i < updatedNodesCoordinates.length; ++i) {
+        const row = updatedNodesCoordinates[i][0];
+        const col = updatedNodesCoordinates[i][1]
+        const node = newGrid[row][col];
+        const newNode = {
+          ...node,
+          row: row,
+          col: col,
+          isStart: false,
+          isFinish: false,
+          weight: newWeight,
+        };
+        newGrid[row][col] = newNode;
+    }
     return newGrid;
 };
 

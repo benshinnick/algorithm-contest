@@ -37,7 +37,7 @@ html, body {
     text-decoration: none;
     font-size: 22px;
     transition-duration: 0.7s;
-    border-radius: 10px;
+    border-radius: 6px;
 
     margin-left: 2px;
     margin-right: 10px;
@@ -55,7 +55,7 @@ html, body {
     text-decoration: none;
     font-size: 22px;
     transition-duration: 0.7s;
-    border-radius: 10px;
+    border-radius: 6px;
 
     margin-left: 2px;
     margin-right: 2px;
