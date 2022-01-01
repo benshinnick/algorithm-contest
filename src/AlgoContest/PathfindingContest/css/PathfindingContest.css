@@ -112,3 +112,152 @@
 #reset-grid-button[disabled] {
     background-color: #00458f;
 }
+
+/* Node Selection Button Dropdown Styling */
+
+#selected-node-display-container {
+    float: left;
+    background-color: white;
+    border: 1px solid rgb(164, 164, 164);
+    width: 32px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    transition-duration: 0.2s;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    border-radius: 2px 0px 0px px;
+}
+
+#selected-node-display {
+    width: 15px;
+    height: 15px;
+    margin: 0px 8px;
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+    float: left;
+}
+
+.display-node-Weighted-Infinity {
+    background-color: #3b3b3b;
+    border: 1px solid #606060;
+}
+
+.display-node-Weighted-1 {
+    background-color: white;
+    border: 1px solid rgb(175, 200, 250);;
+}
+
+.display-node-Weighted-2 {
+    background-color: #eeeeee;
+    border: 1px solid #cdcdcd;
+}
+
+.display-node-Weighted-5 {
+    background-color: #dfdfdf;
+    border: 1px solid #b8b8b8;
+}
+
+.display-node-Weighted-10 {
+    background-color: #c2c2c2;
+    border: 1px solid #989898;
+}
+
+.display-node-Weighted-15 {
+    background-color: #858585;
+    border: 1px solid #505050;
+}
+
+#select-node-type-dropdown {
+    display: inline-block;
+    margin: 0px;
+    padding: 0px;
+    width: 20%;
+    margin-left: 0.25%;
+    margin-right: 0.25%;
+}
+
+#select-node-type-dropdown-button {
+    display: inline-block;
+    background-color: #007bff;
+    width: 100%;
+    border: none;
+    color: white;
+    padding: 0px;
+    transition-duration: 0.4s;
+}
+
+#select-node-type-dropdown-button:hover {
+    background-color: #0069d9;
+}
+
+#select-node-type-dropdown-button:disabled,
+#select-node-type-dropdown-button[disabled] {
+    background-color: #0069d9;
+}
+
+#select-node-type-button-text {
+    background-color: transparent;
+    border: none;
+    color: white;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    transition-duration: 0.2s;
+    border-radius: 1px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    display: inline-block;
+}
+
+#node-selection-dropdown-arrow {
+    background-color: transparent;
+    border-left: 1px solid white;
+    color: white;
+    float: right;
+    padding: 10px 10px;
+    margin: 0px;
+}
+
+#node-selection-dropdown-content {
+    display: block;
+    width: 20%;
+    position: absolute;
+    background-color: #f1f1f1;
+    margin: 0px;
+    z-index: 1;
+}
+
+#node-selection-dropdown-button {
+    color: black;
+    width: 100%;
+    background-color: white;
+    text-align: center;
+    border-top: none;
+    border-left: 1px solid rgb(164, 164, 164);
+    border-right: 1px solid rgb(164, 164, 164);
+    border-bottom: 1px solid rgb(164, 164, 164);
+    font-size: 16px;
+    padding-left: 1px;
+    padding-top: 5px;
+    padding-right: 30px;
+    padding-bottom: 5px;
+    margin-left: 0px;
+    margin-top: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
+    text-decoration: none;
+    display: block;
+}
+
+#node-selection-dropdown-button:hover {
+    background-color: #e2e6ea;
+}
+/* End Of Node Selection Button Dropdown Styling */

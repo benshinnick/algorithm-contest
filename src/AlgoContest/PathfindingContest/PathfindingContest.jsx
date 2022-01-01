@@ -18,6 +18,15 @@ const ALGORITHM_TYPES = [
     'Depth-first Search',
 ]
 
+const NODE_TYPES = [
+    'Weighted-1',
+    'Weighted-2',
+    'Weighted-5',
+    'Weighted-10',
+    'Weighted-15',
+    'Weighted-Infinity'
+]
+
 export default class PathfindingContest extends React.Component {
     constructor(props) {
         super(props);
@@ -28,6 +37,8 @@ export default class PathfindingContest extends React.Component {
             numOfContestants: INITIAL_NUM_OF_CONTESTANTS,
             isPreContest: true,
             isEmptyGrid: true,
+            selectedNodeType: 'Weighted-Infinity',
+            selectedNodeWeight: Infinity,
             startNodeRow: -1,
             startNodeColumn: -1,
             finishNodeRow: -1,
@@ -45,6 +56,7 @@ export default class PathfindingContest extends React.Component {
 
     componentDidMount() {
         this.setEmptyGrid();
+        document.getElementById('node-selection-dropdown-content').style.display = 'none';
         window.addEventListener('resize', this.handlePageResize);
     }
     
@@ -205,6 +217,17 @@ export default class PathfindingContest extends React.Component {
         console.log("Contest Being Skipped");
     }
 
+    selectNodeTypeDropdownOnClick() {
+        console.log("Select Node Type Dropdown On Click");
+        toggleSelectNodeTypeDropdownButtons();
+    }
+
+    nodeSelectionDropdownButtonOnClick(nodeType) {
+        const nodeTypeWeight = parseFloat(nodeType.split('-')[1]);
+        this.setState({...this.state, selectedNodeType: nodeType, selectedNodeWeight: nodeTypeWeight});
+        toggleSelectNodeTypeDropdownButtons();
+    }
+
     render() {
         const ContestantNumbers = [];
         for(let i = 0; i < MAX_NUM_OF_CONTESTANTS; ++i) {
@@ -216,10 +239,30 @@ export default class PathfindingContest extends React.Component {
                 <div id="pathfinding-contest-header">
                     <button id="path-start-contest-button" onClick={() => this.startContestButtonOnClick()}>Start</button>
                     <button id="reset-grid-button" onClick={() => this.resetGridButtonOnClick()}>Reset Grid</button>
-                    <div id="path-num-of-contestants-label">
-                        {this.state.numOfContestants} Contestants
+                    <div id="select-node-type-dropdown">
+                        <button id="select-node-type-dropdown-button" onClick={() => this.selectNodeTypeDropdownOnClick()}>
+                            <div id="selected-node-display-container">
+                                <div id="selected-node-display" className={`display-node-${this.state.selectedNodeType}`}></div>
+                            </div>
+                            <div id="select-node-type-button-text">Select Node Type</div>
+                            <div id='node-selection-dropdown-arrow'>▼</div>
+                        </button>
+                            {/* node selection dropdown content */}
+                            <div id="node-selection-dropdown-content">
+                                {NODE_TYPES.map((nodeType) => (
+                                (nodeType !== this.state.selectedNodeType) ?
+                                    <button
+                                        key={nodeType}
+                                        id='node-selection-dropdown-button'
+                                        onClick={() => this.nodeSelectionDropdownButtonOnClick(nodeType)}
+                                    ><div id="selected-node-display" className={`display-node-${nodeType}`}></div>{nodeType}</button>
+                                    : null
+                                    
+                                ))}
+                            </div>
                     </div>
-                    <button onClick={() => console.log(this.state)}>Log State</button>
+                    <div id="path-num-of-contestants-label">{this.state.numOfContestants} Contestants</div>
+                    {/* <button onClick={() => console.log(this.state)}>Log State</button> */}
                     <button id="path-skip-to-finish-button" onClick={() => this.skipToFinishButtonOnClick()}>Skip To Finish</button>
                 </div>
                 <div className='pathfinding-visualizers'>
@@ -228,6 +271,7 @@ export default class PathfindingContest extends React.Component {
                             key={contestantNum}
                             ref={this.setRef}
                             grid={this.state.grid}
+                            selectedNodeWeight={this.state.selectedNodeWeight}
                             algorithmType={ALGORITHM_TYPES[(contestantNum - 1) % ALGORITHM_TYPES.length]}
                             algorithmTypes={ALGORITHM_TYPES}
                             contestantNumber={contestantNum}
@@ -239,6 +283,16 @@ export default class PathfindingContest extends React.Component {
                 </div>
             </div>
         );
+    }
+}
+
+const toggleSelectNodeTypeDropdownButtons = () => {
+    const selectNodeTypeDropdownButtonContainer = document.getElementById('node-selection-dropdown-content');
+    if(selectNodeTypeDropdownButtonContainer.style.display === 'none') {
+        selectNodeTypeDropdownButtonContainer.style.display = 'block';
+    }
+    else {
+        selectNodeTypeDropdownButtonContainer.style.display = 'none';
     }
 }
 
