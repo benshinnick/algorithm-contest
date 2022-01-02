@@ -243,6 +243,14 @@ export default class PathfindingContest extends React.Component {
         toggleSelectNodeTypeDropdownButtons();
     }
 
+    mazesAndMapsButtonOnClick() {
+        console.log('mazes and maps button has been clicked');
+    }
+
+    addContestantOnClick() {
+        console.log('add contestant button has been clicked');
+    }
+
     render() {
         const ContestantNumbers = [];
         for(let i = 0; i < MAX_NUM_OF_CONTESTANTS; ++i) {
@@ -254,6 +262,7 @@ export default class PathfindingContest extends React.Component {
                 <div id="pathfinding-contest-header">
                     <button id="path-start-contest-button" onClick={() => this.startContestButtonOnClick()}>Start</button>
                     <button id="reset-grid-button" onClick={() => this.resetGridButtonOnClick()}>Reset Grid</button>
+                    <button id="mazes-and-maps-button" onClick={() => this.mazesAndMapsButtonOnClick()}>Mazes & Maps ▼</button>
                     <div id="select-node-type-dropdown">
                         <button id="select-node-type-dropdown-button" onClick={() => this.selectNodeTypeDropdownOnClick()}>
                             <div id="selected-node-display-container">
@@ -262,7 +271,6 @@ export default class PathfindingContest extends React.Component {
                             <div id="select-node-type-button-text">Select Node Type</div>
                             <div id='node-selection-dropdown-arrow'>▼</div>
                         </button>
-                            {/* node selection dropdown content */}
                             <div id="node-selection-dropdown-content">
                                 {NODE_TYPES.map((nodeType) => (
                                 (nodeType[1] !== this.state.selectedNodeType) ?
@@ -280,7 +288,7 @@ export default class PathfindingContest extends React.Component {
                             </div>
                     </div>
                     <button id='path-add-contestant-button' onClick={() => this.addContestantOnClick()}>Add Contestant</button>
-                    <div id="path-num-of-contestants-label">{this.state.numOfContestants} Contestants</div>
+                    <div id="path-num-of-contestants-label">{this.state.numOfContestants}</div>
                     {/* <button onClick={() => console.log(this.state)}>Log State</button> */}
                     <button id="path-skip-to-finish-button" onClick={() => this.skipToFinishButtonOnClick()}>Skip To Finish</button>
                 </div>
@@ -317,7 +325,7 @@ const toggleSelectNodeTypeDropdownButtons = () => {
 }
 
 const getFullPageWidthGridNumCols = () => {
-    return Math.floor((window.innerWidth - 16) / 16);
+    return Math.floor(window.innerWidth / 16);
 }
 
 const getEmptyGrid = () => {
