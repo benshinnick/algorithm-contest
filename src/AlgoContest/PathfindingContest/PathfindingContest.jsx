@@ -4,8 +4,8 @@ import './css/PathfindingContest.css';
 
 const GRID_NUM_ROWS = 18;
 
-const INITIAL_NUM_OF_CONTESTANTS = 5;
-const MAX_NUM_OF_CONTESTANTS = 5;
+const INITIAL_NUM_OF_CONTESTANTS = 3;
+const MAX_NUM_OF_CONTESTANTS = 3;
 
 const EMPTY_GRID_START_NODE_ROW = 3;
 const EMPTY_GRID_START_NODE_COL = 3;
@@ -58,6 +58,7 @@ export default class PathfindingContest extends React.Component {
     componentDidMount() {
         this.setEmptyGrid();
         document.getElementById('node-selection-dropdown-content').style.display = 'none';
+        document.getElementById('mazes-and-maps-dropdown-content').style.display = 'none';
         window.addEventListener('resize', this.handlePageResize);
     }
     
@@ -229,7 +230,6 @@ export default class PathfindingContest extends React.Component {
     }
 
     selectNodeTypeDropdownOnClick() {
-        console.log("Select Node Type Dropdown On Click");
         toggleSelectNodeTypeDropdownButtons();
     }
 
@@ -245,6 +245,7 @@ export default class PathfindingContest extends React.Component {
 
     mazesAndMapsButtonOnClick() {
         console.log('mazes and maps button has been clicked');
+        toggleSelectMazesAndMapsDropdownButtons();
     }
 
     addContestantOnClick() {
@@ -262,17 +263,26 @@ export default class PathfindingContest extends React.Component {
                 <div id="pathfinding-contest-header">
                     <button id="path-start-contest-button" onClick={() => this.startContestButtonOnClick()}>Start</button>
                     <button id="reset-grid-button" onClick={() => this.resetGridButtonOnClick()}>Reset Grid</button>
-                    <button id="mazes-and-maps-button" onClick={() => this.mazesAndMapsButtonOnClick()}>
-                        <div id='mazes-and-maps-button-text'>Mazes & Maps</div>
-                        <div id='mazes-and-maps-dropdown-arrow'>▼</div>
-                    </button>
+                    <div id="mazes-and-maps-dropdown">
+                        <button id="mazes-and-maps-button" onClick={() => this.mazesAndMapsButtonOnClick()}>
+                            <div id='mazes-and-maps-button-text'>Mazes & Maps</div>
+                            <div id='mazes-and-maps-dropdown-arrow'>▼</div>
+                        </button>
+                        <div id="mazes-and-maps-dropdown-content">
+                            <button className='mazes-and-maps-dropdown-button'>Recursive Maze</button>
+                            <button className='mazes-and-maps-dropdown-button'>Random Walls</button>
+                            <button className='mazes-and-maps-dropdown-button'>Map 1</button>
+                            <button className='mazes-and-maps-dropdown-button'>Map 2</button>
+                            <button className='mazes-and-maps-dropdown-button'>Map 3</button>
+                        </div>
+                    </div>
                     <div id="select-node-type-dropdown">
                         <button id="select-node-type-dropdown-button" onClick={() => this.selectNodeTypeDropdownOnClick()}>
                             <div id="selected-node-display-container">
                                 <div id="selected-node-display" className={`display-node-${this.state.selectedNodeType}`}></div>
                             </div>
                             <div id="select-node-type-button-text">Select Node Type</div>
-                            <div id='node-selection-dropdown-arrow'>▼</div>
+                            <div id="node-selection-dropdown-arrow">▼</div>
                         </button>
                             <div id="node-selection-dropdown-content">
                                 {NODE_TYPES.map((nodeType) => (
@@ -292,7 +302,6 @@ export default class PathfindingContest extends React.Component {
                     </div>
                     <button id='path-add-contestant-button' onClick={() => this.addContestantOnClick()}>Add Contestant</button>
                     <div id="path-num-of-contestants-label">{this.state.numOfContestants}</div>
-                    {/* <button onClick={() => console.log(this.state)}>Log State</button> */}
                     <button id="path-skip-to-finish-button" onClick={() => this.skipToFinishButtonOnClick()}>Skip To Finish</button>
                 </div>
                 <div className='pathfinding-visualizers'>
@@ -324,6 +333,16 @@ const toggleSelectNodeTypeDropdownButtons = () => {
     }
     else {
         selectNodeTypeDropdownButtonContainer.style.display = 'none';
+    }
+}
+
+const toggleSelectMazesAndMapsDropdownButtons = () => {
+    const mazesAndMapsDropdownButtonContainer = document.getElementById('mazes-and-maps-dropdown-content');
+    if(mazesAndMapsDropdownButtonContainer.style.display === 'none') {
+        mazesAndMapsDropdownButtonContainer.style.display = 'block';
+    }
+    else {
+        mazesAndMapsDropdownButtonContainer.style.display = 'none';
     }
 }
 

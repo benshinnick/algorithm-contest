@@ -77,6 +77,7 @@
   padding-bottom: 4px;
   text-align: center;
   text-decoration: none;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 15px;
   transition-duration: 0.2s;
   margin: 0px 15px;
@@ -101,6 +102,7 @@
   text-align: center;
   color: white;
   width: 95px;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   padding-left: 15px;
   padding-top: 4px;
@@ -114,8 +116,7 @@
 
 .dropdown-arrow {
   float: right;
-  font-size: 11pt;
-  font-size: 9;
+  font-family: Arial, Helvetica, sans-serif;
   transition-duration: 0.3s;
   background-color: transparent;
   text-align: center;
@@ -152,6 +153,7 @@
   text-align: center;
   border: none;
   width: 115px;
+  font-family: Arial, Helvetica, sans-serif;
   font-size: 16px;
   padding-left: 15px;
   padding-top: 2px;
