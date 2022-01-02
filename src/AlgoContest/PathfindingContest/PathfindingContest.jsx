@@ -2,7 +2,7 @@ import React from 'react';
 import PathfindingVisualizerContestant from './PathfindingVisualizerContestant';
 import './css/PathfindingContest.css';
 
-const GRID_NUM_ROWS = 13;
+const GRID_NUM_ROWS = 18;
 
 const INITIAL_NUM_OF_CONTESTANTS = 5;
 const MAX_NUM_OF_CONTESTANTS = 5;
@@ -14,7 +14,7 @@ const ALGORITHM_TYPES = [
     'Dijkstra',
     'A* Search',
     'Greedy Best-first Search',
-    'Breath-first Search',
+    'Breadth-first Search',
     'Depth-first Search',
 ]
 
@@ -325,7 +325,7 @@ const toggleSelectNodeTypeDropdownButtons = () => {
 }
 
 const getFullPageWidthGridNumCols = () => {
-    return Math.floor(window.innerWidth / 16);
+    return Math.floor((window.innerWidth - 5) / 11);
 }
 
 const getEmptyGrid = () => {
