@@ -296,7 +296,6 @@ export default class PathfindingContest extends React.Component {
                                     <div id='node-selection-dropdown-button-node-type-weight'>{nodeType[1]}</div>
                                     </button>
                                     : null
-                                    
                                 ))}
                             </div>
                     </div>
@@ -347,7 +346,7 @@ const toggleSelectMazesAndMapsDropdownButtons = () => {
 }
 
 const getFullPageWidthGridNumCols = () => {
-    return Math.floor((window.innerWidth - 5) / 11);
+    return Math.floor((window.innerWidth - 25) / 11);
 }
 
 const getEmptyGrid = () => {
@@ -443,6 +442,7 @@ const getNewGridWithStartNodeUpdated = (grid, row, col, prevRow, prevCol) => {
         col: prevCol,
         weight: emptyNodeWeight,
         isStart: false,
+        isFinish: false,
         isLastRow: prevRow === totRows - 1,
         isLastColumn: prevCol === totCols - 1
     }
@@ -452,6 +452,7 @@ const getNewGridWithStartNodeUpdated = (grid, row, col, prevRow, prevCol) => {
         col: col,
         weight: startNodeWeight,
         isStart: true,
+        isFinish: false,
         isLastRow: row === totRows - 1,
         isLastColumn: col === totCols - 1
     };
@@ -472,6 +473,7 @@ const getNewGridWithFinishNodeUpdated = (grid, row, col, prevRow, prevCol) => {
         row: prevRow,
         col: prevCol,
         weight: emptyNodeWeight,
+        isStart: false,
         isFinish: false,
         isLastRow: prevRow === totRows - 1,
         isLastColumn: prevCol === totCols - 1
@@ -481,6 +483,7 @@ const getNewGridWithFinishNodeUpdated = (grid, row, col, prevRow, prevCol) => {
         row: row,
         col: col,
         weight: finishNodeWeight,
+        isStart: false,
         isFinish: true,
         isLastRow: row === totRows - 1,
         isLastColumn: col === totCols - 1
