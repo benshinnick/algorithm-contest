@@ -71,7 +71,7 @@
     background-color: #5a6268;
     border: none;
     color: white;
-    width: 3%;
+    width: 2%;
     padding-top: 8px;
     padding-bottom: 9px;
     padding-left: 8px;
@@ -85,16 +85,16 @@
     margin-left: 0px;
     margin-top: 2px;
     margin-bottom: 2px;
-    margin-right: 0.25%;
+    margin-right: 0.5%;
 }
 
 #path-skip-to-finish-button {
     background-color: #1ea33b;
-    float: right;
+    display: inline-block;
     border: none;
     color: white;
     width: 15%;
-    margin-left: 0.25%;
+    margin-left: 0px;
     padding-top: 9px;
     padding-bottom: 9px;
     text-align: center;
@@ -102,7 +102,7 @@
     font-size: 15px;
     transition-duration: 0.2s;
     border-radius: 1px;
-    margin-right: 0.5%;
+    margin-right: 0px;
     margin-top: 2px;
     margin-bottom: 2px;
 }
@@ -149,11 +149,10 @@
     display: inline-block;
     border: none;
     color: white;
-    width: 13.25%;
+    width: 14.25%;
     margin-left: 0.25%;
     margin-right: 0.25%;
-    padding-top: 9px;
-    padding-bottom: 9px;
+    padding: 0px;
     text-align: center;
     text-decoration: none;
     font-size: 15px;
@@ -170,6 +169,31 @@
 #mazes-and-maps-button:disabled,
 #mazes-and-maps-button[disabled] {
     background-color: #00458f;
+}
+
+#mazes-and-maps-button-text {
+    display: inline-block;
+    background-color: transparent;
+    border: none;
+    color: white;
+    padding-top: 9px;
+    padding-bottom: 9px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 15px;
+    transition-duration: 0.2s;
+    border-radius: 1px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
+
+#mazes-and-maps-dropdown-arrow {
+    background-color: transparent;
+    border-left: 1px solid white;
+    color: white;
+    float: right;
+    padding: 9px 8px;
+    margin: 0px;
 }
 
 /* Node Selection Button Dropdown Styling */
@@ -297,7 +321,7 @@
     border-left: 1px solid white;
     color: white;
     float: right;
-    padding: 10px 10px;
+    padding: 10px 8px;
     margin: 0px;
 }
 

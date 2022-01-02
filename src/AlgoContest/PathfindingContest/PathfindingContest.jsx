@@ -262,7 +262,10 @@ export default class PathfindingContest extends React.Component {
                 <div id="pathfinding-contest-header">
                     <button id="path-start-contest-button" onClick={() => this.startContestButtonOnClick()}>Start</button>
                     <button id="reset-grid-button" onClick={() => this.resetGridButtonOnClick()}>Reset Grid</button>
-                    <button id="mazes-and-maps-button" onClick={() => this.mazesAndMapsButtonOnClick()}>Mazes & Maps ▼</button>
+                    <button id="mazes-and-maps-button" onClick={() => this.mazesAndMapsButtonOnClick()}>
+                        <div id='mazes-and-maps-button-text'>Mazes & Maps</div>
+                        <div id='mazes-and-maps-dropdown-arrow'>▼</div>
+                    </button>
                     <div id="select-node-type-dropdown">
                         <button id="select-node-type-dropdown-button" onClick={() => this.selectNodeTypeDropdownOnClick()}>
                             <div id="selected-node-display-container">
