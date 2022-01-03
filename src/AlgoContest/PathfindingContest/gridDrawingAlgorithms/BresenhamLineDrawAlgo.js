@@ -1,7 +1,10 @@
 //From "https://jstutorial.medium.com/how-to-code-your-first-algorithm-draw-a-line-ca121f9a1395"
 
-//This algorithm is used to get the grid coordinates between the points a mouse skips when they
-// move too quickly when drawing nodes
+/*
+    This algorithm is used to get the grid coordinates
+     between the points a mouse skips when they move
+     too quickly when drawing nodes
+*/
 export let getLinePixelCoordinates = (x1, y1, x2, y2) => {
     let pixelLinePairs = [];
 

@@ -435,9 +435,10 @@ const getNewGridWithStartNodeUpdated = (grid, row, col, prevRow, prevCol) => {
     const totCols = grid[0].length;
     const startNodeWeight = 1;
     const emptyNodeWeight = 1;
+    const prevNode = newGrid[prevRow][prevCol];
     const node = newGrid[row][col];
-    const prevNode = {
-        ...node,
+    const prevStartNode = {
+        ...prevNode,
         row: prevRow,
         col: prevCol,
         weight: emptyNodeWeight,
@@ -446,7 +447,7 @@ const getNewGridWithStartNodeUpdated = (grid, row, col, prevRow, prevCol) => {
         isLastRow: prevRow === totRows - 1,
         isLastColumn: prevCol === totCols - 1
     }
-    const newNode = {
+    const newStartNode = {
         ...node,
         row: row,
         col: col,
@@ -456,8 +457,8 @@ const getNewGridWithStartNodeUpdated = (grid, row, col, prevRow, prevCol) => {
         isLastRow: row === totRows - 1,
         isLastColumn: col === totCols - 1
     };
-    newGrid[prevRow][prevCol] = prevNode;
-    newGrid[row][col] = newNode;
+    newGrid[prevRow][prevCol] = prevStartNode;
+    newGrid[row][col] = newStartNode;
     return newGrid;
 }
 
@@ -467,9 +468,10 @@ const getNewGridWithFinishNodeUpdated = (grid, row, col, prevRow, prevCol) => {
     const totCols = grid[0].length;
     const finishNodeWeight = 1;
     const emptyNodeWeight = 1;
+    const prevNode = newGrid[prevRow][prevCol];
     const node = newGrid[row][col];
-    const prevNode = {
-        ...node,
+    const prevFinishNode = {
+        ...prevNode,
         row: prevRow,
         col: prevCol,
         weight: emptyNodeWeight,
@@ -478,7 +480,7 @@ const getNewGridWithFinishNodeUpdated = (grid, row, col, prevRow, prevCol) => {
         isLastRow: prevRow === totRows - 1,
         isLastColumn: prevCol === totCols - 1
     }
-    const newNode = {
+    const newFinishNode = {
         ...node,
         row: row,
         col: col,
@@ -488,8 +490,8 @@ const getNewGridWithFinishNodeUpdated = (grid, row, col, prevRow, prevCol) => {
         isLastRow: row === totRows - 1,
         isLastColumn: col === totCols - 1
     };
-    newGrid[prevRow][prevCol] = prevNode;
-    newGrid[row][col] = newNode;
+    newGrid[prevRow][prevCol] = prevFinishNode;
+    newGrid[row][col] = newFinishNode;
     return newGrid;
 }
 

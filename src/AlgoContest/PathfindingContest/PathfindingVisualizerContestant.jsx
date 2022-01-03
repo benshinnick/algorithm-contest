@@ -77,21 +77,47 @@ export default class PathfindingVisualizerContestant extends React.Component {
     }
 
     placeStartNode(row, col) {
-        this.props.updateStartNode(row, col);
-        const allStartNodes = document.getElementsByClassName(`node-${row}-${col}`);
-        for(let i = 0; i < allStartNodes.length; ++i) {
-            allStartNodes[i].classList.add('node-start');
+        if(!this.isStartOrFinishNode(row, col)) {
+            this.props.updateStartNode(row, col);
+            const allStartNodes = document.getElementsByClassName(`node-${row}-${col}`);
+            for(let i = 0; i < allStartNodes.length; ++i) {
+                allStartNodes[i].classList.add('node-start');
+            }
+            this.removeHoverStylingFromLastUpdatedNode('selected-start'); 
         }
-        this.removeHoverStylingFromLastUpdatedNode('selected-start');        
+        else {
+            let finNodeCol = col;
+            if(col > 1) { finNodeCol-- }
+            else { finNodeCol++ }
+            setTimeout(() => {
+                this.props.updateFinishNode(row, finNodeCol)
+            }, 100);
+            setTimeout( () => {
+                this.props.updateStartNode(row, col);
+            }, 200);
+        }
     }
 
     placeFinishNode(row, col) {
-        this.props.updateFinishNode(row, col);
-        const allFinishNodes = document.getElementsByClassName(`node-${row}-${col}`);
-        for(let i = 0; i < allFinishNodes.length; ++i) {
-            allFinishNodes[i].classList.add('node-finish');
+        if(!this.isStartOrFinishNode(row, col)) {
+            this.props.updateFinishNode(row, col);
+            const allFinishNodes = document.getElementsByClassName(`node-${row}-${col}`);
+            for(let i = 0; i < allFinishNodes.length; ++i) {
+                allFinishNodes[i].classList.add('node-finish');
+            }
+            this.removeHoverStylingFromLastUpdatedNode('selected-finish');
         }
-        this.removeHoverStylingFromLastUpdatedNode('selected-finish');
+        else {
+            let startNodeCol = col;
+            if(col > 0) { startNodeCol-- }
+            else { startNodeCol++ }
+            setTimeout(() => {
+                this.props.updateStartNode(row, startNodeCol);
+            }, 100);
+            setTimeout(() => {
+                this.props.updateFinishNode(row, col);
+            }, 200);
+        }
     }
 
     isStartOrFinishNode(row, col) {
