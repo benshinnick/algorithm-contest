@@ -1,5 +1,6 @@
 import React from 'react';
 import Node from './Node/Node.jsx';
+import { getDijkstraAnimations } from './pathfindingAlgorithms/Dijkstra.js';
 import { getLinePixelCoordinates } from './gridDrawingAlgorithms/BresenhamLineDrawAlgo.js';
 import './css/PathfindingVisualizerContestant.css';
 
@@ -30,6 +31,25 @@ export default class PathfindingVisualizerContestant extends React.Component {
             return{ selectedNodeWeight: props.selectedNodeWeight }
         }
         return null;
+    }
+
+    getPathfiningAnimations() {
+        let gridCopy = this.state.grid.map((value) => value);
+
+        switch(this.state.algorithmType) {
+            case 'Dijkstra':
+                return getDijkstraAnimations(gridCopy);
+            case 'A* Search':
+                // return getAStarAnimations(gridCopy);
+            case 'Greedy Best-first Search':
+                // return getGreedyBestFirstAnimations(gridCopy);
+            case 'Breadth-first Search':
+                // return getBreadthFirstAnimations(gridCopy);
+            case 'Depth-first Search':
+                // return getDepthFirstAnimations(gridCopy);
+            default:
+                console.log("Error: Unexpected Algorithm Type");
+        }
     }
 
     handleMouseDown(row, col) {

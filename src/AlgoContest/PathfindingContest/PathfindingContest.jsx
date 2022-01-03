@@ -66,6 +66,10 @@ export default class PathfindingContest extends React.Component {
         window.removeEventListener('resize', this.handlePageResize);
     }
 
+    startContest() {
+        
+    }
+
     setEmptyGrid() {
         const emptyGrid = getEmptyGrid();
         const totCols = getFullPageWidthGridNumCols();
