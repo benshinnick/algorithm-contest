@@ -67,7 +67,12 @@ export default class PathfindingContest extends React.Component {
     }
 
     startContest() {
-        
+        // this.disablePreContestButtons();
+        // this.enableDuringContestControlButtons();
+        // this.startCountdown();
+        // const allContestantAnimationData = this.getAllContestantAnimationDataAndSetAlgorithmStatInfo();
+        // this.runContestAnimations(allContestantAnimationData);
+        // this.scheduleContestFinishedCommands(allContestantAnimationData);
     }
 
     setEmptyGrid() {

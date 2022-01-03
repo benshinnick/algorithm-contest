@@ -49,7 +49,34 @@ export default class PathfindingVisualizerContestant extends React.Component {
                 // return getDepthFirstAnimations(gridCopy);
             default:
                 console.log("Error: Unexpected Algorithm Type");
+                return null;
         }
+    }
+
+    doAnimationNextStep(animationStepInfo, currentStepNumber) {
+        switch(this.state.algorithmType) {
+            case 'Dijkstra':
+                this.doNextDijkstraAnimationStep(animationStepInfo, currentStepNumber);
+                break;
+            case 'A* Search':
+                // this.doNextAStarAnimationStep(animationStepInfo, currentStepNumber);
+                break;
+            case 'Greedy Best-first Search':
+                // this.doNextGreedyBestFirstAnimationStep(animationStepInfo, currentStepNumber);
+                break;
+            case 'Breadth-first Search':
+                // this.doNextBreadthFirstAnimationStep(animationStepInfo, currentStepNumber);
+                break;
+            case 'Depth-first Search':
+                // this.doNextDepthFirstAnimationStep(animationStepInfo, currentStepNumber);
+                break;
+            default:
+                console.log("Error: Unexpected Algorithm Type");
+        }
+    }
+
+    doNextDijkstraAnimationStep(animationStepInfo, currentStepNumber) {
+        
     }
 
     handleMouseDown(row, col) {
