@@ -4,7 +4,7 @@ import { getDijkstraAnimations } from './pathfindingAlgorithms/Dijkstra.js';
 import { getLinePixelCoordinates } from './gridDrawingAlgorithms/BresenhamLineDrawAlgo.js';
 import './css/PathfindingVisualizerContestant.css';
 
-const INITIAL_ANIMATION_SPEED = 2;
+const INITIAL_ANIMATION_SPEED = 3;
 
 export default class PathfindingVisualizerContestant extends React.Component {
 
@@ -100,13 +100,13 @@ export default class PathfindingVisualizerContestant extends React.Component {
         //visited node cases
         if (animationCode === 'v') {
             setTimeout(() => {
-                currentNode.classList.add('visiting');
+                // currentNode.classList.add('visiting');
             }, currentStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
             return;
         }
         else if(animationCode === 'vf') {
             setTimeout(() => {
-                currentNode.classList.remove('visiting');
+                // currentNode.classList.remove('visiting');
                 this.addVisitedMarkerToNode(currentNode);
                 // currentNode.classList.add('visited');
             }, currentStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);

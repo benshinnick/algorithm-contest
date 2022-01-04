@@ -2,10 +2,10 @@ import React from 'react';
 import PathfindingVisualizerContestant from './PathfindingVisualizerContestant';
 import './css/PathfindingContest.css';
 
-const GRID_NUM_ROWS = 18;
+const GRID_NUM_ROWS = 20;
 
-const INITIAL_NUM_OF_CONTESTANTS = 1;
-const MAX_NUM_OF_CONTESTANTS = 1;
+const INITIAL_NUM_OF_CONTESTANTS = 3;
+const MAX_NUM_OF_CONTESTANTS = 3;
 
 const EMPTY_GRID_START_NODE_ROW = 3;
 const EMPTY_GRID_START_NODE_COL = 3;
@@ -423,7 +423,7 @@ const toggleSelectMazesAndMapsDropdownButtons = () => {
 }
 
 const getFullPageWidthGridNumCols = () => {
-    return Math.floor((window.innerWidth - 25) / 11);
+    return Math.floor((window.innerWidth - 25) / 10);
 }
 
 const getEmptyGrid = () => {
