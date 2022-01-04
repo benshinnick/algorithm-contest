@@ -4,7 +4,7 @@ export class DijkstraNode {
         this.row = row;
         this.col = col;
         this.weight = weight;
-        this.disance = distance;
+        this.distance = distance;
         this.previousNode = null;
         this.isVisited = false;
     }
@@ -13,40 +13,40 @@ export class DijkstraNode {
         this.weight = weight;
     }
 
-    // getWeight() {
-    //     return this.weight;
-    // }
+    getWeight() {
+        return this.weight;
+    }
 
     setDistance(distance) {
         this.distance = distance;
     }
 
-    // getDistance() {
-    //     return this.distance;
-    // }
+    getDistance() {
+        return this.distance;
+    }
 
     setPreviousNode(prevNode) {
         this.previousNode = prevNode;
     }
 
-    // getPreviousNode() {
-    //     return this.previousNode;
-    // }
+    getPreviousNode() {
+        return this.previousNode;
+    }
 
     setIsVisited(isVisited) {
         this.isVisited = isVisited;
     }
 
-    // isVisited() {
-    //     return this.isVisited;
-    // }
+    isNodeVisited() {
+        return this.isVisited;
+    }
 
-    // getRow() {
-    //     return this.row;
-    // }
+    getRow() {
+        return this.row;
+    }
 
-    // getCol() {
-    //     return this.col;
-    // }
+    getCol() {
+        return this.col;
+    }
 
- }
+}

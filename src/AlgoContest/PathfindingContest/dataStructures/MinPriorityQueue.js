@@ -25,6 +25,10 @@ export class PriorityQueue {
     }
 
     dequeue() {
+        if(this.values.length <= 1) {
+            return this.values.pop();
+        }
+
         const max = this.values[0];
         const end = this.values.pop();
         this.values[0] = end;
@@ -59,6 +63,15 @@ export class PriorityQueue {
         return max;
     }
 
+    contains(value) {
+        for(let i = 0; i < this.values.length; ++i) {
+            if(this.values[i] === value) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     isEmpty() {
         if(this.values.length <= 0) {
             return true;
@@ -68,3 +81,15 @@ export class PriorityQueue {
         }
     }
 }
+
+class Node {
+    constructor(val, priority) {
+      this.val = val;
+      this.priority = priority;
+    }
+
+    getValue() {
+        return this.val;
+    }
+}
+  

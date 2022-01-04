@@ -4,8 +4,8 @@ import './css/PathfindingContest.css';
 
 const GRID_NUM_ROWS = 18;
 
-const INITIAL_NUM_OF_CONTESTANTS = 3;
-const MAX_NUM_OF_CONTESTANTS = 3;
+const INITIAL_NUM_OF_CONTESTANTS = 1;
+const MAX_NUM_OF_CONTESTANTS = 1;
 
 const EMPTY_GRID_START_NODE_ROW = 3;
 const EMPTY_GRID_START_NODE_COL = 3;
@@ -70,9 +70,76 @@ export default class PathfindingContest extends React.Component {
         // this.disablePreContestButtons();
         // this.enableDuringContestControlButtons();
         // this.startCountdown();
-        // const allContestantAnimationData = this.getAllContestantAnimationDataAndSetAlgorithmStatInfo();
-        // this.runContestAnimations(allContestantAnimationData);
+        const allContestantAnimationData = this.getAllContestantAnimationDataAndSetAlgorithmStatInfo();
+        this.runContestAnimations(allContestantAnimationData);
         // this.scheduleContestFinishedCommands(allContestantAnimationData);
+    }
+
+    getAllContestantAnimationDataAndSetAlgorithmStatInfo() {
+        const allContestantAnimationData = [];
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            allContestantAnimationData[i] = this.algoContestantRefs[i].getPathfindingAnimations(
+                this.state.grid[this.state.startNodeRow][this.state.startNodeColumn],
+                this.state.grid[this.state.finishNodeRow][this.state.finishNodeColumn]
+            );
+            // let numOfVisitedNodes = 0;
+            // let pathLength = 0;
+            // for(let j = 0; j < allContestantAnimationData[i].length; ++j){
+            //     let animationCode = allContestantAnimationData[i][j][0];
+            //     if(animationCode === 'v') {
+            //         numOfVisitedNodes++;
+            //     }
+            //     else if(animationCode === 'pf') {
+            //         pathLength += this.state.grid[allContestantAnimationData[i][j][1].row][allContestantAnimationData[i][j][1].col].weight;
+            //     }
+            // }
+            // this.algoContestantRefs[i].setAllAlgorithmStatInfo(allContestantAnimationData[i].length / 2, numOfComparisons, numOfSwapsOrOverwrites);
+        }
+
+        return allContestantAnimationData;
+    }
+
+    runContestAnimations(allContestantAnimationData) {
+        // console.log(allContestantAnimationData);
+        for(let i = 0; i < allContestantAnimationData[0].length; ++i) {
+            this.algoContestantRefs[0].doAnimationNextStep(
+                allContestantAnimationData[0][i],
+                i
+            );
+        }
+
+        // let stepCounter = 0;
+        // let numOfFinishedContestants = 0;
+        // // let placeNumber = 0;
+        // while(numOfFinishedContestants < this.state.numOfContestants) {
+        //     // let hasContestantFinishedThisStep = false;
+        //     for(let i = 0; i < this.state.numOfContestants; ++i) {
+        //         if(stepCounter > allContestantAnimationData[i].length) {
+        //             continue;
+        //         }
+        //         else if(stepCounter === allContestantAnimationData[i].length) {
+        //             numOfFinishedContestants++;
+        //             // if(hasContestantFinishedThisStep === false) {
+        //             //     placeNumber++;
+        //             //     hasContestantFinishedThisStep = true;
+        //             //     this.algoContestantRefs[i].scheduleAlgorithmIsNowFinishedCommands(stepCounter, placeNumber);
+        //             // }
+        //             // else {
+        //             //     this.algoContestantRefs[i].scheduleAlgorithmIsNowFinishedCommands(stepCounter, placeNumber);
+        //             // }
+        //             console.log('contestant finished');
+        //             continue;
+        //         }
+        //         else {
+        //             this.algoContestantRefs[i].doAnimationNextStep(
+        //                 allContestantAnimationData[i][stepCounter],
+        //                 stepCounter
+        //             );
+        //             console.log(stepCounter);
+        //         }
+        //     }
+        //     stepCounter++;
+        // }
     }
 
     setEmptyGrid() {
@@ -227,6 +294,7 @@ export default class PathfindingContest extends React.Component {
 
     startContestButtonOnClick() {
         console.log("Contest Starting");
+        this.startContest();
     }
 
     resetGridButtonOnClick() {
