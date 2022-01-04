@@ -4,10 +4,8 @@ import { DijkstraNode } from "../dataStructures/DijkstraNode";
 export function getDijkstraAnimations(grid, startNode, finishNode) {
     const animations = [];
     const dijkstraGrid = getDijkstraGrid(grid, startNode.row, startNode.col);
-    console.log(dijkstraGrid);
     dijkstra(dijkstraGrid, startNode, finishNode, animations);
     findNodesInShortestPathOrder(dijkstraGrid, finishNode, animations);
-    console.log(animations);
     return animations;
 }
 
@@ -32,24 +30,6 @@ function dijkstra(grid, startNode, finishNode, animations) {
     }
 }
 
-function getDijkstraGrid(grid) {
-    const numRows = grid.length;
-    const numCols = grid[0].length;
-
-    let nodes = [];
-    for (let row = 0; row < numRows; ++row) {
-        nodes.push([]);
-    }
-
-    for (let row = 0; row < numRows; ++row) {
-        for (let col = 0; col < numCols; ++col) {
-            nodes[row][col] = new DijkstraNode(row, col, grid[row][col].weight, Infinity);
-        }
-    }
-
-    return nodes;
-}
-
 function updateClosestNodeNeighbors(node, grid, priorityQueue) {
     const unvisitedNeighbors = getUnvisitedNeighbors(node, grid);
     for (const neighbor of unvisitedNeighbors) {
@@ -67,18 +47,10 @@ function getUnvisitedNeighbors(node, grid) {
     const row = node.getRow();
     const col = node.getCol();
     // only checking adjacent nodes not along a diagonal
-    if (row > 0) {
-        neighbors.push(grid[row - 1][col]);
-    }
-    if (row < grid.length - 1) {
-        neighbors.push(grid[row + 1][col]);
-    }
-    if (col > 0) {
-        neighbors.push(grid[row][col - 1]);
-    }
-    if (col < grid[0].length - 1) {
-        neighbors.push(grid[row][col + 1]);
-    }
+    if (row > 0) neighbors.push(grid[row - 1][col]);
+    if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
+    if (col > 0) neighbors.push(grid[row][col - 1]);
+    if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
 
     return neighbors.filter(neighbor => !neighbor.isNodeVisited());
 }
@@ -90,4 +62,22 @@ function findNodesInShortestPathOrder(grid, finishNode, animations) {
         currentNode = currentNode.previousNode;
     }
     return;
+}
+
+function getDijkstraGrid(grid) {
+    const numRows = grid.length;
+    const numCols = grid[0].length;
+
+    let nodes = [];
+    for (let row = 0; row < numRows; ++row) {
+        nodes.push([]);
+    }
+
+    for (let row = 0; row < numRows; ++row) {
+        for (let col = 0; col < numCols; ++col) {
+            nodes[row][col] = new DijkstraNode(row, col, grid[row][col].weight, Infinity);
+        }
+    }
+
+    return nodes;
 }

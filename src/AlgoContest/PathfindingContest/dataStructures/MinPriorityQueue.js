@@ -63,15 +63,6 @@ export class PriorityQueue {
         return max;
     }
 
-    contains(value) {
-        for(let i = 0; i < this.values.length; ++i) {
-            if(this.values[i] === value) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     isEmpty() {
         if(this.values.length <= 0) {
             return true;
