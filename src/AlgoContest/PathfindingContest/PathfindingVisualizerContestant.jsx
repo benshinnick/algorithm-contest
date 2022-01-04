@@ -4,7 +4,7 @@ import { getDijkstraAnimations } from './pathfindingAlgorithms/Dijkstra.js';
 import { getLinePixelCoordinates } from './gridDrawingAlgorithms/BresenhamLineDrawAlgo.js';
 import './css/PathfindingVisualizerContestant.css';
 
-const INITIAL_ANIMATION_SPEED = 1;
+const INITIAL_ANIMATION_SPEED = 2;
 
 export default class PathfindingVisualizerContestant extends React.Component {
 

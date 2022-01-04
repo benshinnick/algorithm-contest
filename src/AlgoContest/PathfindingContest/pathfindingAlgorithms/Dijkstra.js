@@ -6,7 +6,7 @@ export function getDijkstraAnimations(grid, startNode, finishNode) {
     const dijkstraGrid = getDijkstraGrid(grid, startNode.row, startNode.col);
     console.log(dijkstraGrid);
     dijkstra(dijkstraGrid, startNode, finishNode, animations);
-    // findNodesInShortestPathOrder(dijkstraGrid, finishNode, animations);
+    findNodesInShortestPathOrder(dijkstraGrid, finishNode, animations);
     console.log(animations);
     return animations;
 }
@@ -21,9 +21,8 @@ function dijkstra(grid, startNode, finishNode, animations) {
     let priorityQueue = new PriorityQueue();
     priorityQueue.enqueue(grid[startNode.row][startNode.col], 0);
 
-    // for(let i = 0; i < 100; ++i) {
     while (!priorityQueue.isEmpty()) {
-        const closestNode = priorityQueue.dequeue().getValue();
+        let closestNode = priorityQueue.dequeue().getValue();
         grid[closestNode.getRow()][closestNode.getCol()].setIsVisited(true);
         animations.push(['v', closestNode.getRow(), closestNode.getCol()]);
         animations.push(['vf', closestNode.getRow(), closestNode.getCol()]);
@@ -51,6 +50,18 @@ function getDijkstraGrid(grid) {
     return nodes;
 }
 
+function updateClosestNodeNeighbors(node, grid, priorityQueue) {
+    const unvisitedNeighbors = getUnvisitedNeighbors(node, grid);
+    for (const neighbor of unvisitedNeighbors) {
+        let altDistance = parseInt(node.getDistance()) + parseInt(neighbor.getWeight());
+        if (altDistance < neighbor.getDistance()) {
+            neighbor.setDistance(altDistance);
+            neighbor.setPreviousNode(node);
+            priorityQueue.enqueue(neighbor, neighbor.distance);
+        }
+    }
+}
+
 function getUnvisitedNeighbors(node, grid) {
     const neighbors = [];
     const row = node.getRow();
@@ -70,19 +81,6 @@ function getUnvisitedNeighbors(node, grid) {
     }
 
     return neighbors.filter(neighbor => !neighbor.isNodeVisited());
-}
-
-function updateClosestNodeNeighbors(node, grid, priorityQueue) {
-    const unvisitedNeighbors = getUnvisitedNeighbors(node, grid);
-    for (const neighbor of unvisitedNeighbors) {
-        let altDistance = node.getDistance() + neighbor.getWeight();
-        console.log(altDistance);
-        if (altDistance < neighbor.getDistance()) {
-            neighbor.setDistance(altDistance);
-            neighbor.setPreviousNode(node);
-            priorityQueue.enqueue(neighbor, neighbor.distance);
-        }
-    }
 }
 
 function findNodesInShortestPathOrder(grid, finishNode, animations) {
