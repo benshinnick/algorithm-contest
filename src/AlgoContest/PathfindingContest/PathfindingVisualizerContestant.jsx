@@ -4,7 +4,7 @@ import { getDijkstraAnimations } from './pathfindingAlgorithms/Dijkstra.js';
 import { getLinePixelCoordinates } from './gridDrawingAlgorithms/BresenhamLineDrawAlgo.js';
 import './css/PathfindingVisualizerContestant.css';
 
-const INITIAL_ANIMATION_SPEED = 3;
+const INITIAL_ANIMATION_SPEED = 4;
 
 export default class PathfindingVisualizerContestant extends React.Component {
 
@@ -88,6 +88,29 @@ export default class PathfindingVisualizerContestant extends React.Component {
         node.appendChild(visitedMarker);
     }
 
+    addShortestPathLineToNode(node, row, col, adjacentPathRow, adjacentPathCol) {
+        let visitedMarker = document.createElement("DIV");
+
+        if(row === adjacentPathRow) {
+            if(col < adjacentPathCol) {
+                visitedMarker.setAttribute("class", 'shortestPathRight');
+            }
+            else {
+                visitedMarker.setAttribute("class", 'shortestPathLeft');
+            }
+        }
+        else if(col === adjacentPathCol) {
+            if(row < adjacentPathRow) {
+                visitedMarker.setAttribute("class", 'shortestPathBottom');
+            }
+            else {
+                visitedMarker.setAttribute("class", 'shortestPathTop');
+            }
+        }
+
+        node.prepend(visitedMarker);
+    }
+
     doNextDijkstraAnimationStep(animationStepInfo, currentStepNumber) {
         const animationCode = animationStepInfo[0];
         const row = animationStepInfo[1];
@@ -100,22 +123,31 @@ export default class PathfindingVisualizerContestant extends React.Component {
         //visited node cases
         if (animationCode === 'v') {
             setTimeout(() => {
-                // currentNode.classList.add('visiting');
+                currentNode.classList.add('visiting');
             }, currentStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
             return;
         }
         else if(animationCode === 'vf') {
             setTimeout(() => {
-                // currentNode.classList.remove('visiting');
+                currentNode.classList.remove('visiting');
                 this.addVisitedMarkerToNode(currentNode);
-                // currentNode.classList.add('visited');
             }, currentStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
             return;
         }
         //shortest path case
         else if(animationCode === 'sp') {
+            const nextRow = animationStepInfo[3];
+            const nextCol = animationStepInfo[4];
             setTimeout(() => {
-                currentNode.classList.add('shortestPath');
+                this.addShortestPathLineToNode(currentNode, row, col, nextRow, nextCol);
+            }, currentStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
+            return;
+        }
+        else if(animationCode === 'spf') {
+            setTimeout(() => {
+                const prevRow = animationStepInfo[3];
+                const prevCol = animationStepInfo[4];
+                this.addShortestPathLineToNode(currentNode, row, col, prevRow, prevCol);
             }, currentStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
             return;
         }

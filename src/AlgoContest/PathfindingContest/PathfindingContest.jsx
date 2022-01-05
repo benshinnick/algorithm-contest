@@ -7,8 +7,8 @@ const GRID_NUM_ROWS = 20;
 const INITIAL_NUM_OF_CONTESTANTS = 3;
 const MAX_NUM_OF_CONTESTANTS = 3;
 
-const EMPTY_GRID_START_NODE_ROW = 3;
-const EMPTY_GRID_START_NODE_COL = 3;
+const EMPTY_GRID_START_NODE_ROW = 5;
+const EMPTY_GRID_START_NODE_COL = 5;
 
 const ALGORITHM_TYPES = [
     'Dijkstra',
@@ -145,11 +145,11 @@ export default class PathfindingContest extends React.Component {
     setEmptyGrid() {
         const emptyGrid = getEmptyGrid();
         const totCols = getFullPageWidthGridNumCols();
-        const totRows = this.state.gridNumRows;
+        const totRows = GRID_NUM_ROWS;
         const startRow = EMPTY_GRID_START_NODE_ROW;
         const startCol = EMPTY_GRID_START_NODE_COL;
-        const finRow = totRows - 4;
-        const finCol = totCols - 4;
+        const finRow = totRows - 6;
+        const finCol = totCols - 6;
         this.setState({
             ...this.state,
             grid: emptyGrid,
@@ -423,7 +423,7 @@ const toggleSelectMazesAndMapsDropdownButtons = () => {
 }
 
 const getFullPageWidthGridNumCols = () => {
-    return Math.floor((window.innerWidth - 25) / 10);
+    return Math.floor((window.innerWidth - 26) / 10);
 }
 
 const getEmptyGrid = () => {
@@ -432,8 +432,8 @@ const getEmptyGrid = () => {
     const totRows = GRID_NUM_ROWS;
     const startRow = EMPTY_GRID_START_NODE_ROW;
     const startCol = EMPTY_GRID_START_NODE_COL;
-    const finRow = totRows - 4;
-    const finCol = totCols - 4;
+    const finRow = totRows - 6;
+    const finCol = totCols - 6;
 
     //empty, start, and finish nodes all have weight of one
     const initialNodeWeight = 1;

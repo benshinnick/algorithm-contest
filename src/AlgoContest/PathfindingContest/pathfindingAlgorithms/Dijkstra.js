@@ -6,15 +6,18 @@ export function getDijkstraAnimations(grid, startNode, finishNode) {
     const dijkstraGrid = getDijkstraGrid(grid, startNode.row, startNode.col);
     dijkstra(dijkstraGrid, startNode, finishNode, animations);
     findNodesInShortestPathOrder(dijkstraGrid, finishNode, animations);
+    // console.log(animations);
+    // console.log('hey');
     return animations;
 }
 
-// Animation Codes:
-//  'v' denotes a visited node at a particular row and column
-//  'vf' denotes that we have finished visiting a node
-//  'sp' denotes a node is part of the shortest path
-
 function dijkstra(grid, startNode, finishNode, animations) {
+
+    // Animation Codes:
+    //  'v' denotes a visited node at a particular row and column
+    //  'vf' denotes that we have finished visiting a node
+    //  'sp' denotes a node is part of the shortest path
+
     grid[startNode.row][startNode.col].setDistance(0);
     let priorityQueue = new PriorityQueue();
     priorityQueue.enqueue(grid[startNode.row][startNode.col], 0);
@@ -46,7 +49,6 @@ function getUnvisitedNeighbors(node, grid) {
     const neighbors = [];
     const row = node.getRow();
     const col = node.getCol();
-    // only checking adjacent nodes not along a diagonal
     if (row > 0) neighbors.push(grid[row - 1][col]);
     if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
     if (col > 0) neighbors.push(grid[row][col - 1]);
@@ -56,10 +58,24 @@ function getUnvisitedNeighbors(node, grid) {
 }
 
 function findNodesInShortestPathOrder(grid, finishNode, animations) {
+    // Keep track of next and previous node just for the path animations
+    let nextNode = null;
     let currentNode = grid[finishNode.row][finishNode.col];
+    let previousNode = currentNode.getPreviousNode();
     while (currentNode !== null) {
-        animations.push(['sp', currentNode.row, currentNode.col]);
-        currentNode = currentNode.previousNode;
+        if(nextNode === null) {
+            animations.push(['spf', currentNode.row, currentNode.col, previousNode.row, previousNode.col]);
+        }
+        else if(previousNode === null) {
+            animations.push(['sp', currentNode.row, currentNode.col, nextNode.row, nextNode.col]);
+        }
+        else {
+            animations.push(['sp', currentNode.row, currentNode.col, nextNode.row, nextNode.col]);
+            animations.push(['spf', currentNode.row, currentNode.col, previousNode.row, previousNode.col]);
+        }
+        nextNode = currentNode;
+        currentNode = previousNode;
+        if(previousNode !== null) previousNode = previousNode.getPreviousNode();
     }
     return;
 }
