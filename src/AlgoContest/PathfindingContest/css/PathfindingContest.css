@@ -245,7 +245,7 @@
     position: absolute;
     background-color: #f1f1f1;
     margin: 0px;
-    z-index: 1;
+    z-index: 2;
 }
 
 /* Node Selection Button Dropdown Styling */
@@ -308,8 +308,8 @@
 }
 
 .display-node-Weight-15 {
-    background-color: #0069d9;
-    border: 1px solid #00458f;
+    background-color: #0077f7;
+    border: 1px solid #0069d9;
 }
 
 #node-selection-dropdown-button-node-type-name {
@@ -390,7 +390,7 @@
     position: absolute;
     background-color: #f1f1f1;
     margin: 0px;
-    z-index: 1;
+    z-index: 2;
 }
 
 #node-selection-dropdown-button {

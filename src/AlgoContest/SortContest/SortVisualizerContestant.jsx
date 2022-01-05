@@ -63,6 +63,7 @@ export default class SortVisualizerContestant extends React.Component {
                 return getBubbleSortAnimations(arrayCopy);
             default:
                 console.log("Error: Unexpected Algorithm Type");
+                return null;
         }
     }
 

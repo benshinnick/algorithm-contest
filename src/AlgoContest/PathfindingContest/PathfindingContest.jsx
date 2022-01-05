@@ -2,13 +2,13 @@ import React from 'react';
 import PathfindingVisualizerContestant from './PathfindingVisualizerContestant';
 import './css/PathfindingContest.css';
 
-const GRID_NUM_ROWS = 18;
+const GRID_NUM_ROWS = 15;
 
 const INITIAL_NUM_OF_CONTESTANTS = 3;
 const MAX_NUM_OF_CONTESTANTS = 3;
 
-const EMPTY_GRID_START_NODE_ROW = 3;
-const EMPTY_GRID_START_NODE_COL = 3;
+const EMPTY_GRID_START_NODE_ROW = 5;
+const EMPTY_GRID_START_NODE_COL = 5;
 
 const ALGORITHM_TYPES = [
     'Dijkstra',
@@ -66,14 +66,68 @@ export default class PathfindingContest extends React.Component {
         window.removeEventListener('resize', this.handlePageResize);
     }
 
+    startContest() {
+        // this.disablePreContestButtons();
+        // this.enableDuringContestControlButtons();
+        // this.startCountdown();
+        const allContestantAnimationData = this.getAllContestantAnimationDataAndSetAlgorithmStatInfo();
+        this.runContestAnimations(allContestantAnimationData);
+        // this.scheduleContestFinishedCommands(allContestantAnimationData);
+    }
+
+    getAllContestantAnimationDataAndSetAlgorithmStatInfo() {
+        const allContestantAnimationData = [];
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            allContestantAnimationData[i] = this.algoContestantRefs[i].getPathfindingAnimations(
+                this.state.grid[this.state.startNodeRow][this.state.startNodeColumn],
+                this.state.grid[this.state.finishNodeRow][this.state.finishNodeColumn]
+            );
+        }
+
+        return allContestantAnimationData;
+    }
+
+    runContestAnimations(allContestantAnimationData) {
+        let stepCounter = 0;
+        let numOfFinishedContestants = 0;
+        let placeNumber = 0;
+        while(numOfFinishedContestants < this.state.numOfContestants) {
+            let hasContestantFinishedThisStep = false;
+            for(let i = 0; i < this.state.numOfContestants; ++i) {
+                if(stepCounter > allContestantAnimationData[i].length) {
+                    continue;
+                }
+                else if(stepCounter === allContestantAnimationData[i].length) {
+                    numOfFinishedContestants++;
+                    if(hasContestantFinishedThisStep === false) {
+                        placeNumber++;
+                        hasContestantFinishedThisStep = true;
+                        // this.algoContestantRefs[i].scheduleAlgorithmIsNowFinishedCommands(stepCounter, placeNumber);
+                    }
+                    else {
+                        // this.algoContestantRefs[i].scheduleAlgorithmIsNowFinishedCommands(stepCounter, placeNumber);
+                    }
+                    console.log('contestant finished');
+                    continue;
+                }
+                else {
+                    this.algoContestantRefs[i].doAnimationNextStep(
+                        allContestantAnimationData[i][stepCounter], stepCounter
+                    );
+                }
+            }
+            stepCounter++;
+        }
+    }
+
     setEmptyGrid() {
         const emptyGrid = getEmptyGrid();
         const totCols = getFullPageWidthGridNumCols();
-        const totRows = this.state.gridNumRows;
+        const totRows = GRID_NUM_ROWS;
         const startRow = EMPTY_GRID_START_NODE_ROW;
         const startCol = EMPTY_GRID_START_NODE_COL;
-        const finRow = totRows - 4;
-        const finCol = totCols - 4;
+        const finRow = totRows - 6;
+        const finCol = totCols - 6;
         this.setState({
             ...this.state,
             grid: emptyGrid,
@@ -216,12 +270,25 @@ export default class PathfindingContest extends React.Component {
         }
     }
 
+    clearPathAndVisitedNodes() {
+        const visitedNodes = document.querySelectorAll('.visited');
+        for(let i = 0; i < visitedNodes.length; ++i) {
+            visitedNodes[i].classList.remove('visited');
+        }
+        const shortestPathLines = document.querySelectorAll('.shortest-path');
+        for(let i = 0; i < shortestPathLines.length; ++i) {
+            shortestPathLines[i].remove();
+        }
+    }
+
     startContestButtonOnClick() {
         console.log("Contest Starting");
+        this.startContest();
     }
 
     resetGridButtonOnClick() {
         console.log("Grid Reseting");
+        this.clearPathAndVisitedNodes();
         this.setEmptyGrid();
     }
 
@@ -346,7 +413,7 @@ const toggleSelectMazesAndMapsDropdownButtons = () => {
 }
 
 const getFullPageWidthGridNumCols = () => {
-    return Math.floor((window.innerWidth - 25) / 11);
+    return Math.floor((window.innerWidth - (window.innerWidth * 0.1)) / 10);
 }
 
 const getEmptyGrid = () => {
@@ -355,8 +422,8 @@ const getEmptyGrid = () => {
     const totRows = GRID_NUM_ROWS;
     const startRow = EMPTY_GRID_START_NODE_ROW;
     const startCol = EMPTY_GRID_START_NODE_COL;
-    const finRow = totRows - 4;
-    const finCol = totCols - 4;
+    const finRow = totRows - 6;
+    const finCol = totCols - 6;
 
     //empty, start, and finish nodes all have weight of one
     const initialNodeWeight = 1;
@@ -435,9 +502,10 @@ const getNewGridWithStartNodeUpdated = (grid, row, col, prevRow, prevCol) => {
     const totCols = grid[0].length;
     const startNodeWeight = 1;
     const emptyNodeWeight = 1;
+    const prevNode = newGrid[prevRow][prevCol];
     const node = newGrid[row][col];
-    const prevNode = {
-        ...node,
+    const prevStartNode = {
+        ...prevNode,
         row: prevRow,
         col: prevCol,
         weight: emptyNodeWeight,
@@ -446,7 +514,7 @@ const getNewGridWithStartNodeUpdated = (grid, row, col, prevRow, prevCol) => {
         isLastRow: prevRow === totRows - 1,
         isLastColumn: prevCol === totCols - 1
     }
-    const newNode = {
+    const newStartNode = {
         ...node,
         row: row,
         col: col,
@@ -456,8 +524,8 @@ const getNewGridWithStartNodeUpdated = (grid, row, col, prevRow, prevCol) => {
         isLastRow: row === totRows - 1,
         isLastColumn: col === totCols - 1
     };
-    newGrid[prevRow][prevCol] = prevNode;
-    newGrid[row][col] = newNode;
+    newGrid[prevRow][prevCol] = prevStartNode;
+    newGrid[row][col] = newStartNode;
     return newGrid;
 }
 
@@ -467,9 +535,10 @@ const getNewGridWithFinishNodeUpdated = (grid, row, col, prevRow, prevCol) => {
     const totCols = grid[0].length;
     const finishNodeWeight = 1;
     const emptyNodeWeight = 1;
+    const prevNode = newGrid[prevRow][prevCol];
     const node = newGrid[row][col];
-    const prevNode = {
-        ...node,
+    const prevFinishNode = {
+        ...prevNode,
         row: prevRow,
         col: prevCol,
         weight: emptyNodeWeight,
@@ -478,7 +547,7 @@ const getNewGridWithFinishNodeUpdated = (grid, row, col, prevRow, prevCol) => {
         isLastRow: prevRow === totRows - 1,
         isLastColumn: prevCol === totCols - 1
     }
-    const newNode = {
+    const newFinishNode = {
         ...node,
         row: row,
         col: col,
@@ -488,8 +557,8 @@ const getNewGridWithFinishNodeUpdated = (grid, row, col, prevRow, prevCol) => {
         isLastRow: row === totRows - 1,
         isLastColumn: col === totCols - 1
     };
-    newGrid[prevRow][prevCol] = prevNode;
-    newGrid[row][col] = newNode;
+    newGrid[prevRow][prevCol] = prevFinishNode;
+    newGrid[row][col] = newFinishNode;
     return newGrid;
 }
 

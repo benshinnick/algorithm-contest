@@ -1,7 +1,10 @@
 import React from 'react';
 import Node from './Node/Node.jsx';
+import { getDijkstraAnimations } from './pathfindingAlgorithms/Dijkstra.js';
 import { getLinePixelCoordinates } from './gridDrawingAlgorithms/BresenhamLineDrawAlgo.js';
 import './css/PathfindingVisualizerContestant.css';
+
+const INITIAL_ANIMATION_SPEED = 5;
 
 export default class PathfindingVisualizerContestant extends React.Component {
 
@@ -11,6 +14,7 @@ export default class PathfindingVisualizerContestant extends React.Component {
         super(props);
         this.state = {
             grid: [],
+            animationSpeedMS: INITIAL_ANIMATION_SPEED,
             algorithmType: this.props.algorithmType,
             allAlgorithmTypes: this.props.algorithmTypes,
             contestantNumber: this.props.contestantNumber,
@@ -30,6 +34,109 @@ export default class PathfindingVisualizerContestant extends React.Component {
             return{ selectedNodeWeight: props.selectedNodeWeight }
         }
         return null;
+    }
+
+    getPathfindingAnimations(startNode, endNode) {
+        let gridCopy = this.state.grid.map((value) => value);
+
+        switch(this.state.algorithmType) {
+            case 'Dijkstra':
+                return getDijkstraAnimations(gridCopy, startNode, endNode);
+            case 'A* Search':
+                // return getAStarAnimations(gridCopy);
+                return;
+            case 'Greedy Best-first Search':
+                // return getGreedyBestFirstAnimations(gridCopy);
+                return;
+            case 'Breadth-first Search':
+                // return getBreadthFirstAnimations(gridCopy);
+                return;
+            case 'Depth-first Search':
+                // return getDepthFirstAnimations(gridCopy);
+                return;
+            default:
+                console.log("Error: Unexpected Algorithm Type");
+                return null;
+        }
+    }
+
+    doAnimationNextStep(animationStepInfo, currentStepNumber) {
+        switch(this.state.algorithmType) {
+            case 'Dijkstra':
+                this.doNextDijkstraAnimationStep(animationStepInfo, currentStepNumber);
+                break;
+            case 'A* Search':
+                // this.doNextAStarAnimationStep(animationStepInfo, currentStepNumber);
+                break;
+            case 'Greedy Best-first Search':
+                // this.doNextGreedyBestFirstAnimationStep(animationStepInfo, currentStepNumber);
+                break;
+            case 'Breadth-first Search':
+                // this.doNextBreadthFirstAnimationStep(animationStepInfo, currentStepNumber);
+                break;
+            case 'Depth-first Search':
+                // this.doNextDepthFirstAnimationStep(animationStepInfo, currentStepNumber);
+                break;
+            default:
+                console.log("Error: Unexpected Algorithm Type");
+        }
+    }
+
+    addShortestPathLineToNode(node, row, col, adjacentPathRow, adjacentPathCol) {
+        let visitedMarker = document.createElement("DIV");
+        if(row === adjacentPathRow) {
+            if(col < adjacentPathCol) {
+                visitedMarker.setAttribute("class", 'shortest-path shortest-path-right');
+            }
+            else {
+                visitedMarker.setAttribute("class", 'shortest-path shortest-path-left');
+            }
+        }
+        else if(col === adjacentPathCol) {
+            if(row < adjacentPathRow) {
+                visitedMarker.setAttribute("class", 'shortest-path shortest-path-bottom');
+            }
+            else {
+                visitedMarker.setAttribute("class", 'shortest-path shortest-path-top');
+            }
+        }
+
+        node.appendChild(visitedMarker);
+    }
+
+    doNextDijkstraAnimationStep(animationStepInfo, currentStepNumber) {
+        const animationCode = animationStepInfo[0];
+        const row = animationStepInfo[1];
+        const col = animationStepInfo[2];
+
+        const currentNode = document.getElementById(
+            `${this.state.contestantNumber}-node-${row}-${col}`
+        );
+
+        // visit node case
+        if (animationCode === 'v') {
+            setTimeout(() => {
+                currentNode.classList.add('visited');
+            }, currentStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
+            return;
+        }
+        // draw shortest path line cases
+        else if(animationCode === 'sp') {
+            const nextRow = animationStepInfo[3];
+            const nextCol = animationStepInfo[4];
+            setTimeout(() => {
+                this.addShortestPathLineToNode(currentNode, row, col, nextRow, nextCol);
+            }, currentStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
+            return;
+        }
+        else if(animationCode === 'spf') {
+            setTimeout(() => {
+                const prevRow = animationStepInfo[3];
+                const prevCol = animationStepInfo[4];
+                this.addShortestPathLineToNode(currentNode, row, col, prevRow, prevCol);
+            }, currentStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
+            return;
+        }
     }
 
     handleMouseDown(row, col) {
@@ -77,21 +184,47 @@ export default class PathfindingVisualizerContestant extends React.Component {
     }
 
     placeStartNode(row, col) {
-        this.props.updateStartNode(row, col);
-        const allStartNodes = document.getElementsByClassName(`node-${row}-${col}`);
-        for(let i = 0; i < allStartNodes.length; ++i) {
-            allStartNodes[i].classList.add('node-start');
+        if(!this.isStartOrFinishNode(row, col)) {
+            this.props.updateStartNode(row, col);
+            const allStartNodes = document.getElementsByClassName(`node-${row}-${col}`);
+            for(let i = 0; i < allStartNodes.length; ++i) {
+                allStartNodes[i].classList.add('node-start');
+            }
+            this.removeHoverStylingFromLastUpdatedNode('selected-start'); 
         }
-        this.removeHoverStylingFromLastUpdatedNode('selected-start');        
+        else {
+            let finNodeCol = col;
+            if(col > 1) { finNodeCol-- }
+            else { finNodeCol++ }
+            setTimeout(() => {
+                this.props.updateFinishNode(row, finNodeCol)
+            }, 100);
+            setTimeout( () => {
+                this.props.updateStartNode(row, col);
+            }, 200);
+        }
     }
 
     placeFinishNode(row, col) {
-        this.props.updateFinishNode(row, col);
-        const allFinishNodes = document.getElementsByClassName(`node-${row}-${col}`);
-        for(let i = 0; i < allFinishNodes.length; ++i) {
-            allFinishNodes[i].classList.add('node-finish');
+        if(!this.isStartOrFinishNode(row, col)) {
+            this.props.updateFinishNode(row, col);
+            const allFinishNodes = document.getElementsByClassName(`node-${row}-${col}`);
+            for(let i = 0; i < allFinishNodes.length; ++i) {
+                allFinishNodes[i].classList.add('node-finish');
+            }
+            this.removeHoverStylingFromLastUpdatedNode('selected-finish');
         }
-        this.removeHoverStylingFromLastUpdatedNode('selected-finish');
+        else {
+            let startNodeCol = col;
+            if(col > 0) { startNodeCol-- }
+            else { startNodeCol++ }
+            setTimeout(() => {
+                this.props.updateStartNode(row, startNodeCol);
+            }, 100);
+            setTimeout(() => {
+                this.props.updateFinishNode(row, col);
+            }, 200);
+        }
     }
 
     isStartOrFinishNode(row, col) {
