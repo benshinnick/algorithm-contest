@@ -82,30 +82,22 @@ export default class PathfindingVisualizerContestant extends React.Component {
         }
     }
 
-    addVisitedMarkerToNode(node) {
-        let visitedMarker = document.createElement("DIV");
-        visitedMarker.setAttribute("class", 'visited');
-        node.appendChild(visitedMarker);
-    }
-
     addShortestPathLineToNode(node, row, col, adjacentPathRow, adjacentPathCol) {
         let visitedMarker = document.createElement("DIV");
-        visitedMarker.setAttribute("class", 'shortest-path');
-
         if(row === adjacentPathRow) {
             if(col < adjacentPathCol) {
-                visitedMarker.classList.add('shortest-path-right');
+                visitedMarker.setAttribute("class", 'shortest-path shortest-path-right');
             }
             else {
-                visitedMarker.classList.add('shortest-path-left');
+                visitedMarker.setAttribute("class", 'shortest-path shortest-path-left');
             }
         }
         else if(col === adjacentPathCol) {
             if(row < adjacentPathRow) {
-                visitedMarker.classList.add('shortest-path-bottom');
+                visitedMarker.setAttribute("class", 'shortest-path shortest-path-bottom');
             }
             else {
-                visitedMarker.classList.add('shortest-path-top');
+                visitedMarker.setAttribute("class", 'shortest-path shortest-path-top');
             }
         }
 
@@ -121,20 +113,14 @@ export default class PathfindingVisualizerContestant extends React.Component {
             `${this.state.contestantNumber}-node-${row}-${col}`
         );
 
-        //visited node cases
+        // visit node case
         if (animationCode === 'v') {
             setTimeout(() => {
-            }, currentStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
-            return;
-        }
-        else if(animationCode === 'vf') {
-            setTimeout(() => {
-                // this.addVisitedMarkerToNode(currentNode);
                 currentNode.classList.add('visited');
             }, currentStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
             return;
         }
-        //shortest path case
+        // draw shortest path line cases
         else if(animationCode === 'sp') {
             const nextRow = animationStepInfo[3];
             const nextCol = animationStepInfo[4];

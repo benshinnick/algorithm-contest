@@ -59,9 +59,15 @@ function getUnvisitedNeighbors(node, grid) {
 
 function findNodesInShortestPathOrder(grid, finishNode, animations) {
     // Keep track of next and previous node just for the path animations
+
     let nextNode = null;
     let currentNode = grid[finishNode.row][finishNode.col];
     let previousNode = currentNode.getPreviousNode();
+
+    if(previousNode === null) {
+        return;
+    }
+
     while (currentNode !== null) {
         if(nextNode === null) {
             animations.push(['spf', currentNode.row, currentNode.col, previousNode.row, previousNode.col]);

@@ -273,7 +273,7 @@ export default class PathfindingContest extends React.Component {
     clearPathAndVisitedNodes() {
         const visitedNodes = document.querySelectorAll('.visited');
         for(let i = 0; i < visitedNodes.length; ++i) {
-            visitedNodes[i].remove();
+            visitedNodes[i].classList.remove('visited');
         }
         const shortestPathLines = document.querySelectorAll('.shortest-path');
         for(let i = 0; i < shortestPathLines.length; ++i) {
