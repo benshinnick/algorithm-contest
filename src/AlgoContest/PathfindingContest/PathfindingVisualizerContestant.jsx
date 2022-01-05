@@ -109,7 +109,7 @@ export default class PathfindingVisualizerContestant extends React.Component {
             }
         }
 
-        node.prepend(visitedMarker);
+        node.appendChild(visitedMarker);
     }
 
     doNextDijkstraAnimationStep(animationStepInfo, currentStepNumber) {
@@ -129,7 +129,8 @@ export default class PathfindingVisualizerContestant extends React.Component {
         }
         else if(animationCode === 'vf') {
             setTimeout(() => {
-                this.addVisitedMarkerToNode(currentNode);
+                // this.addVisitedMarkerToNode(currentNode);
+                currentNode.classList.add('visited');
             }, currentStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
             return;
         }

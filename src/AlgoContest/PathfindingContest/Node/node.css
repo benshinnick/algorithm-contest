@@ -15,31 +15,31 @@
 }
 
 .node:hover {
-  box-shadow: inset 0 0 0 1000px rgba(255, 255, 255, 0.3);
+  box-shadow: inset 0 0 0 10px rgba(255, 255, 255, 0.3);
 }
 
 .visiting {
-  box-shadow: inset 0 0 0 1000px rgba(215, 69, 255, 0.5);
+  box-shadow: inset 0 0 0 10px rgba(215, 69, 255, 0.5);
 }
 
 .visited {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 195, 255, 0.35);
-  border-right: 1px solid rgba(0, 195, 255, 0.10);
-  border-bottom: 1px solid rgba(0, 195, 255, 0.10);
-  animation: visitNode 100ms;
-  z-index: 1;
+  box-shadow: inset 0 0 0 10px rgba(0, 195, 255, 0.35);
+  animation: visitNode 250ms;
 }
 
 @keyframes visitNode {
   0% { 
-    transform: scale(0.5);
-    border-radius: 25px;
+    box-shadow: inset 0 0 0 10px rgba(215, 0, 215, 0.35);
+    /* transform: scale(0.5);
+    border-radius: 25px; */
+  }
+  85% {
+    box-shadow: inset 0 0 0 10px rgba(215, 0, 215, 0.35);
   }
   100% {
-    transform: scale(1);
-    border-radius: 0px;
+    box-shadow: inset 0 0 0 10px rgba(0, 195, 255, 0.35);
+    /* transform: scale(1);
+    border-radius: 0px; */
    }
 }
 
@@ -47,6 +47,7 @@
   position: absolute;
   background-color: rgb(255, 0, 0);
   z-index: 1;
+  /* animation: visitNode 10ms; */
 }
 
 .shortest-path-top {

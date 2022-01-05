@@ -4,8 +4,8 @@ import './css/PathfindingContest.css';
 
 const GRID_NUM_ROWS = 15;
 
-const INITIAL_NUM_OF_CONTESTANTS = 5;
-const MAX_NUM_OF_CONTESTANTS = 5;
+const INITIAL_NUM_OF_CONTESTANTS = 3;
+const MAX_NUM_OF_CONTESTANTS = 3;
 
 const EMPTY_GRID_START_NODE_ROW = 5;
 const EMPTY_GRID_START_NODE_COL = 5;
