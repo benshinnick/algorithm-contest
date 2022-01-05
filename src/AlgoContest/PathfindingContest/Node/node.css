@@ -28,7 +28,7 @@
   background-color: rgba(0, 195, 255, 0.35);
   border-right: 1px solid rgba(0, 195, 255, 0.10);
   border-bottom: 1px solid rgba(0, 195, 255, 0.10);
-  animation: visitNode 80ms;
+  animation: visitNode 100ms;
   z-index: 1;
 }
 
