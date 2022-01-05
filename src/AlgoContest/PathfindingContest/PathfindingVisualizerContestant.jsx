@@ -90,21 +90,22 @@ export default class PathfindingVisualizerContestant extends React.Component {
 
     addShortestPathLineToNode(node, row, col, adjacentPathRow, adjacentPathCol) {
         let visitedMarker = document.createElement("DIV");
+        visitedMarker.setAttribute("class", 'shortest-path');
 
         if(row === adjacentPathRow) {
             if(col < adjacentPathCol) {
-                visitedMarker.setAttribute("class", 'shortestPathRight');
+                visitedMarker.classList.add('shortest-path-right');
             }
             else {
-                visitedMarker.setAttribute("class", 'shortestPathLeft');
+                visitedMarker.classList.add('shortest-path-left');
             }
         }
         else if(col === adjacentPathCol) {
             if(row < adjacentPathRow) {
-                visitedMarker.setAttribute("class", 'shortestPathBottom');
+                visitedMarker.classList.add('shortest-path-bottom');
             }
             else {
-                visitedMarker.setAttribute("class", 'shortestPathTop');
+                visitedMarker.classList.add('shortest-path-top');
             }
         }
 

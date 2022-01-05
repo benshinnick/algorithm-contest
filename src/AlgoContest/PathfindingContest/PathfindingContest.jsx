@@ -292,6 +292,17 @@ export default class PathfindingContest extends React.Component {
         }
     }
 
+    clearPathAndVisitedNodes() {
+        const visitedNodes = document.querySelectorAll('.visited');
+        for(let i = 0; i < visitedNodes.length; ++i) {
+            visitedNodes[i].remove();
+        }
+        const shortestPathLines = document.querySelectorAll('.shortest-path');
+        for(let i = 0; i < shortestPathLines.length; ++i) {
+            shortestPathLines[i].remove();
+        }
+    }
+
     startContestButtonOnClick() {
         console.log("Contest Starting");
         this.startContest();
@@ -299,6 +310,7 @@ export default class PathfindingContest extends React.Component {
 
     resetGridButtonOnClick() {
         console.log("Grid Reseting");
+        this.clearPathAndVisitedNodes();
         this.setEmptyGrid();
     }
 
@@ -423,7 +435,7 @@ const toggleSelectMazesAndMapsDropdownButtons = () => {
 }
 
 const getFullPageWidthGridNumCols = () => {
-    return Math.floor((window.innerWidth - 26) / 10);
+    return Math.floor((window.innerWidth - (window.innerWidth * 0.1)) / 10);
 }
 
 const getEmptyGrid = () => {
