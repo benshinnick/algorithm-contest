@@ -375,6 +375,10 @@ export default class PathfindingVisualizerContestant extends React.Component {
         );
     }
 
+    getAnimationSpeed() {
+        return this.state.animationSpeedMS;
+    }
+
     addHoverStylingToAllGridNodes(row, col, hoverType) {
         this.removeHoverStylingFromLastUpdatedNode(hoverType);
         const allStartSelectedNodes = document.getElementsByClassName(`node-${row}-${col}`);
