@@ -58,11 +58,8 @@ export default class PathfindingContest extends React.Component {
 
     componentDidMount() {
         this.setEmptyGrid();
-        document.getElementById('node-selection-dropdown-content').style.display = 'none';
-        document.getElementById('mazes-and-maps-dropdown-content').style.display = 'none';
-        document.getElementById('reset-grid-dropdown-content').style.display = 'none';
+        this.resetPathfindingContestPage();
         window.addEventListener('resize', this.handlePageResize);
-        this.disableDuringContestControlButtons();
     }
     
     componentWillUnmount() {
@@ -71,7 +68,9 @@ export default class PathfindingContest extends React.Component {
 
     startContest() {
         this.disablePreContestButtons();
+        this.disableGrids();
         this.enableDuringContestControlButtons();
+        this.clearPathAndVisitedNodes();
         this.startCountdown();
         const allContestantAnimationData = this.getAllContestantAnimationDataAndSetAlgorithmStatInfo();
         this.runContestAnimations(allContestantAnimationData);
@@ -93,6 +92,7 @@ export default class PathfindingContest extends React.Component {
     handleContestIsNowFinished() {
         this.enablePreContestSetupButtons();
         this.disableDuringContestControlButtons();
+        this.enableGrids();
         // const sortedArray = this.state.array.sort(function(a, b){return a - b});
         // this.setState({ ...this.state, array: sortedArray });
 
@@ -142,10 +142,10 @@ export default class PathfindingContest extends React.Component {
                     if(hasContestantFinishedThisStep === false) {
                         placeNumber++;
                         hasContestantFinishedThisStep = true;
-                        // this.algoContestantRefs[i].scheduleAlgorithmIsNowFinishedCommands(stepCounter, placeNumber);
+                        this.algoContestantRefs[i].scheduleAlgorithmIsNowFinishedCommands(stepCounter, placeNumber);
                     }
                     else {
-                        // this.algoContestantRefs[i].scheduleAlgorithmIsNowFinishedCommands(stepCounter, placeNumber);
+                        this.algoContestantRefs[i].scheduleAlgorithmIsNowFinishedCommands(stepCounter, placeNumber);
                     }
                     console.log('contestant finished');
                     continue;
@@ -322,7 +322,7 @@ export default class PathfindingContest extends React.Component {
     }
 
     startContestButtonOnClick() {
-        console.log("Contest Starting");
+        this.resetPathfindingContestPage();
         this.startContest();
     }
 
@@ -333,14 +333,15 @@ export default class PathfindingContest extends React.Component {
     }
 
     clearPathButtonOnClick() {
-        this.clearPathAndVisitedNodes();
         toggleResetGridDropdownButtons();
+        this.resetPathfindingContestPage();
     }
 
     resetGridButtonOnClick() {
-        this.clearPathAndVisitedNodes();
-        this.setEmptyGrid();
         toggleResetGridDropdownButtons();
+        this.resetPathfindingContestPage();
+        this.setEmptyGrid();
+
     }
 
     skipToFinishButtonOnClick() {
@@ -371,6 +372,7 @@ export default class PathfindingContest extends React.Component {
 
     addContestantOnClick() {
         console.log('add contestant button has been clicked');
+        this.resetPathfindingContestPage();
     }
 
     render() {
@@ -393,7 +395,6 @@ export default class PathfindingContest extends React.Component {
                             <button className='reset-grid-dropdown-button' onClick={() => this.resetGridButtonOnClick()}>Reset Grid</button>
                         </div>
                     </div>
-                    {/* <button id="reset-grid-button" onClick={() => this.resetGridButtonOnClick()}>Reset Grid</button> */}
                     <div id="mazes-and-maps-dropdown">
                         <button id="mazes-and-maps-button" onClick={() => this.mazesAndMapsButtonOnClick()}>
                             <div id='mazes-and-maps-button-text'>Mazes & Maps</div>
@@ -453,6 +454,40 @@ export default class PathfindingContest extends React.Component {
                 </div>
             </div>
         );
+    }
+
+    resetPathfindingContestPage() {
+        this.enablePreContestSetupButtons();
+        this.disableDuringContestControlButtons();
+        this.clearAllAlgorithmStatsAndPlaceLabels();
+        this.clearPathAndVisitedNodes();
+        document.getElementById('node-selection-dropdown-content').style.display = 'none';
+        document.getElementById('mazes-and-maps-dropdown-content').style.display = 'none';
+        document.getElementById('reset-grid-dropdown-content').style.display = 'none';
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            this.algoContestantRefs[i].resetVisualizationStyling();
+        }
+    }
+
+    clearAllAlgorithmStatsAndPlaceLabels() {
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            this.algoContestantRefs[i].destructAlgorithmPlaceLabel();
+            // this.algoContestantRefs[i].destructAlgorithmStatsLabel();
+        }
+    }
+
+    disableGrids() {
+        const gridContainers = document.getElementsByClassName('grid-container');
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            gridContainers[i].style.pointerEvents = 'none';
+        }
+    }
+
+    enableGrids() {
+        const gridContainers = document.getElementsByClassName('grid-container');
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            gridContainers[i].style.pointerEvents = 'all';
+        }
     }
 
     disablePreContestButtons() {

@@ -6,6 +6,9 @@ import './css/PathfindingVisualizerContestant.css';
 
 const INITIAL_ANIMATION_SPEED = 5;
 
+const DEFAULT_BACKGROUND_COLOR = '#f7f7f7'; // light grey
+const FINISHED_PATHFINDING_BACKGROUND_COLOR = '#edfff2'; // light green
+
 export default class PathfindingVisualizerContestant extends React.Component {
 
     static ANIMATION_DELAY_MS = 3000;
@@ -136,6 +139,62 @@ export default class PathfindingVisualizerContestant extends React.Component {
                 this.addShortestPathLineToNode(currentNode, row, col, prevRow, prevCol);
             }, currentStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
             return;
+        }
+    }
+
+    scheduleAlgorithmIsNowFinishedCommands(lastAnimationStepNumber, algorithmPlace) {
+        setTimeout(() => {
+            this.handleAlgorithmIsNowFinished(algorithmPlace);
+        }, lastAnimationStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
+    }
+
+    handleAlgorithmIsNowFinished(algorithmPlace) {
+        this.createAlgorithmPlacelabel(algorithmPlace);
+        document.getElementById(`pathfinding-visualizer-${this.state.contestantNumber}`).style.backgroundColor = FINISHED_PATHFINDING_BACKGROUND_COLOR;
+        document.getElementById(`grid-container-${this.state.contestantNumber}`).style.borderColor = '#0e7424';
+    }
+
+    resetVisualizationStyling() {
+        document.getElementById(`pathfinding-visualizer-${this.state.contestantNumber}`).style.backgroundColor = DEFAULT_BACKGROUND_COLOR;
+        document.getElementById(`grid-container-${this.state.contestantNumber}`).style.borderColor = '#3b3b3b';
+    }
+
+    createAlgorithmPlacelabel(algorithmPlace) {
+        let pathfindingVisualizerContestant = document.getElementById(`pathfinding-visualizer-${this.state.contestantNumber}`);
+        let placeLabel = document.createElement("DIV");
+        placeLabel.setAttribute("id", `path-place-label-${this.state.contestantNumber}`);
+        placeLabel.setAttribute("class", 'path-place-label');
+
+        let placeLabelText;
+        if(algorithmPlace === 1) {
+            const GOLD = '#c7b620';
+            placeLabel.style.backgroundColor = GOLD;
+            placeLabelText = document.createTextNode('1st Place');
+        }
+        else if(algorithmPlace === 2) {
+            const SILVER = '#929292';
+            placeLabel.style.backgroundColor = SILVER;
+            placeLabelText = document.createTextNode('2nd Place');
+        }
+        else if(algorithmPlace === 3) {
+            const BRONZE = '#ab7627';
+            placeLabel.style.backgroundColor = BRONZE;
+            placeLabelText = document.createTextNode('3rd Place');
+        }
+        else {
+            const DEFAULT = '#636363';
+            placeLabel.style.backgroundColor = DEFAULT;
+            placeLabelText = document.createTextNode(`${algorithmPlace}th Place`);
+        }
+
+        placeLabel.appendChild(placeLabelText);
+        pathfindingVisualizerContestant.appendChild(placeLabel);
+    }
+
+    destructAlgorithmPlaceLabel() {
+        let placeLabel = document.getElementById(`path-place-label-${this.state.contestantNumber}`);
+        if(placeLabel !== null) {
+            placeLabel.remove();
         }
     }
 

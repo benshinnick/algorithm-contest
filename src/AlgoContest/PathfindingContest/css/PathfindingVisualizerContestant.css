@@ -10,6 +10,7 @@
 }
 
 .grid-container {
+    position: absolute;
     background-color: white;
     border: 2px solid #3b3b3b;
     margin-top: 1px;
@@ -23,6 +24,22 @@
     height: auto;
     flex-direction: row;
 }
+
+.path-place-label {
+    background-color: #636363;
+    z-index: 2;
+    width: 80px;
+    text-align: center;
+    padding-left: 15px;
+    padding-top: 5px;
+    padding-right: 15px;
+    padding-bottom: 5px;
+    margin: 0px 2px;
+    display: inline-block;
+    border-radius: 0px 5px 5px 0px; 
+    color: white;
+    text-align: center;
+  }
 
 /* Algorithm Dropdown Styling */
 
