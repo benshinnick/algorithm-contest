@@ -25,7 +25,9 @@ export default class PathfindingVisualizerContestant extends React.Component {
             isMousePressed: false,
             isStartNodeSelected: false,
             isFinishNodeSelected: false,
-            lastUpdatedNode: []
+            lastUpdatedNode: [],
+            numOfNodesVisisted: -1,
+            lengthOfPath: -1
         };
     }
 
@@ -198,6 +200,38 @@ export default class PathfindingVisualizerContestant extends React.Component {
         }
     }
 
+    createAlgorithmStatsLabel() {
+        let sortVisualizerContestant = document.getElementById(`pathfinding-visualizer-${this.state.contestantNumber}`);
+        let statsLabel = document.createElement("DIV");
+        statsLabel.setAttribute("id", `path-stats-label-${this.state.contestantNumber}`);
+        statsLabel.setAttribute("class", 'path-stats-label');
+
+        let placeLabelColor = document.getElementById(`path-place-label-${this.state.contestantNumber}`).style.backgroundColor;
+        statsLabel.style.borderColor = placeLabelColor;
+
+        let statsLabelText;
+        if(this.state.lengthOfPath !== 0) {
+            statsLabelText = document.createTextNode(
+                `Final Stats: ${this.state.numOfNodesVisisted} Nodes Visited and A ${this.state.lengthOfPath} Path Length`
+            );
+        }
+        else {
+            statsLabelText = document.createTextNode(
+                `Final Stats: ${this.state.numOfNodesVisisted} Nodes Visited and No Path Found`
+            );
+        }
+        
+        statsLabel.appendChild(statsLabelText);
+        sortVisualizerContestant.appendChild(statsLabel);
+    }
+
+    destructAlgorithmStatsLabel() {
+        let statsLabel = document.getElementById(`path-stats-label-${this.state.contestantNumber}`);
+        if(statsLabel !== null) {
+            statsLabel.remove();
+        }
+    }
+
     handleMouseDown(row, col) {
         if(!this.isStartOrFinishNode(row, col)) {
             this.updateGridNodeWithSelectedWeight(row, col);
@@ -243,7 +277,7 @@ export default class PathfindingVisualizerContestant extends React.Component {
     }
 
     placeStartNode(row, col) {
-        if(!this.isStartOrFinishNode(row, col)) {
+        if(!this.state.grid[row][col].isFinish) {
             this.props.updateStartNode(row, col);
             const allStartNodes = document.getElementsByClassName(`node-${row}-${col}`);
             for(let i = 0; i < allStartNodes.length; ++i) {
@@ -265,7 +299,7 @@ export default class PathfindingVisualizerContestant extends React.Component {
     }
 
     placeFinishNode(row, col) {
-        if(!this.isStartOrFinishNode(row, col)) {
+        if(!this.state.grid[row][col].isStart) {
             this.props.updateFinishNode(row, col);
             const allFinishNodes = document.getElementsByClassName(`node-${row}-${col}`);
             for(let i = 0; i < allFinishNodes.length; ++i) {
@@ -432,6 +466,14 @@ export default class PathfindingVisualizerContestant extends React.Component {
                 </div>
             </>
         );
+    }
+
+    setAllAlgorithmStatInfo(numOfNodesVisisted, lengthOfPath) {
+        this.setState({
+            ...this.state,
+            numOfNodesVisisted: numOfNodesVisisted,
+            lengthOfPath: lengthOfPath
+        });
     }
 
     getAnimationSpeed() {

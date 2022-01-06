@@ -93,13 +93,10 @@ export default class PathfindingContest extends React.Component {
         this.enablePreContestSetupButtons();
         this.disableDuringContestControlButtons();
         this.enableGrids();
-        // const sortedArray = this.state.array.sort(function(a, b){return a - b});
-        // this.setState({ ...this.state, array: sortedArray });
-
-        // for(let i = 0; i < this.state.numOfContestants; ++i) {
-        //     this.algoContestantRefs[i].createAlgorithmStatsLabel();
-        //     this.algoContestantRefs[i].setAllAlgorithmStatInfo(-1, -1, -1);
-        // }
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            this.algoContestantRefs[i].createAlgorithmStatsLabel();
+            this.algoContestantRefs[i].setAllAlgorithmStatInfo(-1, -1, -1);
+        }
     }
 
     startCountdown() {
@@ -122,6 +119,21 @@ export default class PathfindingContest extends React.Component {
                 this.state.grid[this.state.startNodeRow][this.state.startNodeColumn],
                 this.state.grid[this.state.finishNodeRow][this.state.finishNodeColumn]
             );
+
+            let numOfNodesVisisted = 0;
+            let lengthOfPath = 0;
+            for(let j = 0; j < allContestantAnimationData[i].length; ++j){
+                const animationCode = allContestantAnimationData[i][j][0];
+                if(animationCode === 'v') {
+                    numOfNodesVisisted++;
+                }
+                else if(animationCode === 'spf') {
+                    const row = allContestantAnimationData[i][j][1];
+                    const col = allContestantAnimationData[i][j][2];
+                    lengthOfPath += parseInt(this.state.grid[row][col].weight);
+                }
+            }
+            this.algoContestantRefs[i].setAllAlgorithmStatInfo(numOfNodesVisisted, lengthOfPath);
         }
 
         return allContestantAnimationData;
@@ -472,7 +484,7 @@ export default class PathfindingContest extends React.Component {
     clearAllAlgorithmStatsAndPlaceLabels() {
         for(let i = 0; i < this.state.numOfContestants; ++i) {
             this.algoContestantRefs[i].destructAlgorithmPlaceLabel();
-            // this.algoContestantRefs[i].destructAlgorithmStatsLabel();
+            this.algoContestantRefs[i].destructAlgorithmStatsLabel();
         }
     }
 

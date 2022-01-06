@@ -39,7 +39,25 @@
     border-radius: 0px 5px 5px 0px; 
     color: white;
     text-align: center;
-  }
+}
+
+.path-stats-label {
+    background-color: #3b3b3b;
+    z-index: 2;
+    float: right;
+    width: 450px;
+    text-align: center;
+    padding-left: 15px;
+    padding-top: 4px;
+    padding-right: 15px;
+    padding-bottom: 4px;
+    margin: 0px 12px;
+    border-style: hidden hidden hidden solid;
+    border-width: 10px;
+    border-radius: 4px;
+    color: white;
+    animation: fadein 0.4s;
+}
 
 /* Algorithm Dropdown Styling */
 
