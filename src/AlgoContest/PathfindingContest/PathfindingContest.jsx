@@ -3,6 +3,7 @@ import PathfindingVisualizerContestant from './PathfindingVisualizerContestant';
 import './css/PathfindingContest.css';
 
 const GRID_NUM_ROWS = 15;
+const COUNTDOWN_DURATION_MS = PathfindingVisualizerContestant.ANIMATION_DELAY_MS;
 
 const INITIAL_NUM_OF_CONTESTANTS = 3;
 const MAX_NUM_OF_CONTESTANTS = 3;
@@ -57,8 +58,7 @@ export default class PathfindingContest extends React.Component {
 
     componentDidMount() {
         this.setEmptyGrid();
-        document.getElementById('node-selection-dropdown-content').style.display = 'none';
-        document.getElementById('mazes-and-maps-dropdown-content').style.display = 'none';
+        this.resetPathfindingContestPage();
         window.addEventListener('resize', this.handlePageResize);
     }
     
@@ -67,12 +67,52 @@ export default class PathfindingContest extends React.Component {
     }
 
     startContest() {
-        // this.disablePreContestButtons();
-        // this.enableDuringContestControlButtons();
-        // this.startCountdown();
+        this.setState({...this.state, isPreContest: false});
+        this.disablePreContestButtons();
+        this.disableGrids();
+        this.enableDuringContestControlButtons();
+        this.clearPathAndVisitedNodes();
+        this.startCountdown();
         const allContestantAnimationData = this.getAllContestantAnimationDataAndSetAlgorithmStatInfo();
         this.runContestAnimations(allContestantAnimationData);
-        // this.scheduleContestFinishedCommands(allContestantAnimationData);
+        this.scheduleContestFinishedCommands(allContestantAnimationData);
+    }
+
+    scheduleContestFinishedCommands(allContestantAnimationData) {
+
+        const allContestantMaxAnimationSteps = [];
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            allContestantMaxAnimationSteps.push(allContestantAnimationData[i].length);
+        }
+
+        const maxNumberOfAnimationSteps = Math.max(...allContestantMaxAnimationSteps);
+        setTimeout(() => {
+            this.handleContestIsNowFinished();
+        }, maxNumberOfAnimationSteps * this.algoContestantRefs[0].getAnimationSpeed() + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
+    }
+
+    handleContestIsNowFinished() {
+        this.setState({...this.state, isPreContest: true});
+        this.enablePreContestSetupButtons();
+        this.disableDuringContestControlButtons();
+        this.enableGrids();
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            this.algoContestantRefs[i].createAlgorithmStatsLabel();
+            this.algoContestantRefs[i].setAllAlgorithmStatInfo(-1, -1, -1);
+        }
+    }
+
+    startCountdown() {
+        let numOfCountdownSeconds = COUNTDOWN_DURATION_MS / 1000;
+        for(let i = 0; i < numOfCountdownSeconds; ++i) {
+            setTimeout(() => {
+                document.getElementById("path-start-contest-button").innerHTML = `${numOfCountdownSeconds - i}`;
+            }, i * 1000);
+        }
+
+        setTimeout(() => {
+            document.getElementById("path-start-contest-button").innerHTML = 'GO!';
+        }, COUNTDOWN_DURATION_MS); 
     }
 
     getAllContestantAnimationDataAndSetAlgorithmStatInfo() {
@@ -82,6 +122,21 @@ export default class PathfindingContest extends React.Component {
                 this.state.grid[this.state.startNodeRow][this.state.startNodeColumn],
                 this.state.grid[this.state.finishNodeRow][this.state.finishNodeColumn]
             );
+
+            let numOfNodesVisisted = 0;
+            let lengthOfPath = 0;
+            for(let j = 0; j < allContestantAnimationData[i].length; ++j){
+                const animationCode = allContestantAnimationData[i][j][0];
+                if(animationCode === 'v') {
+                    numOfNodesVisisted++;
+                }
+                else if(animationCode === 'spf') {
+                    const row = allContestantAnimationData[i][j][1];
+                    const col = allContestantAnimationData[i][j][2];
+                    lengthOfPath += parseInt(this.state.grid[row][col].weight);
+                }
+            }
+            this.algoContestantRefs[i].setAllAlgorithmStatInfo(numOfNodesVisisted, lengthOfPath);
         }
 
         return allContestantAnimationData;
@@ -102,10 +157,10 @@ export default class PathfindingContest extends React.Component {
                     if(hasContestantFinishedThisStep === false) {
                         placeNumber++;
                         hasContestantFinishedThisStep = true;
-                        // this.algoContestantRefs[i].scheduleAlgorithmIsNowFinishedCommands(stepCounter, placeNumber);
+                        this.algoContestantRefs[i].scheduleAlgorithmIsNowFinishedCommands(stepCounter, placeNumber);
                     }
                     else {
-                        // this.algoContestantRefs[i].scheduleAlgorithmIsNowFinishedCommands(stepCounter, placeNumber);
+                        this.algoContestantRefs[i].scheduleAlgorithmIsNowFinishedCommands(stepCounter, placeNumber);
                     }
                     console.log('contestant finished');
                     continue;
@@ -253,11 +308,15 @@ export default class PathfindingContest extends React.Component {
 
     handlePageResize = () => {
         if(getFullPageWidthGridNumCols() !== this.state.numCols) {
-            if(this.state.isEmptyGrid) {
-                this.setEmptyGrid();
-            }
-            else {
-                this.setResizedGridWithUpdatedNodesCopied();
+            if(this.state.isPreContest) {
+                if(this.state.isEmptyGrid) {
+                    this.resetPathfindingContestPage();
+                    this.setEmptyGrid();
+                }
+                else {
+                    this.resetPathfindingContestPage();
+                    this.setResizedGridWithUpdatedNodesCopied();
+                }
             }
         }
 
@@ -282,14 +341,26 @@ export default class PathfindingContest extends React.Component {
     }
 
     startContestButtonOnClick() {
-        console.log("Contest Starting");
+        this.resetPathfindingContestPage();
         this.startContest();
     }
 
+    resetButtonOnClick() {
+        if(document.getElementById('reset-grid-button').disabled !== true) {
+            toggleResetGridDropdownButtons();
+        }
+    }
+
+    clearPathButtonOnClick() {
+        toggleResetGridDropdownButtons();
+        this.resetPathfindingContestPage();
+    }
+
     resetGridButtonOnClick() {
-        console.log("Grid Reseting");
-        this.clearPathAndVisitedNodes();
+        toggleResetGridDropdownButtons();
+        this.resetPathfindingContestPage();
         this.setEmptyGrid();
+
     }
 
     skipToFinishButtonOnClick() {
@@ -297,7 +368,9 @@ export default class PathfindingContest extends React.Component {
     }
 
     selectNodeTypeDropdownOnClick() {
-        toggleSelectNodeTypeDropdownButtons();
+        if(document.getElementById('select-node-type-dropdown-button').disabled !== true) {
+            toggleSelectNodeTypeDropdownButtons();
+        }
     }
 
     nodeSelectionDropdownButtonOnClick(nodeType) {
@@ -311,12 +384,14 @@ export default class PathfindingContest extends React.Component {
     }
 
     mazesAndMapsButtonOnClick() {
-        console.log('mazes and maps button has been clicked');
-        toggleSelectMazesAndMapsDropdownButtons();
+        if(document.getElementById("mazes-and-maps-button").disabled !== true) {
+            toggleSelectMazesAndMapsDropdownButtons();
+        }
     }
 
     addContestantOnClick() {
         console.log('add contestant button has been clicked');
+        this.resetPathfindingContestPage();
     }
 
     render() {
@@ -329,7 +404,16 @@ export default class PathfindingContest extends React.Component {
             <div className='pathfinding-contest'>
                 <div id="pathfinding-contest-header">
                     <button id="path-start-contest-button" onClick={() => this.startContestButtonOnClick()}>Start</button>
-                    <button id="reset-grid-button" onClick={() => this.resetGridButtonOnClick()}>Reset Grid</button>
+                    <div id="reset-grid-dropdown">
+                        <button id="reset-grid-button" onClick={() => this.resetButtonOnClick()}>
+                            <div id='reset-grid-button-text'>Reset</div>
+                            <div id='reset-grid-dropdown-arrow'>▼</div>
+                        </button>
+                        <div id="reset-grid-dropdown-content">
+                            <button className='reset-grid-dropdown-button' onClick={() => this.clearPathButtonOnClick()}>Clear Path</button>
+                            <button className='reset-grid-dropdown-button' onClick={() => this.resetGridButtonOnClick()}>Reset Grid</button>
+                        </div>
+                    </div>
                     <div id="mazes-and-maps-dropdown">
                         <button id="mazes-and-maps-button" onClick={() => this.mazesAndMapsButtonOnClick()}>
                             <div id='mazes-and-maps-button-text'>Mazes & Maps</div>
@@ -390,6 +474,83 @@ export default class PathfindingContest extends React.Component {
             </div>
         );
     }
+
+    resetPathfindingContestPage() {
+        this.enablePreContestSetupButtons();
+        this.disableDuringContestControlButtons();
+        this.clearAllAlgorithmStatsAndPlaceLabels();
+        this.clearPathAndVisitedNodes();
+        document.getElementById('node-selection-dropdown-content').style.display = 'none';
+        document.getElementById('mazes-and-maps-dropdown-content').style.display = 'none';
+        document.getElementById('reset-grid-dropdown-content').style.display = 'none';
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            this.algoContestantRefs[i].resetVisualizationStyling();
+        }
+    }
+
+    clearAllAlgorithmStatsAndPlaceLabels() {
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            this.algoContestantRefs[i].destructAlgorithmPlaceLabel();
+            this.algoContestantRefs[i].destructAlgorithmStatsLabel();
+        }
+    }
+
+    disableGrids() {
+        const gridContainers = document.getElementsByClassName('grid-container');
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            gridContainers[i].style.pointerEvents = 'none';
+        }
+    }
+
+    enableGrids() {
+        const gridContainers = document.getElementsByClassName('grid-container');
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            gridContainers[i].style.pointerEvents = 'all';
+        }
+    }
+
+    disablePreContestButtons() {
+        document.getElementById("path-start-contest-button").disabled = true;
+        document.getElementById("reset-grid-button").disabled = true;
+        document.getElementById("mazes-and-maps-button").disabled = true;
+        document.getElementById('select-node-type-dropdown-button').disabled = true;
+        document.getElementById('path-add-contestant-button').disabled = true;
+
+        const algorithmDropDownButtons = document.getElementsByClassName('path-algorithm-dropdown-button');
+        for(let i = 0; i < algorithmDropDownButtons.length; ++i) {
+            algorithmDropDownButtons[i].disabled = true;
+        }
+        const algorithmDropDownArrows = document.getElementsByClassName('dropdown-arrow');
+        for(let i = 0; i < algorithmDropDownArrows.length; ++i) {
+            algorithmDropDownArrows[i].style.visibility = 'hidden';
+        }
+    }
+
+    enablePreContestSetupButtons() {
+        document.getElementById("path-start-contest-button").innerHTML = 'Start';
+        document.getElementById("path-start-contest-button").disabled = false;
+        document.getElementById("reset-grid-button").disabled = false;
+        document.getElementById("mazes-and-maps-button").disabled = false;
+        document.getElementById('select-node-type-dropdown-button').disabled = false;
+        document.getElementById('path-add-contestant-button').disabled = false;
+
+        const algorithmDropDownButtons = document.getElementsByClassName('path-algorithm-dropdown-button');
+        for(let i = 0; i < algorithmDropDownButtons.length; ++i) {
+            algorithmDropDownButtons[i].disabled = false;
+        }
+        const algorithmDropDownArrows = document.getElementsByClassName('dropdown-arrow');
+        for(let i = 0; i < algorithmDropDownArrows.length; ++i) {
+            algorithmDropDownArrows[i].style.visibility = 'visible';
+        }
+    }
+
+    disableDuringContestControlButtons() {
+        document.getElementById('path-skip-to-finish-button').disabled = true;
+    }
+
+    enableDuringContestControlButtons() {
+        document.getElementById('path-skip-to-finish-button').disabled = false
+    }
 }
 
 const toggleSelectNodeTypeDropdownButtons = () => {
@@ -404,6 +565,16 @@ const toggleSelectNodeTypeDropdownButtons = () => {
 
 const toggleSelectMazesAndMapsDropdownButtons = () => {
     const mazesAndMapsDropdownButtonContainer = document.getElementById('mazes-and-maps-dropdown-content');
+    if(mazesAndMapsDropdownButtonContainer.style.display === 'none') {
+        mazesAndMapsDropdownButtonContainer.style.display = 'block';
+    }
+    else {
+        mazesAndMapsDropdownButtonContainer.style.display = 'none';
+    }
+}
+
+const toggleResetGridDropdownButtons = () => {
+    const mazesAndMapsDropdownButtonContainer = document.getElementById('reset-grid-dropdown-content');
     if(mazesAndMapsDropdownButtonContainer.style.display === 'none') {
         mazesAndMapsDropdownButtonContainer.style.display = 'block';
     }
