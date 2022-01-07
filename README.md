@@ -14,4 +14,4 @@ React application for visualizing sorting algorithms competing agianst each othe
 * Selection
 
 # Pathfinding Algorithm Contest
-This project is still a work in progress. Currently, I am working on the same project but instead of having sorting algorithms compete, I will have pathfinding algorithms compete.
+This project is still a work in progress. Currently, I am working on a separate page where pathfinding algorithms can compete to find a path the quickest on the same graph.
