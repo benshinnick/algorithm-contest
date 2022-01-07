@@ -9,7 +9,7 @@ import { getSelectionSortAnimations } from './sortAlgorithms/SelectionSort.js';
 import './css/SortVisualizerContestant.css';
 
 // main color of the array bars: dark blue
-const PRIMARY_COLOR = '#292cff';
+const PRIMARY_COLOR = '#5457ff';
 // color of array bars that are being compared or swapped
 const SECONDARY_COLOR = 'red';
 // color of all the array bars once sorting has finished

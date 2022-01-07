@@ -67,6 +67,7 @@ export default class PathfindingContest extends React.Component {
     }
 
     startContest() {
+        this.setState({...this.state, isPreContest: false});
         this.disablePreContestButtons();
         this.disableGrids();
         this.enableDuringContestControlButtons();
@@ -78,6 +79,7 @@ export default class PathfindingContest extends React.Component {
     }
 
     scheduleContestFinishedCommands(allContestantAnimationData) {
+
         const allContestantMaxAnimationSteps = [];
         for(let i = 0; i < this.state.numOfContestants; ++i) {
             allContestantMaxAnimationSteps.push(allContestantAnimationData[i].length);
@@ -90,6 +92,7 @@ export default class PathfindingContest extends React.Component {
     }
 
     handleContestIsNowFinished() {
+        this.setState({...this.state, isPreContest: true});
         this.enablePreContestSetupButtons();
         this.disableDuringContestControlButtons();
         this.enableGrids();
@@ -305,11 +308,15 @@ export default class PathfindingContest extends React.Component {
 
     handlePageResize = () => {
         if(getFullPageWidthGridNumCols() !== this.state.numCols) {
-            if(this.state.isEmptyGrid) {
-                this.setEmptyGrid();
-            }
-            else {
-                this.setResizedGridWithUpdatedNodesCopied();
+            if(this.state.isPreContest) {
+                if(this.state.isEmptyGrid) {
+                    this.resetPathfindingContestPage();
+                    this.setEmptyGrid();
+                }
+                else {
+                    this.resetPathfindingContestPage();
+                    this.setResizedGridWithUpdatedNodesCopied();
+                }
             }
         }
 
