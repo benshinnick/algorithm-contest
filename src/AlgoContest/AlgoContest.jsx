@@ -14,7 +14,7 @@ export default class AlgoContest extends React.Component {
     }
 
     componentDidMount() {
-        this.changePageContentToPathfindingContest();
+        this.changePageContentToSortContest();
     }
 
     changePageContentToSortContest() {
@@ -33,6 +33,11 @@ export default class AlgoContest extends React.Component {
         document.querySelector('#pathfinding-contest-button').style.backgroundColor = '#6c757d';
         
         ReactDOM.render(<PathfindingContest />, document.getElementById('main-content'));
+
+        //Github pages early deploy message
+        setTimeout(() => {
+            alert("Pathfinding page is still very incomplete. Selecting and drawing nodes on the graph is supported. Moving start and end nodes is supported. Reset Buttons Work. And only Dijkstra's algorithm is supported.");
+        }, 200);
     }
 
     render() {
