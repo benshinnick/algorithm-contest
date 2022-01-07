@@ -212,7 +212,7 @@ export default class PathfindingVisualizerContestant extends React.Component {
         let statsLabelText;
         if(this.state.lengthOfPath !== 0) {
             statsLabelText = document.createTextNode(
-                `Final Stats: ${this.state.numOfNodesVisisted} Nodes Visited and A ${this.state.lengthOfPath} Path Length`
+                `Final Stats: ${this.state.numOfNodesVisisted} Nodes Visited and A ${this.state.lengthOfPath} Path Length Found`
             );
         }
         else {
