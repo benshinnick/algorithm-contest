@@ -1,15 +1,15 @@
-import { AStarNode } from "../dataStructures/AStarNode";
+import { GreedyBestFirstNode } from "../dataStructures/GreedyBestFirstNode";
 import { PriorityQueue } from "../dataStructures/TieBreakingMinPriorityQueue";
 
-export function getAStarAnimations(grid, startNode, finishNode) {
+export function getGreedyBestFirstAnimations(grid, startNode, finishNode) {
     const animations = [];
-    const aStarGrid = getAStarGrid(grid);
-    aStar(aStarGrid, startNode, finishNode, animations);
+    const aStarGrid = getGreedyBestFirstGrid(grid);
+    greedyBestFirst(aStarGrid, startNode, finishNode, animations);
     reconstructShortestPath(aStarGrid, finishNode, animations);
     return animations;
 }
 
-function aStar(grid, startNode, finishNode, animations) {
+function greedyBestFirst(grid, startNode, finishNode, animations) {
 
     // Animation Codes:
     //  'v' denotes a visited node at a particular row and column
@@ -21,47 +21,42 @@ function aStar(grid, startNode, finishNode, animations) {
     let openSet = new PriorityQueue();
     let openSetHash = new Set();
 
-    grid[startNode.row][startNode.col].setGScore(0);
     grid[startNode.row][startNode.col].setFScore(0);
-
     const startFScore = calculateHeuristic(startNode, finishNode);
     grid[startNode.row][startNode.col].setFScore(startFScore);
+    grid[startNode.row][startNode.col].setIsVisited(true);
+
     openSet.enqueue(grid[startNode.row][startNode.col], 0, count.getCount());
     openSetHash.add([startNode.row, startNode.col]);
 
     while (!openSet.isEmpty()) {
         let currentNode = openSet.dequeue().getValue();
-        openSetHash.delete(currentNode);
 
         animations.push(['v', currentNode.getRow(), currentNode.getCol()]);
+        animations.push(['vf', currentNode.getRow(), currentNode.getCol()]);
 
         if (currentNode.getRow() === finishNode.row && 
             currentNode.getCol() === finishNode.col) return;
         
         updateCurrentNodeNeighbors(currentNode, grid, openSet, openSetHash, finishNode, count);
-
-        animations.push(['vf', currentNode.getRow(), currentNode.getCol()]);
     }
 }
 
 function updateCurrentNodeNeighbors(node, grid, openSet, openSetHash, finishNode, count) {
-    const nodeNeighbors = getNodeNeighbors(node, grid);
-    for (const neighbor of nodeNeighbors) {
-        let altGScore = parseInt(node.getGScore()) + parseInt(neighbor.getWeight());
-        if (altGScore < neighbor.getGScore()) {
+    const unvisitedNeighbors = getUnvisitedNeighbors(node, grid);
+    for (const neighbor of unvisitedNeighbors) {
+        if(!openSetHash.has([neighbor.getRow(), neighbor.getCol()])) {
+            count.increment();
+            neighbor.setIsVisited(true);
             neighbor.setPreviousNode(node);
-            neighbor.setGScore(altGScore);
-            neighbor.setFScore(altGScore + calculateHeuristic(neighbor, finishNode));
-            if(!openSetHash.has([neighbor.getRow(), neighbor.getCol()])) {
-                count.increment();
-                openSet.enqueue(neighbor, neighbor.getFScore(), count.getCount());
-                openSetHash.add([neighbor.getRow(), neighbor.getCol()]);
-            }
+            neighbor.setFScore(calculateHeuristic(neighbor, finishNode) + neighbor.getWeight());
+            openSet.enqueue(neighbor, neighbor.getFScore(), count.getCount());
+            openSetHash.add([neighbor.getRow(), neighbor.getCol()]);
         }
     }
 }
 
-function getNodeNeighbors(node, grid) {
+function getUnvisitedNeighbors(node, grid) {
     const neighbors = [];
     const row = node.getRow();
     const col = node.getCol();
@@ -70,7 +65,7 @@ function getNodeNeighbors(node, grid) {
     if (col > 0) neighbors.push(grid[row][col - 1]);
     if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
 
-    return neighbors.filter(neighbor => !neighbor.isWall());
+    return neighbors.filter(neighbor => !neighbor.isWall() && !neighbor.isNodeVisited());
 }
 
 function reconstructShortestPath(grid, finishNode, animations) {
@@ -109,7 +104,7 @@ function calculateHeuristic(node1, node2) {
     return d1 + d2;
 }
 
-function getAStarGrid(grid) {
+function getGreedyBestFirstGrid(grid) {
     const numRows = grid.length;
     const numCols = grid[0].length;
 
@@ -120,8 +115,8 @@ function getAStarGrid(grid) {
 
     for (let row = 0; row < numRows; ++row) {
         for (let col = 0; col < numCols; ++col) {
-            nodes[row][col] = new AStarNode(
-                row, col, parseFloat(grid[row][col].weight), Infinity, Infinity, Infinity
+            nodes[row][col] = new GreedyBestFirstNode(
+                row, col, parseFloat(grid[row][col].weight), Infinity
             );
         }
     }

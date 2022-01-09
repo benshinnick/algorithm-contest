@@ -2,6 +2,7 @@ import React from 'react';
 import Node from './Node/Node.jsx';
 import { getDijkstraAnimations } from './pathfindingAlgorithms/Dijkstra.js';
 import { getAStarAnimations } from './pathfindingAlgorithms/AStar.js';
+import { getGreedyBestFirstAnimations } from './pathfindingAlgorithms/GreedyBestFirst.js';
 import { getLinePixelCoordinates } from './gridDrawingAlgorithms/BresenhamLineDrawAlgo.js';
 import './css/PathfindingVisualizerContestant.css';
 
@@ -51,13 +52,12 @@ export default class PathfindingVisualizerContestant extends React.Component {
             case 'A* Search':
                 return getAStarAnimations(gridCopy, startNode, endNode);
             case 'Greedy Best-first Search':
-                // return getGreedyBestFirstAnimations(gridCopy);
-                return null;
+                return getGreedyBestFirstAnimations(gridCopy, startNode, endNode);
             case 'Breadth-first Search':
-                // return getBreadthFirstAnimations(gridCopy);
+                // return getBreadthFirstAnimations(gridCopy, startNode, endNode);
                 return null;
             case 'Depth-first Search':
-                // return getDepthFirstAnimations(gridCopy);
+                // return getDepthFirstAnimations(gridCopy, startNode, endNode);
                 return null;
             default:
                 console.log("Error: Unexpected Algorithm Type");
@@ -74,7 +74,7 @@ export default class PathfindingVisualizerContestant extends React.Component {
                 this.doNextAStarAnimationStep(animationStepInfo, currentStepNumber);
                 break;
             case 'Greedy Best-first Search':
-                // this.doNextGreedyBestFirstAnimationStep(animationStepInfo, currentStepNumber);
+                this.doNextGreedyBestFirstAnimationStep(animationStepInfo, currentStepNumber);
                 break;
             case 'Breadth-first Search':
                 // this.doNextBreadthFirstAnimationStep(animationStepInfo, currentStepNumber);
@@ -123,6 +123,41 @@ export default class PathfindingVisualizerContestant extends React.Component {
     }
 
     doNextAStarAnimationStep(animationStepInfo, currentStepNumber) {
+        const animationCode = animationStepInfo[0];
+        const row = animationStepInfo[1];
+        const col = animationStepInfo[2];
+
+        const currentNode = document.getElementById(
+            `${this.state.contestantNumber}-node-${row}-${col}`
+        );
+
+        // visit node case
+        if (animationCode === 'v') {
+            setTimeout(() => {
+                currentNode.classList.add('visited');
+            }, currentStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
+            return;
+        }
+        // draw shortest path line cases
+        else if(animationCode === 'sp') {
+            const nextRow = animationStepInfo[3];
+            const nextCol = animationStepInfo[4];
+            setTimeout(() => {
+                this.addShortestPathLineToNode(currentNode, row, col, nextRow, nextCol);
+            }, currentStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
+            return;
+        }
+        else if(animationCode === 'spf') {
+            setTimeout(() => {
+                const prevRow = animationStepInfo[3];
+                const prevCol = animationStepInfo[4];
+                this.addShortestPathLineToNode(currentNode, row, col, prevRow, prevCol);
+            }, currentStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
+            return;
+        }
+    }
+
+    doNextGreedyBestFirstAnimationStep(animationStepInfo, currentStepNumber) {
         const animationCode = animationStepInfo[0];
         const row = animationStepInfo[1];
         const col = animationStepInfo[2];

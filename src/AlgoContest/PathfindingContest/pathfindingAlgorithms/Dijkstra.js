@@ -96,7 +96,9 @@ function getDijkstraGrid(grid) {
 
     for (let row = 0; row < numRows; ++row) {
         for (let col = 0; col < numCols; ++col) {
-            nodes[row][col] = new DijkstraNode(row, col, grid[row][col].weight, Infinity);
+            nodes[row][col] = new DijkstraNode(
+                row, col, parseFloat(grid[row][col].weight), Infinity
+            );
         }
     }
 
