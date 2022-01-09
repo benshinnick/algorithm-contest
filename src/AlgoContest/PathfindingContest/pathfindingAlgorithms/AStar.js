@@ -14,9 +14,8 @@ function aStar(grid, startNode, finishNode, animations) {
     // Animation Codes:
     //  'v' denotes a visited node at a particular row and column
     //  'vf' denotes that we have finished visiting a node
-    //  'sp' 
-    //  'spf'
-    //  'o' open
+    //  'sp' denotes a node is part of the shortest path
+    //  'spf' denotes that we are finished with a shortest path node
 
     let count = new Counter();
     let openSet = new PriorityQueue();
@@ -35,17 +34,13 @@ function aStar(grid, startNode, finishNode, animations) {
         openSetHash.delete(currentNode);
 
         animations.push(['v', currentNode.getRow(), currentNode.getCol()]);
-        animations.push(['vf', currentNode.getRow(), currentNode.getCol()]);
 
         if (currentNode.getRow() === finishNode.row && 
             currentNode.getCol() === finishNode.col) return;
         
         updateCurrentNodeNeighbors(currentNode, grid, openSet, openSetHash, finishNode, count);
 
-        // if (currentNode.getRow() === startNode.row && 
-        //     currentNode.getCol() === startNode.col) {
-        //         animations.push(['c', currentNode.getRow(), currentNode.getCol()]);
-        // }
+        animations.push(['vf', currentNode.getRow(), currentNode.getCol()]);
     }
 }
 
@@ -62,7 +57,6 @@ function updateCurrentNodeNeighbors(node, grid, openSet, openSetHash, finishNode
                 console.log(count);
                 openSet.enqueue(neighbor, neighbor.getFScore(), count.getCount());
                 openSetHash.add([neighbor.getRow(), neighbor.getCol()]);
-                // animations.push(['o', neighbor.getRow(), neighbor.getCol()]);
             }
         }
     }

@@ -5,8 +5,8 @@ import './css/PathfindingContest.css';
 const GRID_NUM_ROWS = 15;
 const COUNTDOWN_DURATION_MS = PathfindingVisualizerContestant.ANIMATION_DELAY_MS;
 
-const INITIAL_NUM_OF_CONTESTANTS = 5;
-const MAX_NUM_OF_CONTESTANTS = 5;
+const INITIAL_NUM_OF_CONTESTANTS = 2;
+const MAX_NUM_OF_CONTESTANTS = 2;
 
 const EMPTY_GRID_START_NODE_ROW = 5;
 const EMPTY_GRID_START_NODE_COL = 5;
@@ -88,7 +88,7 @@ export default class PathfindingContest extends React.Component {
         const maxNumberOfAnimationSteps = Math.max(...allContestantMaxAnimationSteps);
         setTimeout(() => {
             this.handleContestIsNowFinished();
-        }, maxNumberOfAnimationSteps * this.algoContestantRefs[0].getAnimationSpeed() + PathfindingVisualizerContestant.ANIMATION_DELAY_MS + 250);
+        }, maxNumberOfAnimationSteps * this.algoContestantRefs[0].getAnimationSpeed() + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
     }
 
     handleContestIsNowFinished() {

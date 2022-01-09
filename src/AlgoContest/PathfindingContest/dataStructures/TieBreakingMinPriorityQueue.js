@@ -1,5 +1,3 @@
-// From: https://www.digitalocean.com/community/tutorials/js-binary-heaps
-
 export class PriorityQueue {
 
     constructor() {
@@ -16,7 +14,6 @@ export class PriorityQueue {
             let parentIndex = Math.floor((index - 1) / 2);
             let parent = this.values[parentIndex];
     
-            // if (parent.priority >= current.priority) {
             if (this.enquePrioritize(parent, current)) {
                 this.values[parentIndex] = current;
                 this.values[index] = parent;
@@ -45,14 +42,11 @@ export class PriorityQueue {
     
             if (leftChildIndex < length) {
                 leftChild = this.values[leftChildIndex];
-                // if (leftChild.priority < current.priority) swap = leftChildIndex;
                 if (this.dequePrioritize(leftChild, current)) swap = leftChildIndex;
             }
             if (rightChildIndex < length) {
                 rightChild = this.values[rightChildIndex];
                 if (
-                    // (swap === null && rightChild.priority < current.priority) ||
-                    // (swap !== null && rightChild.priority < leftChild.priority)
                     (swap === null && this.dequePrioritize(rightChild, current)) ||
                     (swap !== null && this.dequePrioritize(rightChild, leftChild))
                 )
