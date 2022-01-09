@@ -1,4 +1,5 @@
-// From: https://www.digitalocean.com/community/tutorials/js-binary-heaps
+// Referenced: https://www.digitalocean.com/community/tutorials/js-binary-heaps
+// Used in dijkstra's algorithm to determine what the next closest node to visit is
 
 export class PriorityQueue {
 

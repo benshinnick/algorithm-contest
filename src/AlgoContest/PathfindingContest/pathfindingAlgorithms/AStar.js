@@ -24,7 +24,7 @@ function aStar(grid, startNode, finishNode, animations) {
     grid[startNode.row][startNode.col].setGScore(0);
     grid[startNode.row][startNode.col].setFScore(0);
 
-    const startFScore = f(startNode, finishNode);
+    const startFScore = calculateHeuristic(startNode, finishNode);
     grid[startNode.row][startNode.col].setFScore(startFScore);
     openSet.enqueue(grid[startNode.row][startNode.col], 0, count.getCount());
     openSetHash.add([startNode.row, startNode.col]);
@@ -51,7 +51,7 @@ function updateCurrentNodeNeighbors(node, grid, openSet, openSetHash, finishNode
         if (altGScore < neighbor.getGScore()) {
             neighbor.setPreviousNode(node);
             neighbor.setGScore(altGScore);
-            neighbor.setFScore(altGScore + f(neighbor, finishNode));
+            neighbor.setFScore(altGScore + calculateHeuristic(neighbor, finishNode));
             if(!openSetHash.has([neighbor.getRow(), neighbor.getCol()])) {
                 count.increment();
                 openSet.enqueue(neighbor, neighbor.getFScore(), count.getCount());
@@ -102,7 +102,7 @@ function reconstructShortestPath(grid, finishNode, animations) {
     return;
 }
 
-function f(node1, node2) {
+function calculateHeuristic(node1, node2) {
     // Used manhatten distance to determine the f score
     let d1 = Math.abs(node2.row - node1.row);
     let d2 = Math.abs(node2.col - node1.col);
