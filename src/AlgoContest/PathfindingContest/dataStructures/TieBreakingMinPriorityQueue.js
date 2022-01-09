@@ -1,3 +1,7 @@
+// Used in the A* algorithm to determine what the next node to visit is
+//  f score is used as the priority and the order the value was added is
+//  used as the secondary priority to break any ties in priority
+
 export class PriorityQueue {
 
     constructor() {

@@ -14,8 +14,8 @@ function dijkstra(grid, startNode, finishNode, animations) {
     // Animation Codes:
     //  'v' denotes a visited node at a particular row and column
     //  'vf' denotes that we have finished visiting a node
-    //  'sp' denotes a node is part of the shortest path
-    //  'spf' denotes that we are finished with a shortest path node
+    //  'sp' denotes that we are starting to reconstruct the shortest path on a node
+    //  'spf' denotes that we are finishing to reconstruct the shortest path on a node
 
     grid[startNode.row][startNode.col].setDistance(0);
     let priorityQueue = new PriorityQueue();

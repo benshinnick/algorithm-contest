@@ -14,8 +14,8 @@ function aStar(grid, startNode, finishNode, animations) {
     // Animation Codes:
     //  'v' denotes a visited node at a particular row and column
     //  'vf' denotes that we have finished visiting a node
-    //  'sp' denotes a node is part of the shortest path
-    //  'spf' denotes that we are finished with a shortest path node
+    //  'sp' denotes that we are starting to reconstruct the shortest path on a node
+    //  'spf' denotes that we are finishing to reconstruct the shortest path on a node
 
     let count = new Counter();
     let openSet = new PriorityQueue();
@@ -24,8 +24,8 @@ function aStar(grid, startNode, finishNode, animations) {
     grid[startNode.row][startNode.col].setGScore(0);
     grid[startNode.row][startNode.col].setFScore(0);
 
-    const initialStartDistance = getManhattenDistance(startNode, finishNode);
-    grid[startNode.row][startNode.col].setFScore(initialStartDistance);
+    const startFScore = f(startNode, finishNode);
+    grid[startNode.row][startNode.col].setFScore(startFScore);
     openSet.enqueue(grid[startNode.row][startNode.col], 0, count.getCount());
     openSetHash.add([startNode.row, startNode.col]);
 
@@ -51,10 +51,9 @@ function updateCurrentNodeNeighbors(node, grid, openSet, openSetHash, finishNode
         if (altGScore < neighbor.getGScore()) {
             neighbor.setPreviousNode(node);
             neighbor.setGScore(altGScore);
-            neighbor.setFScore(altGScore + getManhattenDistance(neighbor, finishNode));
+            neighbor.setFScore(altGScore + f(neighbor, finishNode));
             if(!openSetHash.has([neighbor.getRow(), neighbor.getCol()])) {
                 count.increment();
-                console.log(count);
                 openSet.enqueue(neighbor, neighbor.getFScore(), count.getCount());
                 openSetHash.add([neighbor.getRow(), neighbor.getCol()]);
             }
@@ -103,7 +102,8 @@ function reconstructShortestPath(grid, finishNode, animations) {
     return;
 }
 
-function getManhattenDistance(node1, node2) {
+function f(node1, node2) {
+    // Used manhatten distance to determine the f score
     let d1 = Math.abs(node2.row - node1.row);
     let d2 = Math.abs(node2.col - node1.col);
     return d1 + d2;
@@ -129,6 +129,9 @@ function getAStarGrid(grid) {
     return nodes;
 }
 
+// Counter is used to keep track of the amount of times that we insert 
+//  into the priority queue and is used to determine which node will
+//  be visited next if multiple nodes share the same f score or priority
 class Counter {
     constructor() {
         this.count = 1;

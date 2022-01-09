@@ -9,7 +9,6 @@ export class AStarNode {
         this.hScore = hScore;
         this.previousNode = null;
         this.isVisited = false;
-        this.orderAdded = Infinity;
     }
 
     setWeight(weight) {
@@ -70,14 +69,6 @@ export class AStarNode {
 
     isWall() {
         return this.weight === Infinity;
-    }
-
-    setOrderAdded(orderAdded) {
-        this.orderAdded = orderAdded;
-    }
-
-    getOrderAdded() {
-        return this.orderAdded;
     }
 
 }
