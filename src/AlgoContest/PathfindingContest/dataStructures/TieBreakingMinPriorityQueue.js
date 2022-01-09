@@ -1,4 +1,6 @@
-// From: https://www.digitalocean.com/community/tutorials/js-binary-heaps
+// Used in the A* algorithm to determine what the next node to visit is
+//  f score is used as the priority and the order the value was added is
+//  used as the secondary priority to break any ties in priority
 
 export class PriorityQueue {
 
@@ -6,8 +8,8 @@ export class PriorityQueue {
         this.values = [];
     }
 
-    enqueue(val, priority) {
-        let newNode = new Node(val, priority);
+    enqueue(val, priority, secondaryPriority) {
+        let newNode = new Node(val, priority, secondaryPriority);
         this.values.push(newNode);
         let index = this.values.length - 1;
         const current = this.values[index];
@@ -16,7 +18,7 @@ export class PriorityQueue {
             let parentIndex = Math.floor((index - 1) / 2);
             let parent = this.values[parentIndex];
     
-            if (parent.priority >= current.priority) {
+            if (this.enquePrioritize(parent, current)) {
                 this.values[parentIndex] = current;
                 this.values[index] = parent;
                 index = parentIndex;
@@ -44,13 +46,13 @@ export class PriorityQueue {
     
             if (leftChildIndex < length) {
                 leftChild = this.values[leftChildIndex];
-                if (leftChild.priority < current.priority) swap = leftChildIndex;
+                if (this.dequePrioritize(leftChild, current)) swap = leftChildIndex;
             }
             if (rightChildIndex < length) {
                 rightChild = this.values[rightChildIndex];
                 if (
-                    (swap === null && rightChild.priority < current.priority) ||
-                    (swap !== null && rightChild.priority < leftChild.priority)
+                    (swap === null && this.dequePrioritize(rightChild, current)) ||
+                    (swap !== null && this.dequePrioritize(rightChild, leftChild))
                 )
                     swap = rightChildIndex;
             }
@@ -61,6 +63,18 @@ export class PriorityQueue {
             index = swap;
         }
         return max;
+    }
+
+    enquePrioritize(val1, val2) {
+        return val1.priority === val2.priority
+            ? val1.secondaryPriority > val2.secondaryPriority
+            : val1.priority > val2.priority;
+    }
+
+    dequePrioritize(val1, val2) {
+        return val1.priority === val2.priority
+        ? val1.secondaryPriority < val2.secondaryPriority
+        : val1.priority < val2.priority;
     }
 
     isEmpty() {
@@ -74,9 +88,10 @@ export class PriorityQueue {
 }
 
 class Node {
-    constructor(val, priority) {
+    constructor(val, priority, secondaryPriority) {
       this.val = val;
       this.priority = priority;
+      this.secondaryPriority = secondaryPriority;
     }
 
     getValue() {

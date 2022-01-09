@@ -5,9 +5,7 @@ export function getDijkstraAnimations(grid, startNode, finishNode) {
     const animations = [];
     const dijkstraGrid = getDijkstraGrid(grid, startNode.row, startNode.col);
     dijkstra(dijkstraGrid, startNode, finishNode, animations);
-    findNodesInShortestPathOrder(dijkstraGrid, finishNode, animations);
-    // console.log(animations);
-    // console.log('hey');
+    reconstructShortestPath(dijkstraGrid, finishNode, animations);
     return animations;
 }
 
@@ -16,7 +14,8 @@ function dijkstra(grid, startNode, finishNode, animations) {
     // Animation Codes:
     //  'v' denotes a visited node at a particular row and column
     //  'vf' denotes that we have finished visiting a node
-    //  'sp' denotes a node is part of the shortest path
+    //  'sp' denotes that we are starting to reconstruct the shortest path on a node
+    //  'spf' denotes that we are finishing to reconstruct the shortest path on a node
 
     grid[startNode.row][startNode.col].setDistance(0);
     let priorityQueue = new PriorityQueue();
@@ -57,7 +56,7 @@ function getUnvisitedNeighbors(node, grid) {
     return neighbors.filter(neighbor => !neighbor.isNodeVisited());
 }
 
-function findNodesInShortestPathOrder(grid, finishNode, animations) {
+function reconstructShortestPath(grid, finishNode, animations) {
     // Keep track of next and previous node just for the path animations
 
     let nextNode = null;

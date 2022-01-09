@@ -1,6 +1,7 @@
 import React from 'react';
 import Node from './Node/Node.jsx';
 import { getDijkstraAnimations } from './pathfindingAlgorithms/Dijkstra.js';
+import { getAStarAnimations } from './pathfindingAlgorithms/AStar.js';
 import { getLinePixelCoordinates } from './gridDrawingAlgorithms/BresenhamLineDrawAlgo.js';
 import './css/PathfindingVisualizerContestant.css';
 
@@ -48,17 +49,16 @@ export default class PathfindingVisualizerContestant extends React.Component {
             case 'Dijkstra':
                 return getDijkstraAnimations(gridCopy, startNode, endNode);
             case 'A* Search':
-                // return getAStarAnimations(gridCopy);
-                return;
+                return getAStarAnimations(gridCopy, startNode, endNode);
             case 'Greedy Best-first Search':
                 // return getGreedyBestFirstAnimations(gridCopy);
-                return;
+                return null;
             case 'Breadth-first Search':
                 // return getBreadthFirstAnimations(gridCopy);
-                return;
+                return null;
             case 'Depth-first Search':
                 // return getDepthFirstAnimations(gridCopy);
-                return;
+                return null;
             default:
                 console.log("Error: Unexpected Algorithm Type");
                 return null;
@@ -71,7 +71,7 @@ export default class PathfindingVisualizerContestant extends React.Component {
                 this.doNextDijkstraAnimationStep(animationStepInfo, currentStepNumber);
                 break;
             case 'A* Search':
-                // this.doNextAStarAnimationStep(animationStepInfo, currentStepNumber);
+                this.doNextAStarAnimationStep(animationStepInfo, currentStepNumber);
                 break;
             case 'Greedy Best-first Search':
                 // this.doNextGreedyBestFirstAnimationStep(animationStepInfo, currentStepNumber);
@@ -85,28 +85,6 @@ export default class PathfindingVisualizerContestant extends React.Component {
             default:
                 console.log("Error: Unexpected Algorithm Type");
         }
-    }
-
-    addShortestPathLineToNode(node, row, col, adjacentPathRow, adjacentPathCol) {
-        let visitedMarker = document.createElement("DIV");
-        if(row === adjacentPathRow) {
-            if(col < adjacentPathCol) {
-                visitedMarker.setAttribute("class", 'shortest-path shortest-path-right');
-            }
-            else {
-                visitedMarker.setAttribute("class", 'shortest-path shortest-path-left');
-            }
-        }
-        else if(col === adjacentPathCol) {
-            if(row < adjacentPathRow) {
-                visitedMarker.setAttribute("class", 'shortest-path shortest-path-bottom');
-            }
-            else {
-                visitedMarker.setAttribute("class", 'shortest-path shortest-path-top');
-            }
-        }
-
-        node.appendChild(visitedMarker);
     }
 
     doNextDijkstraAnimationStep(animationStepInfo, currentStepNumber) {
@@ -142,6 +120,63 @@ export default class PathfindingVisualizerContestant extends React.Component {
             }, currentStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
             return;
         }
+    }
+
+    doNextAStarAnimationStep(animationStepInfo, currentStepNumber) {
+        const animationCode = animationStepInfo[0];
+        const row = animationStepInfo[1];
+        const col = animationStepInfo[2];
+
+        const currentNode = document.getElementById(
+            `${this.state.contestantNumber}-node-${row}-${col}`
+        );
+
+        // visit node case
+        if (animationCode === 'v') {
+            setTimeout(() => {
+                currentNode.classList.add('visited');
+            }, currentStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
+            return;
+        }
+        // draw shortest path line cases
+        else if(animationCode === 'sp') {
+            const nextRow = animationStepInfo[3];
+            const nextCol = animationStepInfo[4];
+            setTimeout(() => {
+                this.addShortestPathLineToNode(currentNode, row, col, nextRow, nextCol);
+            }, currentStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
+            return;
+        }
+        else if(animationCode === 'spf') {
+            setTimeout(() => {
+                const prevRow = animationStepInfo[3];
+                const prevCol = animationStepInfo[4];
+                this.addShortestPathLineToNode(currentNode, row, col, prevRow, prevCol);
+            }, currentStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
+            return;
+        }
+    }
+
+    addShortestPathLineToNode(node, row, col, adjacentPathRow, adjacentPathCol) {
+        let visitedMarker = document.createElement("DIV");
+        if(row === adjacentPathRow) {
+            if(col < adjacentPathCol) {
+                visitedMarker.setAttribute("class", 'shortest-path shortest-path-right');
+            }
+            else {
+                visitedMarker.setAttribute("class", 'shortest-path shortest-path-left');
+            }
+        }
+        else if(col === adjacentPathCol) {
+            if(row < adjacentPathRow) {
+                visitedMarker.setAttribute("class", 'shortest-path shortest-path-bottom');
+            }
+            else {
+                visitedMarker.setAttribute("class", 'shortest-path shortest-path-top');
+            }
+        }
+
+        node.appendChild(visitedMarker);
     }
 
     scheduleAlgorithmIsNowFinishedCommands(lastAnimationStepNumber, algorithmPlace) {

@@ -29,6 +29,8 @@
     background-color: #636363;
     z-index: 2;
     width: 80px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
     text-align: center;
     padding-left: 15px;
     padding-top: 5px;
@@ -46,6 +48,8 @@
     z-index: 2;
     float: right;
     width: 450px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
     text-align: center;
     padding-left: 15px;
     padding-top: 4px;
