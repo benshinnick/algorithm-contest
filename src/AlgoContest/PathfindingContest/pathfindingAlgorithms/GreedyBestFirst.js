@@ -10,7 +10,6 @@ export function getGreedyBestFirstAnimations(grid, startNode, finishNode) {
 }
 
 function greedyBestFirst(grid, startNode, finishNode, animations) {
-
     // Animation Codes:
     //  'v' denotes a visited node at a particular row and column
     //  'vf' denotes that we have finished visiting a node
@@ -70,7 +69,6 @@ function getUnvisitedNeighbors(node, grid) {
 
 function reconstructShortestPath(grid, finishNode, animations) {
     // Keep track of next and previous node just for the path animations
-
     let nextNode = null;
     let currentNode = grid[finishNode.row][finishNode.col];
     let previousNode = currentNode.getPreviousNode();

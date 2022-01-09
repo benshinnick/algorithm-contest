@@ -1,4 +1,4 @@
-import { PriorityQueue } from "../dataStructures/MinPriorityQueue";
+import { PriorityQueue } from "../dataStructures/TieBreakingMinPriorityQueue";
 import { DijkstraNode } from "../dataStructures/DijkstraNode";
 
 export function getDijkstraAnimations(grid, startNode, finishNode) {
@@ -10,16 +10,16 @@ export function getDijkstraAnimations(grid, startNode, finishNode) {
 }
 
 function dijkstra(grid, startNode, finishNode, animations) {
-
     // Animation Codes:
     //  'v' denotes a visited node at a particular row and column
     //  'vf' denotes that we have finished visiting a node
     //  'sp' denotes that we are starting to reconstruct the shortest path on a node
     //  'spf' denotes that we are finishing to reconstruct the shortest path on a node
 
-    grid[startNode.row][startNode.col].setDistance(0);
+    let count = new Counter();
     let priorityQueue = new PriorityQueue();
-    priorityQueue.enqueue(grid[startNode.row][startNode.col], 0);
+    grid[startNode.row][startNode.col].setDistance(0);
+    priorityQueue.enqueue(grid[startNode.row][startNode.col], 0, count);
 
     while (!priorityQueue.isEmpty()) {
         let closestNode = priorityQueue.dequeue().getValue();
@@ -28,18 +28,19 @@ function dijkstra(grid, startNode, finishNode, animations) {
         animations.push(['vf', closestNode.getRow(), closestNode.getCol()]);
         if (closestNode.getRow() === finishNode.row && 
             closestNode.getCol() === finishNode.col) return;
-        updateClosestNodeNeighbors(closestNode, grid, priorityQueue);
+        updateClosestNodeNeighbors(closestNode, grid, priorityQueue, count);
     }
 }
 
-function updateClosestNodeNeighbors(node, grid, priorityQueue) {
+function updateClosestNodeNeighbors(node, grid, priorityQueue, count) {
     const unvisitedNeighbors = getUnvisitedNeighbors(node, grid);
     for (const neighbor of unvisitedNeighbors) {
         let altDistance = parseInt(node.getDistance()) + parseInt(neighbor.getWeight());
         if (altDistance < neighbor.getDistance()) {
+            count.increment();
             neighbor.setDistance(altDistance);
             neighbor.setPreviousNode(node);
-            priorityQueue.enqueue(neighbor, neighbor.distance);
+            priorityQueue.enqueue(neighbor, neighbor.distance, count.getCount());
         }
     }
 }
@@ -58,7 +59,6 @@ function getUnvisitedNeighbors(node, grid) {
 
 function reconstructShortestPath(grid, finishNode, animations) {
     // Keep track of next and previous node just for the path animations
-
     let nextNode = null;
     let currentNode = grid[finishNode.row][finishNode.col];
     let previousNode = currentNode.getPreviousNode();
@@ -103,4 +103,21 @@ function getDijkstraGrid(grid) {
     }
 
     return nodes;
+}
+
+// Counter is used to keep track of the amount of times that we insert 
+//  into the priority queue and is used to determine which node will
+//  be visited next if multiple nodes share the same f score or priority
+class Counter {
+    constructor() {
+        this.count = 1;
+      }
+
+      increment() {
+          this.count++;
+      }
+  
+      getCount() {
+          return this.count;
+      }
 }
