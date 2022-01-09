@@ -31,14 +31,10 @@ function aStar(grid, startNode, finishNode, animations) {
     while (!openSet.isEmpty()) {
         let currentNode = openSet.dequeue().getValue();
         openSetHash.delete(currentNode);
-
         animations.push(['v', currentNode.getRow(), currentNode.getCol()]);
-
         if (currentNode.getRow() === finishNode.row && 
             currentNode.getCol() === finishNode.col) return;
-        
         updateCurrentNodeNeighbors(currentNode, grid, openSet, openSetHash, finishNode, count);
-
         animations.push(['vf', currentNode.getRow(), currentNode.getCol()]);
     }
 }

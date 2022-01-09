@@ -1,15 +1,16 @@
-import { PriorityQueue } from "../dataStructures/TieBreakingMinPriorityQueue";
-import { DijkstraNode } from "../dataStructures/DijkstraNode";
+// import { PriorityQueue } from "../dataStructures/TieBreakingMinPriorityQueue";
+import { PriorityQueue } from "../dataStructures/MinPriorityQueue";
+import { BreadthFirstNode } from "../dataStructures/BreadthFirstSeachNode";
 
-export function getDijkstraAnimations(grid, startNode, finishNode) {
+export function getBreadthFirstAnimations(grid, startNode, finishNode) {
     const animations = [];
-    const dijkstraGrid = getDijkstraGrid(grid, startNode.row, startNode.col);
-    dijkstra(dijkstraGrid, startNode, finishNode, animations);
-    reconstructShortestPath(dijkstraGrid, finishNode, animations);
+    const breadthFirstGrid = getBreadthFirstGrid(grid, startNode.row, startNode.col);
+    breadthFirstSearch(breadthFirstGrid, startNode, finishNode, animations);
+    reconstructShortestPath(breadthFirstGrid, finishNode, animations);
     return animations;
 }
 
-function dijkstra(grid, startNode, finishNode, animations) {
+function breadthFirstSearch(grid, startNode, finishNode, animations) {
     // Animation Codes:
     //  'v' denotes a visited node at a particular row and column
     //  'vf' denotes that we have finished visiting a node
@@ -18,13 +19,12 @@ function dijkstra(grid, startNode, finishNode, animations) {
 
     let count = new Counter();
     let priorityQueue = new PriorityQueue();
-    grid[startNode.row][startNode.col].setDistance(0);
-    priorityQueue.enqueue(grid[startNode.row][startNode.col], 0, count);
+    priorityQueue.enqueue(grid[startNode.row][startNode.col], count.getCount());
 
     while (!priorityQueue.isEmpty()) {
         let closestNode = priorityQueue.dequeue().getValue();
         animations.push(['v', closestNode.getRow(), closestNode.getCol()]);
-        grid[closestNode.getRow()][closestNode.getCol()].setIsVisited(true);
+        grid[closestNode.getRow()][closestNode.getCol()].setIsExplored(true);
         if (closestNode.getRow() === finishNode.row && 
             closestNode.getCol() === finishNode.col) return;
         updateClosestNodeNeighbors(closestNode, grid, priorityQueue, count);
@@ -33,19 +33,16 @@ function dijkstra(grid, startNode, finishNode, animations) {
 }
 
 function updateClosestNodeNeighbors(node, grid, priorityQueue, count) {
-    const unvisitedNeighbors = getUnvisitedNeighbors(node, grid);
-    for (const neighbor of unvisitedNeighbors) {
-        let altDistance = parseInt(node.getDistance()) + parseInt(neighbor.getWeight());
-        if (altDistance < neighbor.getDistance()) {
+    const unexploredNeighbors = getUnexploredNeighbors(node, grid);
+    for (const neighbor of unexploredNeighbors) {
             count.increment();
-            neighbor.setDistance(altDistance);
+            neighbor.setIsExplored(true);
             neighbor.setPreviousNode(node);
-            priorityQueue.enqueue(neighbor, neighbor.distance, count.getCount());
+            priorityQueue.enqueue(neighbor, count.getCount());
         }
-    }
 }
 
-function getUnvisitedNeighbors(node, grid) {
+function getUnexploredNeighbors(node, grid) {
     const neighbors = [];
     const row = node.getRow();
     const col = node.getCol();
@@ -54,7 +51,7 @@ function getUnvisitedNeighbors(node, grid) {
     if (col > 0) neighbors.push(grid[row][col - 1]);
     if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
 
-    return neighbors.filter(neighbor => !neighbor.isNodeVisited());
+    return neighbors.filter(neighbor => !neighbor.isNodeExplored() && !neighbor.isNodeWall());
 }
 
 function reconstructShortestPath(grid, finishNode, animations) {
@@ -85,7 +82,7 @@ function reconstructShortestPath(grid, finishNode, animations) {
     return;
 }
 
-function getDijkstraGrid(grid) {
+function getBreadthFirstGrid(grid) {
     const numRows = grid.length;
     const numCols = grid[0].length;
 
@@ -96,9 +93,7 @@ function getDijkstraGrid(grid) {
 
     for (let row = 0; row < numRows; ++row) {
         for (let col = 0; col < numCols; ++col) {
-            nodes[row][col] = new DijkstraNode(
-                row, col, parseFloat(grid[row][col].weight), Infinity
-            );
+            nodes[row][col] = new BreadthFirstNode(row, col, parseFloat(grid[row][col].weight));
         }
     }
 

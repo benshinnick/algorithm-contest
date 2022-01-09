@@ -1,5 +1,5 @@
 // Referenced: https://www.digitalocean.com/community/tutorials/js-binary-heaps
-// Regualar single priority queue. Not used in any algorithms but I am keeping it in case I need it.
+// Used in the breadth first search algorithm to determine which node should be visited next
 
 export class PriorityQueue {
 

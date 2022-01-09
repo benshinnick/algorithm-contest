@@ -30,14 +30,11 @@ function greedyBestFirst(grid, startNode, finishNode, animations) {
 
     while (!openSet.isEmpty()) {
         let currentNode = openSet.dequeue().getValue();
-
         animations.push(['v', currentNode.getRow(), currentNode.getCol()]);
-        animations.push(['vf', currentNode.getRow(), currentNode.getCol()]);
-
         if (currentNode.getRow() === finishNode.row && 
             currentNode.getCol() === finishNode.col) return;
-        
         updateCurrentNodeNeighbors(currentNode, grid, openSet, openSetHash, finishNode, count);
+        animations.push(['vf', currentNode.getRow(), currentNode.getCol()]);
     }
 }
 
