@@ -1,5 +1,5 @@
 // Referenced: https://www.digitalocean.com/community/tutorials/js-binary-heaps
-// Used in dijkstra's algorithm to determine what the next closest node to visit is
+// Regualar single priority queue. Not used in any algorithms but I am keeping it in case I need it.
 
 export class PriorityQueue {
 
