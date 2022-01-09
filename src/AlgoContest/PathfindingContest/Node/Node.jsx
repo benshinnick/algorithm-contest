@@ -10,7 +10,6 @@ export default class Node extends Component {
       weight,
       isFinish,
       isStart,
-      isWall,
       isLastRow,
       isLastColumn,
       onMouseDown,
@@ -22,7 +21,7 @@ export default class Node extends Component {
       ? ' node-finish'
       : isStart
       ? ' node-start'
-      : isWall
+      : parseFloat(weight) === Infinity
       ? ' node-wall'
       : '';
 

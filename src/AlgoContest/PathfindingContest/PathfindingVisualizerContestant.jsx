@@ -3,6 +3,7 @@ import Node from './Node/Node.jsx';
 import { getDijkstraAnimations } from './pathfindingAlgorithms/Dijkstra.js';
 import { getAStarAnimations } from './pathfindingAlgorithms/AStar.js';
 import { getGreedyBestFirstAnimations } from './pathfindingAlgorithms/GreedyBestFirst.js';
+import { getBreadthFirstAnimations } from './pathfindingAlgorithms/BreadthFirst.js';
 import { getLinePixelCoordinates } from './gridDrawingAlgorithms/BresenhamLineDrawAlgo.js';
 import './css/PathfindingVisualizerContestant.css';
 
@@ -54,8 +55,7 @@ export default class PathfindingVisualizerContestant extends React.Component {
             case 'Greedy Best-first Search':
                 return getGreedyBestFirstAnimations(gridCopy, startNode, endNode);
             case 'Breadth-first Search':
-                // return getBreadthFirstAnimations(gridCopy, startNode, endNode);
-                return null;
+                return getBreadthFirstAnimations(gridCopy, startNode, endNode);
             case 'Depth-first Search':
                 // return getDepthFirstAnimations(gridCopy, startNode, endNode);
                 return null;
@@ -77,7 +77,7 @@ export default class PathfindingVisualizerContestant extends React.Component {
                 this.doNextGreedyBestFirstAnimationStep(animationStepInfo, currentStepNumber);
                 break;
             case 'Breadth-first Search':
-                // this.doNextBreadthFirstAnimationStep(animationStepInfo, currentStepNumber);
+                this.doNextBreadthFirstAnimationStep(animationStepInfo, currentStepNumber);
                 break;
             case 'Depth-first Search':
                 // this.doNextDepthFirstAnimationStep(animationStepInfo, currentStepNumber);
@@ -158,6 +158,41 @@ export default class PathfindingVisualizerContestant extends React.Component {
     }
 
     doNextGreedyBestFirstAnimationStep(animationStepInfo, currentStepNumber) {
+        const animationCode = animationStepInfo[0];
+        const row = animationStepInfo[1];
+        const col = animationStepInfo[2];
+
+        const currentNode = document.getElementById(
+            `${this.state.contestantNumber}-node-${row}-${col}`
+        );
+
+        // visit node case
+        if (animationCode === 'v') {
+            setTimeout(() => {
+                currentNode.classList.add('visited');
+            }, currentStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
+            return;
+        }
+        // draw shortest path line cases
+        else if(animationCode === 'sp') {
+            const nextRow = animationStepInfo[3];
+            const nextCol = animationStepInfo[4];
+            setTimeout(() => {
+                this.addShortestPathLineToNode(currentNode, row, col, nextRow, nextCol);
+            }, currentStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
+            return;
+        }
+        else if(animationCode === 'spf') {
+            setTimeout(() => {
+                const prevRow = animationStepInfo[3];
+                const prevCol = animationStepInfo[4];
+                this.addShortestPathLineToNode(currentNode, row, col, prevRow, prevCol);
+            }, currentStepNumber * this.state.animationSpeedMS + PathfindingVisualizerContestant.ANIMATION_DELAY_MS);
+            return;
+        }
+    }
+
+    doNextBreadthFirstAnimationStep(animationStepInfo, currentStepNumber) {
         const animationCode = animationStepInfo[0];
         const row = animationStepInfo[1];
         const col = animationStepInfo[2];
