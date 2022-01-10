@@ -9,6 +9,13 @@ export function getAStarAnimations(grid, startNode, finishNode) {
     return animations;
 }
 
+export function getShortestPathLength(grid, startNode, finishNode) {
+    const aStarGrid = getAStarGrid(grid);
+    aStar(aStarGrid, startNode, finishNode, []);
+    const startNodeWeight = 1;
+    return findShortestPathLength(aStarGrid, finishNode) - startNodeWeight;
+}
+
 function aStar(grid, startNode, finishNode, animations) {
     // Animation Codes:
     //  'v' denotes a visited node at a particular row and column
@@ -94,6 +101,18 @@ function reconstructShortestPath(grid, finishNode, animations) {
         if(previousNode !== null) previousNode = previousNode.getPreviousNode();
     }
     return;
+}
+
+function findShortestPathLength(grid, finishNode) {
+    let currentNode = grid[finishNode.row][finishNode.col];
+    let pathLength = 0;
+
+    while (currentNode !== null) {
+        pathLength += currentNode.getWeight();
+        currentNode = currentNode.getPreviousNode();
+    }
+
+    return pathLength;
 }
 
 function calculateHeuristic(node1, node2) {
