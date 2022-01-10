@@ -8,7 +8,7 @@ import { getDepthFirstAnimations } from './pathfindingAlgorithms/DepthFirst.js';
 import { getLinePixelCoordinates } from './gridDrawingAlgorithms/BresenhamLineDrawAlgo.js';
 import './css/PathfindingVisualizerContestant.css';
 
-const INITIAL_ANIMATION_SPEED = 5;
+const INITIAL_ANIMATION_SPEED = 8;
 
 const DEFAULT_BACKGROUND_COLOR = '#f7f7f7'; // light grey
 const FINISHED_PATHFINDING_BACKGROUND_COLOR = '#edfff2'; // light green
@@ -31,7 +31,8 @@ export default class PathfindingVisualizerContestant extends React.Component {
             isFinishNodeSelected: false,
             lastUpdatedNode: [],
             numOfNodesVisisted: -1,
-            lengthOfPath: -1
+            lengthOfPath: -1,
+            lengthOfShortestPath: -1
         };
     }
 
@@ -352,8 +353,20 @@ export default class PathfindingVisualizerContestant extends React.Component {
         let statsLabelText;
         if(this.state.lengthOfPath !== 0) {
             statsLabelText = document.createTextNode(
-                `Final Stats: ${this.state.numOfNodesVisisted} Nodes Visited and A ${this.state.lengthOfPath} Path Length Found`
+                `Final Stats: ${this.state.numOfNodesVisisted} Nodes Visited For A ${this.state.lengthOfPath} Path Length`
             );
+            let shortestPathLabel = document.createElement("DIV");
+            let shortestPathLabelText;
+            if(this.state.lengthOfPath === this.state.lengthOfShortestPath) {
+                shortestPathLabel.setAttribute("class", 'shortest-path-found-label');
+                shortestPathLabelText = document.createTextNode("SP");
+            }
+            else {
+                shortestPathLabel.setAttribute("class", 'shortest-path-not-found-label');
+                shortestPathLabelText = document.createTextNode("!SP");   
+            }
+            shortestPathLabel.appendChild(shortestPathLabelText);
+            sortVisualizerContestant.appendChild(shortestPathLabel);
         }
         else {
             statsLabelText = document.createTextNode(
@@ -608,11 +621,12 @@ export default class PathfindingVisualizerContestant extends React.Component {
         );
     }
 
-    setAllAlgorithmStatInfo(numOfNodesVisisted, lengthOfPath) {
+    setAllAlgorithmStatInfo(numOfNodesVisisted, lengthOfPath, lengthOfShortestPath) {
         this.setState({
             ...this.state,
             numOfNodesVisisted: numOfNodesVisisted,
-            lengthOfPath: lengthOfPath
+            lengthOfPath: lengthOfPath,
+            lengthOfShortestPath: lengthOfShortestPath
         });
     }
 
