@@ -36,7 +36,7 @@ export default class AlgoContest extends React.Component {
 
         //Github pages early deploy message
         setTimeout(() => {
-            alert("Pathfinding page is still very incomplete. Selecting and drawing nodes on the graph is supported. Moving start and end nodes is supported. Reset Buttons Work. And only Dijkstra's algorithm is supported.");
+            alert("The pathfinding page is still very incomplete, but all algorithms are implemented. The skip and maps and mazes buttons are not working yet, but everything else should work as expected. There are some bugs I still need to fix and other user experience improvements I want to add, but this project will hopefully be completed in the next few weeks.");
         }, 200);
     }
 
