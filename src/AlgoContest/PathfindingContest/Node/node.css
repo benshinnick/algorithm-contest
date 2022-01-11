@@ -25,19 +25,19 @@
 .visited {
   box-shadow: 
     inset 0 0 0 10px rgba(0, 195, 255, 0.35);
-  animation: visitNode 225ms;
+  animation: visitNode 250ms;
   border-color: rgb(86, 216, 255) !important;
 }
 
 @keyframes visitNode {
   0% { 
-    box-shadow: inset 0 0 0 10px rgba(215, 0, 215, 0.6);
+    box-shadow: inset 0 0 0 5px rgba(215, 0, 215, 0.6);
   }
   85% {
-    box-shadow: inset 0 0 0 10px rgba(215, 0, 215, 0.3);
+    box-shadow: inset 0 0 0 5px rgba(215, 0, 215, 0.3);
   }
   100% {
-    box-shadow: inset 0 0 0 10px rgba(0, 195, 255, 0.35);
+    box-shadow: inset 0 0 0 5px rgba(0, 195, 255, 0.35);
    }
 }
 
@@ -149,5 +149,19 @@
   }
   to {
     transform: scale(1);
+  }
+}
+
+@media only screen and (min-width: 800px) {
+  /* Box shadow animations are really slow for smaller grids in safari for some reason */
+  _::-webkit-full-page-media, _:future, :root .visited {
+    animation: none;
+  }
+}
+
+@media only screen and (min-width: 1300px) {
+  /* Cancel all node visited animations at 1300px just to support better performance for much larger grids */
+  .visited {
+    animation: none;
   }
 }

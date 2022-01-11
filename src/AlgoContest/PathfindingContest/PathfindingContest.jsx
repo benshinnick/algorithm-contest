@@ -3,7 +3,7 @@ import PathfindingVisualizerContestant from './PathfindingVisualizerContestant';
 import { getShortestPathLength } from './pathfindingAlgorithms/AStar';
 import './css/PathfindingContest.css';
 
-const GRID_NUM_ROWS = 12;
+const GRID_NUM_ROWS = 14;
 const COUNTDOWN_DURATION_MS = PathfindingVisualizerContestant.ANIMATION_DELAY_MS;
 
 const INITIAL_NUM_OF_CONTESTANTS = 5;
@@ -499,9 +499,13 @@ export default class PathfindingContest extends React.Component {
             this.algoContestantRefs[i].destructAlgorithmPlaceLabel();
             this.algoContestantRefs[i].destructAlgorithmStatsLabel();
         }
-        let shortestPathLabels = document.querySelectorAll('.shortest-path-found-label', '.shortest-path-not-found-label');
+        let shortestPathLabels = document.querySelectorAll('.shortest-path-found-label');
         for(let i = 0; i < shortestPathLabels.length; ++i) {
             shortestPathLabels[i].remove();
+        }
+        let notShortestPathLabels = document.querySelectorAll(        '.shortest-path-not-found-label');
+        for(let i = 0; i < notShortestPathLabels.length; ++i) {
+            notShortestPathLabels[i].remove();
         }
     }
 
