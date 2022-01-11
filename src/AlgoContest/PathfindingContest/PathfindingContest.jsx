@@ -1,12 +1,13 @@
 import React from 'react';
 import PathfindingVisualizerContestant from './PathfindingVisualizerContestant';
+import { getShortestPathLength } from './pathfindingAlgorithms/AStar';
 import './css/PathfindingContest.css';
 
-const GRID_NUM_ROWS = 15;
+const GRID_NUM_ROWS = 14;
 const COUNTDOWN_DURATION_MS = PathfindingVisualizerContestant.ANIMATION_DELAY_MS;
 
-const INITIAL_NUM_OF_CONTESTANTS = 3;
-const MAX_NUM_OF_CONTESTANTS = 3;
+const INITIAL_NUM_OF_CONTESTANTS = 5;
+const MAX_NUM_OF_CONTESTANTS = 5;
 
 const EMPTY_GRID_START_NODE_ROW = 5;
 const EMPTY_GRID_START_NODE_COL = 5;
@@ -15,8 +16,8 @@ const ALGORITHM_TYPES = [
     'Dijkstra',
     'A* Search',
     'Greedy Best-first Search',
-    'Breadth-first Search',
     'Depth-first Search',
+    'Breadth-first Search'
 ]
 
 const NODE_TYPES = [
@@ -92,7 +93,6 @@ export default class PathfindingContest extends React.Component {
     }
 
     handleContestIsNowFinished() {
-        this.setState({...this.state, isPreContest: true});
         this.enablePreContestSetupButtons();
         this.disableDuringContestControlButtons();
         this.enableGrids();
@@ -117,6 +117,12 @@ export default class PathfindingContest extends React.Component {
 
     getAllContestantAnimationDataAndSetAlgorithmStatInfo() {
         const allContestantAnimationData = [];
+        const shortestPathLength = getShortestPathLength(
+            this.state.grid,
+            this.state.grid[this.state.startNodeRow][this.state.startNodeColumn],
+            this.state.grid[this.state.finishNodeRow][this.state.finishNodeColumn]
+        );
+
         for(let i = 0; i < this.state.numOfContestants; ++i) {
             allContestantAnimationData[i] = this.algoContestantRefs[i].getPathfindingAnimations(
                 this.state.grid[this.state.startNodeRow][this.state.startNodeColumn],
@@ -136,7 +142,7 @@ export default class PathfindingContest extends React.Component {
                     lengthOfPath += parseInt(this.state.grid[row][col].weight);
                 }
             }
-            this.algoContestantRefs[i].setAllAlgorithmStatInfo(numOfNodesVisisted, lengthOfPath);
+            this.algoContestantRefs[i].setAllAlgorithmStatInfo(numOfNodesVisisted, lengthOfPath, shortestPathLength);
         }
 
         return allContestantAnimationData;
@@ -492,6 +498,14 @@ export default class PathfindingContest extends React.Component {
         for(let i = 0; i < this.state.numOfContestants; ++i) {
             this.algoContestantRefs[i].destructAlgorithmPlaceLabel();
             this.algoContestantRefs[i].destructAlgorithmStatsLabel();
+        }
+        let shortestPathLabels = document.querySelectorAll('.shortest-path-found-label');
+        for(let i = 0; i < shortestPathLabels.length; ++i) {
+            shortestPathLabels[i].remove();
+        }
+        let notShortestPathLabels = document.querySelectorAll(        '.shortest-path-not-found-label');
+        for(let i = 0; i < notShortestPathLabels.length; ++i) {
+            notShortestPathLabels[i].remove();
         }
     }
 

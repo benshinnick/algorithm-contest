@@ -1,15 +1,15 @@
+import { GreedyBestFirstNode } from "../dataStructures/GreedyBestFirstNode";
 import { PriorityQueue } from "../dataStructures/TieBreakingMinPriorityQueue";
-import { DijkstraNode } from "../dataStructures/DijkstraNode";
 
-export function getDijkstraAnimations(grid, startNode, finishNode) {
+export function getGreedyBestFirstAnimations(grid, startNode, finishNode) {
     const animations = [];
-    const dijkstraGrid = getDijkstraGrid(grid, startNode.row, startNode.col);
-    dijkstra(dijkstraGrid, startNode, finishNode, animations);
-    reconstructShortestPath(dijkstraGrid, finishNode, animations);
+    const aStarGrid = getGreedyBestFirstGrid(grid);
+    greedyBestFirst(aStarGrid, startNode, finishNode, animations);
+    reconstructShortestPath(aStarGrid, finishNode, animations);
     return animations;
 }
 
-function dijkstra(grid, startNode, finishNode, animations) {
+function greedyBestFirst(grid, startNode, finishNode, animations) {
     // Animation Codes:
     //  'v' denotes a visited node at a particular row and column
     //  'vf' denotes that we have finished visiting a node
@@ -17,30 +17,37 @@ function dijkstra(grid, startNode, finishNode, animations) {
     //  'spf' denotes that we are finishing to reconstruct the shortest path on a node
 
     let count = new Counter();
-    let priorityQueue = new PriorityQueue();
-    grid[startNode.row][startNode.col].setDistance(0);
-    priorityQueue.enqueue(grid[startNode.row][startNode.col], 0, count);
+    let openSet = new PriorityQueue();
+    let openSetHash = new Set();
 
-    while (!priorityQueue.isEmpty()) {
-        let closestNode = priorityQueue.dequeue().getValue();
-        animations.push(['v', closestNode.getRow(), closestNode.getCol()]);
-        grid[closestNode.getRow()][closestNode.getCol()].setIsVisited(true);
-        if (closestNode.getRow() === finishNode.row && 
-            closestNode.getCol() === finishNode.col) return;
-        updateClosestNodeNeighbors(closestNode, grid, priorityQueue, count);
-        animations.push(['vf', closestNode.getRow(), closestNode.getCol()]);
+    grid[startNode.row][startNode.col].setFScore(0);
+    const startFScore = calculateHeuristic(startNode, finishNode);
+    grid[startNode.row][startNode.col].setFScore(startFScore);
+    grid[startNode.row][startNode.col].setIsVisited(true);
+
+    openSet.enqueue(grid[startNode.row][startNode.col], 0, count.getCount());
+    openSetHash.add([startNode.row, startNode.col]);
+
+    while (!openSet.isEmpty()) {
+        let currentNode = openSet.dequeue().getValue();
+        animations.push(['v', currentNode.getRow(), currentNode.getCol()]);
+        if (currentNode.getRow() === finishNode.row && 
+            currentNode.getCol() === finishNode.col) return;
+        updateCurrentNodeNeighbors(currentNode, grid, openSet, openSetHash, finishNode, count);
+        animations.push(['vf', currentNode.getRow(), currentNode.getCol()]);
     }
 }
 
-function updateClosestNodeNeighbors(node, grid, priorityQueue, count) {
+function updateCurrentNodeNeighbors(node, grid, openSet, openSetHash, finishNode, count) {
     const unvisitedNeighbors = getUnvisitedNeighbors(node, grid);
     for (const neighbor of unvisitedNeighbors) {
-        let altDistance = parseInt(node.getDistance()) + parseInt(neighbor.getWeight());
-        if (altDistance < neighbor.getDistance()) {
+        if(!openSetHash.has([neighbor.getRow(), neighbor.getCol()])) {
             count.increment();
-            neighbor.setDistance(altDistance);
+            neighbor.setIsVisited(true);
             neighbor.setPreviousNode(node);
-            priorityQueue.enqueue(neighbor, neighbor.distance, count.getCount());
+            neighbor.setFScore(calculateHeuristic(neighbor, finishNode) + neighbor.getWeight());
+            openSet.enqueue(neighbor, neighbor.getFScore(), count.getCount());
+            openSetHash.add([neighbor.getRow(), neighbor.getCol()]);
         }
     }
 }
@@ -54,7 +61,7 @@ function getUnvisitedNeighbors(node, grid) {
     if (col > 0) neighbors.push(grid[row][col - 1]);
     if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
 
-    return neighbors.filter(neighbor => !neighbor.isNodeVisited());
+    return neighbors.filter(neighbor => !neighbor.isWall() && !neighbor.isNodeVisited());
 }
 
 function reconstructShortestPath(grid, finishNode, animations) {
@@ -85,7 +92,14 @@ function reconstructShortestPath(grid, finishNode, animations) {
     return;
 }
 
-function getDijkstraGrid(grid) {
+function calculateHeuristic(node1, node2) {
+    // Used manhatten distance to determine the f score
+    let d1 = Math.abs(node2.row - node1.row);
+    let d2 = Math.abs(node2.col - node1.col);
+    return d1 + d2;
+}
+
+function getGreedyBestFirstGrid(grid) {
     const numRows = grid.length;
     const numCols = grid[0].length;
 
@@ -96,7 +110,7 @@ function getDijkstraGrid(grid) {
 
     for (let row = 0; row < numRows; ++row) {
         for (let col = 0; col < numCols; ++col) {
-            nodes[row][col] = new DijkstraNode(
+            nodes[row][col] = new GreedyBestFirstNode(
                 row, col, parseFloat(grid[row][col].weight), Infinity
             );
         }
