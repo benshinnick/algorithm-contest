@@ -1,6 +1,6 @@
 import React from 'react';
 import PathfindingVisualizerContestant from './PathfindingVisualizerContestant';
-import { getRecursiveDivisionMazeWallPoints } from './gridDrawingAlgorithms/RecursiveDivisionMaze';
+import { getRecursiveDivisionMazeWallCoordinates } from './gridDrawingAlgorithms/RecursiveDivisionMaze';
 import { getShortestPathLength } from './pathfindingAlgorithms/AStar';
 import './css/PathfindingContest.css';
 
@@ -397,8 +397,8 @@ export default class PathfindingContest extends React.Component {
     }
 
     recursiveMazeButtonOnClick() {
-        const recursiveMazeWallPoints = getRecursiveDivisionMazeWallPoints(this.state.gridNumRows, this.state.gridNumCols);
-        const mazeGrid = getNewGridWithMultipleNodeWeightsUpdated(this.state.grid, recursiveMazeWallPoints, Infinity);
+        const recursiveMazeWallCoordinates = getRecursiveDivisionMazeWallCoordinates(this.state.gridNumRows, this.state.gridNumCols);
+        const mazeGrid = getNewGridWithMultipleNodeWeightsUpdated(this.state.grid, recursiveMazeWallCoordinates, Infinity);
         this.setState({...this.state, grid: mazeGrid});
         toggleSelectMazesAndMapsDropdownButtons();
     }
