@@ -5,7 +5,7 @@ import { getAStarAnimations } from './pathfindingAlgorithms/AStar.js';
 import { getGreedyBestFirstAnimations } from './pathfindingAlgorithms/GreedyBestFirst.js';
 import { getBreadthFirstAnimations } from './pathfindingAlgorithms/BreadthFirst.js';
 import { getDepthFirstAnimations } from './pathfindingAlgorithms/DepthFirst.js';
-import { getLinePixelCoordinates } from './gridDrawingAlgorithms/BresenhamLineDrawAlgo.js';
+import { getLinePixelCoordinates } from './gridAlgorithms/BresenhamLineDrawAlgo.js';
 import './css/PathfindingVisualizerContestant.css';
 
 const INITIAL_ANIMATION_SPEED = 8;

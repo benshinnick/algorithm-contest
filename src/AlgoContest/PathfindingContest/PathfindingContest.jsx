@@ -1,6 +1,6 @@
 import React from 'react';
 import PathfindingVisualizerContestant from './PathfindingVisualizerContestant';
-import { getRecursiveDivisionMazeWallCoordinates } from './gridDrawingAlgorithms/RecursiveDivisionMaze';
+import { getRecursiveDivisionMazeWallCoordinates } from './gridAlgorithms/RecursiveDivisionMaze';
 import { getShortestPathLength } from './pathfindingAlgorithms/AStar';
 import './css/PathfindingContest.css';
 
@@ -397,10 +397,17 @@ export default class PathfindingContest extends React.Component {
     }
 
     recursiveMazeButtonOnClick() {
-        const recursiveMazeWallCoordinates = getRecursiveDivisionMazeWallCoordinates(this.state.gridNumRows, this.state.gridNumCols);
-        const mazeGrid = getNewGridWithMultipleNodeWeightsUpdated(this.state.grid, recursiveMazeWallCoordinates, Infinity);
-        this.setState({...this.state, grid: mazeGrid});
         toggleSelectMazesAndMapsDropdownButtons();
+        this.resetPathfindingContestPage();
+        const emptyGrid = getEmptyGrid();
+        const recursiveMazeWallCoordinates = getRecursiveDivisionMazeWallCoordinates(
+            this.state.gridNumRows,
+            this.state.gridNumCols,
+            this.state.grid[this.state.startNodeRow][this.state.startNodeColumn],
+            this.state.grid[this.state.finishNodeRow][this.state.finishNodeColumn]
+        );
+        const mazeGrid = getNewGridWithMultipleNodeWeightsUpdated(emptyGrid, recursiveMazeWallCoordinates, Infinity);
+        this.setState({...this.state, grid: mazeGrid});
     }
 
     addContestantOnClick() {
@@ -424,8 +431,8 @@ export default class PathfindingContest extends React.Component {
                             <div id='reset-grid-dropdown-arrow'>▼</div>
                         </button>
                         <div id="reset-grid-dropdown-content">
-                            <button className='reset-grid-dropdown-button' onClick={() => this.clearPathButtonOnClick()}>Clear Path</button>
                             <button className='reset-grid-dropdown-button' onClick={() => this.resetGridButtonOnClick()}>Reset Grid</button>
+                            <button className='reset-grid-dropdown-button' onClick={() => this.clearPathButtonOnClick()}>Clear Path</button>
                         </div>
                     </div>
                     <div id="mazes-and-maps-dropdown">
