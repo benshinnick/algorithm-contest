@@ -676,7 +676,7 @@ const getNewGridWithMultipleNodeWeightsUpdated = (grid, updatedNodesCoordinates,
         const row = parseInt(updatedNodesCoordinates[i][0]);
         const col = parseInt(updatedNodesCoordinates[i][1]);
         const weight = parseFloat(newWeight);
-        console.log(`Row: ${row} Col: ${col}`);
+        // console.log(`Row: ${row} Col: ${col}`);
         const node = newGrid[row][col];
         const newNode = {
           ...node,
