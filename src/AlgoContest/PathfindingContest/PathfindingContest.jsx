@@ -1,9 +1,10 @@
 import React from 'react';
 import PathfindingVisualizerContestant from './PathfindingVisualizerContestant';
+import { getRecursiveDivisionMazeWallCoordinates } from './gridAlgorithms/RecursiveDivisionMaze';
 import { getShortestPathLength } from './pathfindingAlgorithms/AStar';
 import './css/PathfindingContest.css';
 
-const GRID_NUM_ROWS = 14;
+const GRID_NUM_ROWS = 15;
 const COUNTDOWN_DURATION_MS = PathfindingVisualizerContestant.ANIMATION_DELAY_MS;
 
 const INITIAL_NUM_OF_CONTESTANTS = 5;
@@ -395,6 +396,20 @@ export default class PathfindingContest extends React.Component {
         }
     }
 
+    recursiveMazeButtonOnClick() {
+        toggleSelectMazesAndMapsDropdownButtons();
+        this.resetPathfindingContestPage();
+        const emptyGrid = getEmptyGrid();
+        const recursiveMazeWallCoordinates = getRecursiveDivisionMazeWallCoordinates(
+            this.state.gridNumRows,
+            this.state.gridNumCols,
+            this.state.grid[this.state.startNodeRow][this.state.startNodeColumn],
+            this.state.grid[this.state.finishNodeRow][this.state.finishNodeColumn]
+        );
+        const mazeGrid = getNewGridWithMultipleNodeWeightsUpdated(emptyGrid, recursiveMazeWallCoordinates, Infinity);
+        this.setState({...this.state, grid: mazeGrid});
+    }
+
     addContestantOnClick() {
         console.log('add contestant button has been clicked');
         this.resetPathfindingContestPage();
@@ -416,8 +431,8 @@ export default class PathfindingContest extends React.Component {
                             <div id='reset-grid-dropdown-arrow'>▼</div>
                         </button>
                         <div id="reset-grid-dropdown-content">
-                            <button className='reset-grid-dropdown-button' onClick={() => this.clearPathButtonOnClick()}>Clear Path</button>
                             <button className='reset-grid-dropdown-button' onClick={() => this.resetGridButtonOnClick()}>Reset Grid</button>
+                            <button className='reset-grid-dropdown-button' onClick={() => this.clearPathButtonOnClick()}>Clear Path</button>
                         </div>
                     </div>
                     <div id="mazes-and-maps-dropdown">
@@ -426,7 +441,7 @@ export default class PathfindingContest extends React.Component {
                             <div id='mazes-and-maps-dropdown-arrow'>▼</div>
                         </button>
                         <div id="mazes-and-maps-dropdown-content">
-                            <button className='mazes-and-maps-dropdown-button'>Recursive Maze</button>
+                            <button className='mazes-and-maps-dropdown-button' onClick={() => this.recursiveMazeButtonOnClick()}>Recursive Maze</button>
                             <button className='mazes-and-maps-dropdown-button'>Random Walls</button>
                             <button className='mazes-and-maps-dropdown-button'>Map 1</button>
                             <button className='mazes-and-maps-dropdown-button'>Map 2</button>
@@ -665,8 +680,10 @@ const getNewGridWithNodeWeightUpdated = (grid, row, col, newWeight) => {
 const getNewGridWithMultipleNodeWeightsUpdated = (grid, updatedNodesCoordinates, newWeight) => {
     const newGrid = grid.slice();
     for(let i = 0; i < updatedNodesCoordinates.length; ++i) {
-        const row = updatedNodesCoordinates[i][0];
-        const col = updatedNodesCoordinates[i][1]
+        const row = parseInt(updatedNodesCoordinates[i][0]);
+        const col = parseInt(updatedNodesCoordinates[i][1]);
+        const weight = parseFloat(newWeight);
+        // console.log(`Row: ${row} Col: ${col}`);
         const node = newGrid[row][col];
         const newNode = {
           ...node,
@@ -674,7 +691,7 @@ const getNewGridWithMultipleNodeWeightsUpdated = (grid, updatedNodesCoordinates,
           col: col,
           isStart: false,
           isFinish: false,
-          weight: newWeight,
+          weight: weight,
         };
         newGrid[row][col] = newNode;
     }
