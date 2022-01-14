@@ -8,8 +8,8 @@ import './css/PathfindingContest.css';
 const GRID_NUM_ROWS = 15;
 const COUNTDOWN_DURATION_MS = PathfindingVisualizerContestant.ANIMATION_DELAY_MS;
 
-const INITIAL_NUM_OF_CONTESTANTS = 5;
-const MAX_NUM_OF_CONTESTANTS = 5;
+const INITIAL_NUM_OF_CONTESTANTS = 1;
+const MAX_NUM_OF_CONTESTANTS = 1;
 
 const EMPTY_GRID_START_NODE_ROW = 5;
 const EMPTY_GRID_START_NODE_COL = 5;
@@ -430,6 +430,23 @@ export default class PathfindingContest extends React.Component {
         this.resetPathfindingContestPage();
     }
 
+    // Temporary Function 
+    printGridWeights() {
+        let gridWeightString = "";
+
+        for(let r = 0; r < this.state.gridNumRows; ++r) {
+            for(let c = 0; c < this.state.gridNumCols; ++c) {
+                if(c !== this.state.gridNumCols - 1) {
+                    gridWeightString += `${parseFloat(this.state.grid[r][c].weight)}, `
+                }
+                else gridWeightString += `${parseFloat(this.state.grid[r][c].weight)}\n`
+            }
+        }
+
+        console.log(gridWeightString);
+    }
+    // Temporary Function
+
     render() {
         const ContestantNumbers = [];
         for(let i = 0; i < MAX_NUM_OF_CONTESTANTS; ++i) {
@@ -458,7 +475,7 @@ export default class PathfindingContest extends React.Component {
                         <div id="mazes-and-maps-dropdown-content">
                             <button className='mazes-and-maps-dropdown-button' onClick={() => this.recursiveMazeButtonOnClick()}>Recursive Maze</button>
                             <button className='mazes-and-maps-dropdown-button' onClick={() => this.randomWallsButtonOnClick()}>Random Walls</button>
-                            <button className='mazes-and-maps-dropdown-button'>Map 1</button>
+                            <button className='mazes-and-maps-dropdown-button' onClick={() => this.printGridWeights()}>Map 1</button>
                             <button className='mazes-and-maps-dropdown-button'>Map 2</button>
                             <button className='mazes-and-maps-dropdown-button'>Map 3</button>
                         </div>
