@@ -1,6 +1,7 @@
 import React from 'react';
 import PathfindingVisualizerContestant from './PathfindingVisualizerContestant';
 import { getRecursiveDivisionMazeWallCoordinates } from './gridAlgorithms/RecursiveDivisionMaze';
+import { getRandomWallsCoordinates } from './gridAlgorithms/RandomWallsGeneration';
 import { getShortestPathLength } from './pathfindingAlgorithms/AStar';
 import './css/PathfindingContest.css';
 
@@ -410,6 +411,20 @@ export default class PathfindingContest extends React.Component {
         this.setState({...this.state, grid: mazeGrid});
     }
 
+    randomWallsButtonOnClick() {
+        toggleSelectMazesAndMapsDropdownButtons();
+        this.resetPathfindingContestPage();
+        const emptyGrid = getEmptyGrid();
+        const randomWallsCoordinates = getRandomWallsCoordinates(
+            this.state.gridNumRows,
+            this.state.gridNumCols,
+            this.state.grid[this.state.startNodeRow][this.state.startNodeColumn],
+            this.state.grid[this.state.finishNodeRow][this.state.finishNodeColumn]
+        );
+        const randomWallGrid = getNewGridWithMultipleNodeWeightsUpdated(emptyGrid, randomWallsCoordinates, Infinity);
+        this.setState({...this.state, grid: randomWallGrid});
+    }
+
     addContestantOnClick() {
         console.log('add contestant button has been clicked');
         this.resetPathfindingContestPage();
@@ -442,7 +457,7 @@ export default class PathfindingContest extends React.Component {
                         </button>
                         <div id="mazes-and-maps-dropdown-content">
                             <button className='mazes-and-maps-dropdown-button' onClick={() => this.recursiveMazeButtonOnClick()}>Recursive Maze</button>
-                            <button className='mazes-and-maps-dropdown-button'>Random Walls</button>
+                            <button className='mazes-and-maps-dropdown-button' onClick={() => this.randomWallsButtonOnClick()}>Random Walls</button>
                             <button className='mazes-and-maps-dropdown-button'>Map 1</button>
                             <button className='mazes-and-maps-dropdown-button'>Map 2</button>
                             <button className='mazes-and-maps-dropdown-button'>Map 3</button>
