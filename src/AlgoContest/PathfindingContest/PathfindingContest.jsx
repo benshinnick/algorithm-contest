@@ -9,8 +9,8 @@ import './css/PathfindingContest.css';
 const GRID_NUM_ROWS = 15;
 const COUNTDOWN_DURATION_MS = PathfindingVisualizerContestant.ANIMATION_DELAY_MS;
 
-const INITIAL_NUM_OF_CONTESTANTS = 1;
-const MAX_NUM_OF_CONTESTANTS = 1;
+const INITIAL_NUM_OF_CONTESTANTS = 4;
+const MAX_NUM_OF_CONTESTANTS = 4;
 
 const EMPTY_GRID_START_NODE_ROW = 5;
 const EMPTY_GRID_START_NODE_COL = 5;
@@ -28,7 +28,7 @@ const NODE_TYPES = [
     ['Path','Weight-2'],
     ['Grass','Weight-5'],
     ['Sand','Weight-10'],
-    ['Water','Weight-20'],
+    ['Water','Weight-25'],
     ['Wall','Weight-Inf']
 ]
 
@@ -496,6 +496,7 @@ export default class PathfindingContest extends React.Component {
                             <button className='mazes-and-maps-dropdown-button' onClick={() => this.randomWallsButtonOnClick()}>Random Walls</button>
                             <button className='mazes-and-maps-dropdown-button' onClick={() => this.setGridToPremadeMap(1)}>Custom Map 1</button>
                             <button className='mazes-and-maps-dropdown-button' onClick={() => this.setGridToPremadeMap(2)}>Custom Map 2</button>
+                            <button className='mazes-and-maps-dropdown-button' onClick={() => this.setGridToPremadeMap(3)}>Custom Map 3</button>
                             <button className='mazes-and-maps-dropdown-button' onClick={() => this.printGridWeights()}>Print Grid</button>
                         </div>
                     </div>
