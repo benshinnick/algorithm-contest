@@ -412,9 +412,9 @@ export default class PathfindingContest extends React.Component {
         this.setState({...this.state, grid: mazeGrid});
     }
 
-    setGridToPremadeMap() {
+    setGridToPremadeMap(mapType) {
         toggleSelectMazesAndMapsDropdownButtons();
-        const prmadeMapGridWeights = getPremadeMap(this.state.gridNumRows, this.state.gridNumCols, 1);
+        const prmadeMapGridWeights = getPremadeMap(this.state.gridNumRows, this.state.gridNumCols, mapType);
         this.resetPathfindingContestPage();
         const emptyGrid = getEmptyGrid();
         const prmadeMapGrid = getNewGridWithAllNodeWeightsUpdated(
@@ -494,9 +494,9 @@ export default class PathfindingContest extends React.Component {
                         <div id="mazes-and-maps-dropdown-content">
                             <button className='mazes-and-maps-dropdown-button' onClick={() => this.recursiveMazeButtonOnClick()}>Recursive Maze</button>
                             <button className='mazes-and-maps-dropdown-button' onClick={() => this.randomWallsButtonOnClick()}>Random Walls</button>
-                            <button className='mazes-and-maps-dropdown-button' onClick={() => this.setGridToPremadeMap()}>Map 1</button>
-                            <button className='mazes-and-maps-dropdown-button'>Map 2</button>
-                            <button className='mazes-and-maps-dropdown-button' onClick={() => this.printGridWeights()}>Map 3</button>
+                            <button className='mazes-and-maps-dropdown-button' onClick={() => this.setGridToPremadeMap(1)}>Custom Map 1</button>
+                            <button className='mazes-and-maps-dropdown-button' onClick={() => this.setGridToPremadeMap(2)}>Custom Map 2</button>
+                            <button className='mazes-and-maps-dropdown-button' onClick={() => this.printGridWeights()}>Print Grid</button>
                         </div>
                     </div>
                     <div id="select-node-type-dropdown">
