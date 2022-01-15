@@ -2,14 +2,15 @@ import React from 'react';
 import PathfindingVisualizerContestant from './PathfindingVisualizerContestant';
 import { getRecursiveDivisionMazeWallCoordinates } from './gridAlgorithms/RecursiveDivisionMaze';
 import { getRandomWallsCoordinates } from './gridAlgorithms/RandomWallsGeneration';
+import { getPremadeMap } from './gridAlgorithms/PremadeMaps';
 import { getShortestPathLength } from './pathfindingAlgorithms/AStar';
 import './css/PathfindingContest.css';
 
 const GRID_NUM_ROWS = 15;
 const COUNTDOWN_DURATION_MS = PathfindingVisualizerContestant.ANIMATION_DELAY_MS;
 
-const INITIAL_NUM_OF_CONTESTANTS = 5;
-const MAX_NUM_OF_CONTESTANTS = 5;
+const INITIAL_NUM_OF_CONTESTANTS = 4;
+const MAX_NUM_OF_CONTESTANTS = 4;
 
 const EMPTY_GRID_START_NODE_ROW = 5;
 const EMPTY_GRID_START_NODE_COL = 5;
@@ -27,7 +28,7 @@ const NODE_TYPES = [
     ['Path','Weight-2'],
     ['Grass','Weight-5'],
     ['Sand','Weight-10'],
-    ['Water','Weight-15'],
+    ['Water','Weight-25'],
     ['Wall','Weight-Inf']
 ]
 
@@ -411,6 +412,20 @@ export default class PathfindingContest extends React.Component {
         this.setState({...this.state, grid: mazeGrid});
     }
 
+    setGridToPremadeMap(mapType) {
+        toggleSelectMazesAndMapsDropdownButtons();
+        const prmadeMapGridWeights = getPremadeMap(this.state.gridNumRows, this.state.gridNumCols, mapType);
+        this.resetPathfindingContestPage();
+        const emptyGrid = getEmptyGrid();
+        const prmadeMapGrid = getNewGridWithAllNodeWeightsUpdated(
+            emptyGrid,
+            prmadeMapGridWeights,
+            this.state.grid[this.state.startNodeRow][this.state.startNodeColumn],
+            this.state.grid[this.state.finishNodeRow][this.state.finishNodeColumn]
+        );
+        this.setState({...this.state, grid: prmadeMapGrid});
+    }
+
     randomWallsButtonOnClick() {
         toggleSelectMazesAndMapsDropdownButtons();
         this.resetPathfindingContestPage();
@@ -429,6 +444,27 @@ export default class PathfindingContest extends React.Component {
         console.log('add contestant button has been clicked');
         this.resetPathfindingContestPage();
     }
+
+    // Temporary Function 
+    printGridWeights() {
+        let gridWeightString = "[";
+
+        for(let r = 0; r < this.state.gridNumRows; ++r) {
+            for(let c = 0; c < this.state.gridNumCols; ++c) {
+                if(c === 0) {
+                    gridWeightString += `[${parseFloat(this.state.grid[r][c].weight)}, `
+                }
+                else if(c !== this.state.gridNumCols - 1) {
+                    gridWeightString += `${parseFloat(this.state.grid[r][c].weight)}, `
+                }
+                else gridWeightString += `${parseFloat(this.state.grid[r][c].weight)}],\n`
+            }
+        }
+
+        gridWeightString += "]";
+        console.log(gridWeightString);
+    }
+    // Temporary Function
 
     render() {
         const ContestantNumbers = [];
@@ -458,9 +494,10 @@ export default class PathfindingContest extends React.Component {
                         <div id="mazes-and-maps-dropdown-content">
                             <button className='mazes-and-maps-dropdown-button' onClick={() => this.recursiveMazeButtonOnClick()}>Recursive Maze</button>
                             <button className='mazes-and-maps-dropdown-button' onClick={() => this.randomWallsButtonOnClick()}>Random Walls</button>
-                            <button className='mazes-and-maps-dropdown-button'>Map 1</button>
-                            <button className='mazes-and-maps-dropdown-button'>Map 2</button>
-                            <button className='mazes-and-maps-dropdown-button'>Map 3</button>
+                            <button className='mazes-and-maps-dropdown-button' onClick={() => this.setGridToPremadeMap(1)}>Custom Map 1</button>
+                            <button className='mazes-and-maps-dropdown-button' onClick={() => this.setGridToPremadeMap(2)}>Custom Map 2</button>
+                            <button className='mazes-and-maps-dropdown-button' onClick={() => this.setGridToPremadeMap(3)}>Custom Map 3</button>
+                            <button className='mazes-and-maps-dropdown-button' onClick={() => this.printGridWeights()}>Print Grid</button>
                         </div>
                     </div>
                     <div id="select-node-type-dropdown">
@@ -698,7 +735,6 @@ const getNewGridWithMultipleNodeWeightsUpdated = (grid, updatedNodesCoordinates,
         const row = parseInt(updatedNodesCoordinates[i][0]);
         const col = parseInt(updatedNodesCoordinates[i][1]);
         const weight = parseFloat(newWeight);
-        // console.log(`Row: ${row} Col: ${col}`);
         const node = newGrid[row][col];
         const newNode = {
           ...node,
@@ -709,6 +745,26 @@ const getNewGridWithMultipleNodeWeightsUpdated = (grid, updatedNodesCoordinates,
           weight: weight,
         };
         newGrid[row][col] = newNode;
+    }
+    return newGrid;
+};
+
+const getNewGridWithAllNodeWeightsUpdated = (grid, gridWeights, startNode, finishNode) => {
+    const newGrid = grid.slice();
+    for(let r = 0; r < grid.length; ++r) {
+        for(let c = 0; c < grid[0].length; ++c) {
+            let weight = gridWeights[r][c];
+            if(r === startNode.row && c === startNode.col) weight = 1;
+            else if(r === finishNode.row && c === finishNode.col) weight = 1;
+            const node = newGrid[r][c];
+            const newNode = {
+                ...node,
+                row: r,
+                col: c,
+                weight: weight,
+            };
+            newGrid[r][c] = newNode;
+        }
     }
     return newGrid;
 };
