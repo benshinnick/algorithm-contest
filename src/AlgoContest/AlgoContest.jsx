@@ -36,7 +36,7 @@ export default class AlgoContest extends React.Component {
 
         //Github pages early deploy message
         setTimeout(() => {
-            alert("The pathfinding page is still very incomplete, but all algorithms are implemented. The skip and maps and mazes buttons are not working yet, but everything else should work as expected. There are some bugs I still need to fix and other user experience improvements I want to add, but this project will hopefully be completed in the next few weeks.");
+            alert("The pathfinding page is still incomplete, but all essential functionality is implemented. The add contestant and skip buttons do not work yet, but everything else should. I am still working on the page and a lot of improvements will be made in the next few weeks.");
         }, 200);
     }
 
