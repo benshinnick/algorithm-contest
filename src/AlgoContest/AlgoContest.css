@@ -7,6 +7,11 @@ html, body {
     overflow-x: hidden;
 }
 
+::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+}
+
 #algo-contest-header {
     background-color: #3b3b3b;
     margin-top: 0;

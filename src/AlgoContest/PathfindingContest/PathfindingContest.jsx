@@ -445,7 +445,8 @@ export default class PathfindingContest extends React.Component {
         this.resetPathfindingContestPage();
     }
 
-    // Temporary Function 
+    // Function used to print all grid node weights in a 2D array format.
+    //  Used to save custom maps for later retreival.
     printGridWeights() {
         let gridWeightString = "[";
 
@@ -464,7 +465,6 @@ export default class PathfindingContest extends React.Component {
         gridWeightString += "]";
         console.log(gridWeightString);
     }
-    // Temporary Function
 
     render() {
         const ContestantNumbers = [];
@@ -494,10 +494,10 @@ export default class PathfindingContest extends React.Component {
                         <div id="mazes-and-maps-dropdown-content">
                             <button className='mazes-and-maps-dropdown-button' onClick={() => this.recursiveMazeButtonOnClick()}>Recursive Maze</button>
                             <button className='mazes-and-maps-dropdown-button' onClick={() => this.randomWallsButtonOnClick()}>Random Walls</button>
-                            <button className='mazes-and-maps-dropdown-button' onClick={() => this.setGridToPremadeMap(1)}>Custom Map 1</button>
-                            <button className='mazes-and-maps-dropdown-button' onClick={() => this.setGridToPremadeMap(2)}>Custom Map 2</button>
-                            <button className='mazes-and-maps-dropdown-button' onClick={() => this.setGridToPremadeMap(3)}>Custom Map 3</button>
-                            <button className='mazes-and-maps-dropdown-button' onClick={() => this.printGridWeights()}>Print Grid</button>
+                            <button className='mazes-and-maps-dropdown-button' onClick={() => this.setGridToPremadeMap(1)}>Islands Custom Map</button>
+                            <button className='mazes-and-maps-dropdown-button' onClick={() => this.setGridToPremadeMap(2)}>Fields Custom Map</button>
+                            <button className='mazes-and-maps-dropdown-button' onClick={() => this.setGridToPremadeMap(3)}>Mazes Custom Map</button>
+                            {/* <button className='mazes-and-maps-dropdown-button' onClick={() => this.printGridWeights()}>Print Grid</button> */}
                         </div>
                     </div>
                     <div id="select-node-type-dropdown">
@@ -665,7 +665,7 @@ const toggleResetGridDropdownButtons = () => {
 }
 
 const getFullPageWidthGridNumCols = () => {
-    return Math.floor((window.innerWidth - (window.innerWidth * 0.1)) / 10);
+    return Math.floor((window.innerWidth - 15) / 11);
 }
 
 const getEmptyGrid = () => {
