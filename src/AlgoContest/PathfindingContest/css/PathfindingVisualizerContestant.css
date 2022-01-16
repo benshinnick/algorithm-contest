@@ -4,7 +4,7 @@
     border-style: solid hidden hidden hidden;
     border-width: 2px;
     border-color: white;
-    height: 190px;
+    height: 205px;
     /* height: 175px; */
     /* height: 255px; */
     margin-left: 2px;
@@ -15,8 +15,8 @@
     position: absolute;
     background-color: white;
     border: 2px solid #3b3b3b;
+    border-color: #3b3b3b;
     margin-top: 1px;
-    margin-right: 10px;
     margin-left: 5px;
 }
 
