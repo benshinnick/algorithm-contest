@@ -24,10 +24,10 @@ function breadthFirstSearch(grid, startNode, finishNode, animations) {
         let closestNode = priorityQueue.dequeue().getValue();
         animations.push(['v', closestNode.getRow(), closestNode.getCol()]);
         grid[closestNode.getRow()][closestNode.getCol()].setIsExplored(true);
+        animations.push(['vf', closestNode.getRow(), closestNode.getCol()]);
         if (closestNode.getRow() === finishNode.row && 
             closestNode.getCol() === finishNode.col) return;
         updateClosestNodeNeighbors(closestNode, grid, priorityQueue, count);
-        animations.push(['vf', closestNode.getRow(), closestNode.getCol()]);
     }
 }
 
