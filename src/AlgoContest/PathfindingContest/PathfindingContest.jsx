@@ -9,8 +9,8 @@ import './css/PathfindingContest.css';
 const GRID_NUM_ROWS = 15;
 const COUNTDOWN_DURATION_MS = PathfindingVisualizerContestant.ANIMATION_DELAY_MS;
 
-const INITIAL_NUM_OF_CONTESTANTS = 4;
-const MAX_NUM_OF_CONTESTANTS = 4;
+const INITIAL_NUM_OF_CONTESTANTS = 5;
+const MAX_NUM_OF_CONTESTANTS = 5;
 
 const EMPTY_GRID_START_NODE_ROW = 5;
 const EMPTY_GRID_START_NODE_COL = 5;
@@ -101,7 +101,7 @@ export default class PathfindingContest extends React.Component {
         this.enableGrids();
         for(let i = 0; i < this.state.numOfContestants; ++i) {
             this.algoContestantRefs[i].createAlgorithmStatsLabel();
-            this.algoContestantRefs[i].setAllAlgorithmStatInfo(-1, -1, -1);
+            this.algoContestantRefs[i].setAllAlgorithmStatInfo(-1, -1, -1, -1);
         }
     }
 
@@ -134,18 +134,21 @@ export default class PathfindingContest extends React.Component {
 
             let numOfNodesVisisted = 0;
             let lengthOfPath = 0;
+            let numOfAnimationSteps = 0;
             for(let j = 0; j < allContestantAnimationData[i].length; ++j){
                 const animationCode = allContestantAnimationData[i][j][0];
                 if(animationCode === 'v') {
                     numOfNodesVisisted++;
+                    numOfAnimationSteps++;
                 }
                 else if(animationCode === 'spf') {
                     const row = allContestantAnimationData[i][j][1];
                     const col = allContestantAnimationData[i][j][2];
                     lengthOfPath += parseInt(this.state.grid[row][col].weight);
+                    numOfAnimationSteps++;
                 }
             }
-            this.algoContestantRefs[i].setAllAlgorithmStatInfo(numOfNodesVisisted, lengthOfPath, shortestPathLength);
+            this.algoContestantRefs[i].setAllAlgorithmStatInfo(numOfNodesVisisted, lengthOfPath, shortestPathLength, numOfAnimationSteps);
         }
 
         return allContestantAnimationData;
@@ -373,7 +376,67 @@ export default class PathfindingContest extends React.Component {
     }
 
     skipToFinishButtonOnClick() {
-        console.log("Contest Being Skipped");
+        this.clearAllTimeouts();
+        // this.clearAllAlgorithmStatsAndPlaceLabels();
+
+        let allContestantPlaceInfo = this.findAllPlaceInformation();
+        console.log(allContestantPlaceInfo);
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            const algorithmPlace = allContestantPlaceInfo[i][2];
+            this.algoContestantRefs[i].handleAlgorithmIsNowFinished(algorithmPlace);
+        }
+
+        this.handleContestIsNowFinished();
+    }
+
+    clearAllTimeouts() {
+        // from https://stackoverflow.com/questions/8860188/javascript-clear-all-timeouts
+        // all timeout ids are consecutive integers, so this will clear all of the pending animation timeouts
+        var id = setTimeout(function() {}, 0);
+        while (id--) {
+            clearTimeout(id);
+        }
+    }
+
+    findAllPlaceInformation() {
+
+        const allContestantPlaceInfo = [];
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            const contestantNum = i+1;
+            const numOfSteps = this.algoContestantRefs[i].getNumOfAnimationsSteps();
+            allContestantPlaceInfo.push([contestantNum, numOfSteps]);
+        }
+
+        //sort by number of animation steps to get the list in order of place
+        allContestantPlaceInfo.sort(function(a,b) {
+            return a[1]-b[1]
+        });
+
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            if(i > 0) {
+                if(allContestantPlaceInfo[i][1] === allContestantPlaceInfo[i-1][1]) {
+                    let placeNumber = allContestantPlaceInfo[i-1][2];
+                    allContestantPlaceInfo[i][2] = placeNumber;
+                }
+                else {
+                    let placeNumber = allContestantPlaceInfo[i-1][2] + 1;
+                    allContestantPlaceInfo[i][2] = placeNumber;
+                }
+            }
+            else {
+                let placeNumber = 1;
+                allContestantPlaceInfo[i][2] = placeNumber;
+            }
+        }
+
+
+        //sort by contestant number to get the list in the correct order
+        allContestantPlaceInfo.sort(function(a,b) {
+            return a[0]-b[0]
+        });
+        
+        //final format [contestant number, number of animation steps, place achieved]
+        return allContestantPlaceInfo;
     }
 
     selectNodeTypeDropdownOnClick() {

@@ -32,7 +32,8 @@ export default class PathfindingVisualizerContestant extends React.Component {
             lastUpdatedNode: [],
             numOfNodesVisisted: -1,
             lengthOfPath: -1,
-            lengthOfShortestPath: -1
+            lengthOfShortestPath: -1,
+            numOfAnimationSteps: -1
         };
     }
 
@@ -621,13 +622,18 @@ export default class PathfindingVisualizerContestant extends React.Component {
         );
     }
 
-    setAllAlgorithmStatInfo(numOfNodesVisisted, lengthOfPath, lengthOfShortestPath) {
+    setAllAlgorithmStatInfo(numOfNodesVisisted, lengthOfPath, lengthOfShortestPath, numOfAnimationSteps) {
         this.setState({
             ...this.state,
             numOfNodesVisisted: numOfNodesVisisted,
             lengthOfPath: lengthOfPath,
-            lengthOfShortestPath: lengthOfShortestPath
+            lengthOfShortestPath: lengthOfShortestPath,
+            numOfAnimationSteps: numOfAnimationSteps
         });
+    }
+
+    getNumOfAnimationsSteps() {
+        return this.state.numOfAnimationSteps;
     }
 
     getAnimationSpeed() {
