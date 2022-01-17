@@ -23,9 +23,13 @@
 }
 
 .visited {
-  box-shadow: 
-    inset 0 0 0 10px rgba(0, 195, 255, 0.35);
+  box-shadow: inset 0 0 0 10px rgba(0, 195, 255, 0.35);
   animation: visitNode 300ms;
+  border-color: rgb(86, 216, 255) !important;
+}
+
+.visited-no-animation {
+  box-shadow: inset 0 0 0 10px rgba(0, 195, 255, 0.35);
   border-color: rgb(86, 216, 255) !important;
 }
 

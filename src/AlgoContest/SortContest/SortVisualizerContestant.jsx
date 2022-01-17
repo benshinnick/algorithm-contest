@@ -30,9 +30,9 @@ export default class SortVisualizerContestant extends React.Component {
             algorithmType: this.props.algorithmType,
             allAlgorithmTypes: this.props.algorithmTypes,
             contestantNumber: this.props.contestantNumber,
-            numOfAnimationSteps: -1,
             numOfSwapsOrOverwrites: -1,
-            numOfComparisons: -1
+            numOfComparisons: -1,
+            numOfAnimationSteps: -1
         };
     }
 
