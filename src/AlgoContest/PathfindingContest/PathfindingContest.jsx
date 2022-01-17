@@ -366,6 +366,7 @@ export default class PathfindingContest extends React.Component {
     clearPathButtonOnClick() {
         toggleResetGridDropdownButtons();
         this.resetPathfindingContestPage();
+        this.setState({...this.state, isPreContest: true});
     }
 
     resetGridButtonOnClick() {
@@ -377,11 +378,16 @@ export default class PathfindingContest extends React.Component {
 
     skipToFinishButtonOnClick() {
         this.clearAllTimeouts();
-        // this.clearAllAlgorithmStatsAndPlaceLabels();
+        this.clearPathAndVisitedNodes();
+        this.clearAllAlgorithmStatsAndPlaceLabels();
 
         let allContestantPlaceInfo = this.findAllPlaceInformation();
-        console.log(allContestantPlaceInfo);
         for(let i = 0; i < this.state.numOfContestants; ++i) {
+            const contestantAnimationData = this.algoContestantRefs[i].getPathfindingAnimations(
+                this.state.grid[this.state.startNodeRow][this.state.startNodeColumn],
+                this.state.grid[this.state.finishNodeRow][this.state.finishNodeColumn]
+            );
+            // this.algoContestantRefs[i].doAllAnimationStepsAtOnce(contestantAnimationData);
             const algorithmPlace = allContestantPlaceInfo[i][2];
             this.algoContestantRefs[i].handleAlgorithmIsNowFinished(algorithmPlace);
         }
@@ -752,7 +758,7 @@ const toggleResetGridDropdownButtons = () => {
 }
 
 const getFullPageWidthGridNumCols = () => {
-    return Math.floor((window.innerWidth - 15) / 11);
+    return Math.floor((window.innerWidth - 14) / 11);
 }
 
 const getEmptyGrid = () => {
