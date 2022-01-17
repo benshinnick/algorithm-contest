@@ -346,6 +346,10 @@ export default class PathfindingContest extends React.Component {
         for(let i = 0; i < visitedNodes.length; ++i) {
             visitedNodes[i].classList.remove('visited');
         }
+        const visitedNodesNoAnimation = document.querySelectorAll('.visited-no-animation');
+        for(let i = 0; i < visitedNodesNoAnimation.length; ++i) {
+            visitedNodesNoAnimation[i].classList.remove('visited-no-animation');
+        }
         const shortestPathLines = document.querySelectorAll('.shortest-path');
         for(let i = 0; i < shortestPathLines.length; ++i) {
             shortestPathLines[i].remove();
@@ -387,7 +391,7 @@ export default class PathfindingContest extends React.Component {
                 this.state.grid[this.state.startNodeRow][this.state.startNodeColumn],
                 this.state.grid[this.state.finishNodeRow][this.state.finishNodeColumn]
             );
-            // this.algoContestantRefs[i].doAllAnimationStepsAtOnce(contestantAnimationData);
+            this.algoContestantRefs[i].doAllAnimationStepsAtOnce(contestantAnimationData);
             const algorithmPlace = allContestantPlaceInfo[i][2];
             this.algoContestantRefs[i].handleAlgorithmIsNowFinished(algorithmPlace);
         }
