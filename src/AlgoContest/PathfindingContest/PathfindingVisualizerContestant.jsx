@@ -441,6 +441,14 @@ export default class PathfindingVisualizerContestant extends React.Component {
         });
     }
 
+    removeComponent() {
+        document.getElementById(`pathfinding-visualizer-${this.state.contestantNumber}`).style.display = 'none';
+    }
+
+    addComponent() {
+        document.getElementById(`pathfinding-visualizer-${this.state.contestantNumber}`).style.display = 'block';
+    }
+
     render() {
         return (
             <>
@@ -503,6 +511,14 @@ export default class PathfindingVisualizerContestant extends React.Component {
             lengthOfShortestPath: lengthOfShortestPath,
             numOfAnimationSteps: numOfAnimationSteps
         });
+    }
+
+    setAlgorithmType(algorithmType) {
+        this.setState({...this.state, algorithmType: algorithmType});
+    }
+
+    getAlgorithmType() {
+        return this.state.algorithmType;
     }
 
     getNumOfAnimationsSteps() {

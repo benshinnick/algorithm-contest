@@ -46,6 +46,15 @@
     animation: fadein 0.4s;
 }
 
+.path-remove-button:hover {
+    background-color: #c82333
+}
+  
+.path-remove-button:disabled,
+.path-remove-button[disabled] {
+    display: none;
+}
+
 .path-place-label {
     background-color: #636363;
     z-index: 2;

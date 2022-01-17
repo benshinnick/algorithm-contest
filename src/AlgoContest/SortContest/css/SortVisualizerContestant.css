@@ -88,12 +88,12 @@
   animation: fadein 0.4s;
 }
 
-#remove-button:hover {
+.sort-remove-button:hover {
   background-color: #c82333
 }
 
-#remove-button:disabled,
-#remove-button[disabled] {
+.sort-remove-button:disabled,
+.sort-remove-button[disabled] {
   display: none;
 }
 

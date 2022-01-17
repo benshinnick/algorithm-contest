@@ -53,6 +53,7 @@ export default class PathfindingContest extends React.Component {
         this.setNewGridWithStartNodeUpdated = this.setNewGridWithStartNodeUpdated.bind(this);
         this.setNewGridWithFinishNodeUpdated = this.setNewGridWithFinishNodeUpdated.bind(this);
         this.setNewGridWithMultipleWeightNodesUpdated = this.setNewGridWithMultipleWeightNodesUpdated.bind(this);
+        this.removeContestant = this.removeContestant.bind(this);
         this.algoContestantRefs = [];
     }
 
@@ -356,6 +357,42 @@ export default class PathfindingContest extends React.Component {
         }
     }
 
+    removeContestant(contestantNum) {
+        //shift all algorithm types over then removes the last one
+        for(let i = contestantNum - 1; i < this.state.numOfContestants - 1; ++i) {
+            this.algoContestantRefs[i].updateAlgorithmType(this.algoContestantRefs[i+1].getAlgorithmType());
+        }
+        const newNumOfContestants = this.state.numOfContestants - 1;
+        this.algoContestantRefs[this.state.numOfContestants - 1].removeComponent();
+        this.setState({...this.state, numOfContestants: newNumOfContestants}, () => {
+            this.resetPathfindingContestPage()
+        });
+
+        let animationStandIn = document.createElement("DIV");
+        animationStandIn.setAttribute("class", 'path-remove-element-animation-stand-in');
+        let pathVisualizerContestants = document.getElementById('pathfinding-visualizers');
+        let nextPathVisualizerContestant = document.getElementById(`pathfinding-visualizer-${contestantNum}`);
+        pathVisualizerContestants.insertBefore(animationStandIn, nextPathVisualizerContestant);
+        setTimeout(() => {
+            animationStandIn.remove();
+        }, 800);
+        
+        if(newNumOfContestants === 2) {
+            this.disableRemoveContestantButtons();
+        }
+
+        // do remove animation
+
+        // //renable the remove contestant since we know we do not have the maximum number of contestants
+        // document.getElementById('sort-add-contestant-button').disabled = false;
+        // if(window.innerWidth <= 1195) {
+        //     document.getElementById('sort-add-contestant-button').innerText = 'Add';
+        // }
+        // else {
+        //     document.getElementById('sort-add-contestant-button').innerText = 'Add Contestant';
+        // }
+    }
+
     startContestButtonOnClick() {
         this.resetPathfindingContestPage();
         this.startContest();
@@ -624,7 +661,7 @@ export default class PathfindingContest extends React.Component {
                     <div id="path-num-of-contestants-label">{this.state.numOfContestants}</div>
                     <button id="path-skip-to-finish-button" onClick={() => this.skipToFinishButtonOnClick()}>Skip To Finish</button>
                 </div>
-                <div className='pathfinding-visualizers'>
+                <div id= 'pathfinding-visualizers'>
                     {ContestantNumbers.map(contestantNum => (
                         <PathfindingVisualizerContestant
                             key={contestantNum}
@@ -638,6 +675,7 @@ export default class PathfindingContest extends React.Component {
                             updateMultipleNodeWeights={this.setNewGridWithMultipleWeightNodesUpdated}
                             updateStartNode={this.setNewGridWithStartNodeUpdated}
                             updateFinishNode={this.setNewGridWithFinishNodeUpdated}
+                            removeMe={this.removeContestant}
                         />
                     ))}
                 </div>
@@ -728,6 +766,22 @@ export default class PathfindingContest extends React.Component {
 
     enableDuringContestControlButtons() {
         document.getElementById('path-skip-to-finish-button').disabled = false
+    }
+
+    disableRemoveContestantButtons() {
+        const removeAlgorithmButtons = document.getElementsByClassName('path-remove-button');
+        for(let i = 0; i < removeAlgorithmButtons.length; ++i) {
+            removeAlgorithmButtons[i].disabled = true;
+        }
+    }
+
+    enableRemoveContestantButtons() {
+        if(this.state.numOfContestants > 2) {
+            const removeAlgorithmButtons = document.getElementsByClassName('path-remove-button');
+            for(let i = 0; i < removeAlgorithmButtons.length; ++i) {
+                removeAlgorithmButtons[i].disabled = false;
+            }
+        }
     }
 }
 

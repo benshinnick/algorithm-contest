@@ -83,7 +83,7 @@ export default class SortContest extends React.Component {
         this.setState({...this.state, numOfContestants: newNumOfContestants}, this.resetSortContestPage());
         // do remove animation
         let animationStandIn = document.createElement("DIV");
-        animationStandIn.setAttribute("class", 'remove-element-animation-stand-in');
+        animationStandIn.setAttribute("class", 'sort-remove-element-animation-stand-in');
         let sortVisualizerContestants = document.getElementById('sort-visualizers');
         let nextSortVisualizerContestant = document.getElementById(`sort-visualizer-${contestantNum}`);
         sortVisualizerContestants.insertBefore(animationStandIn, nextSortVisualizerContestant);
@@ -305,7 +305,7 @@ export default class SortContest extends React.Component {
     }
 
     disableRemoveContestantButtons() {
-        const removeAlgorithmButtons = document.getElementsByClassName('remove');
+        const removeAlgorithmButtons = document.getElementsByClassName('sort-remove-button');
         for(let i = 0; i < removeAlgorithmButtons.length; ++i) {
             removeAlgorithmButtons[i].disabled = true;
         }
@@ -313,7 +313,7 @@ export default class SortContest extends React.Component {
 
     enableRemoveContestantButtons() {
         if(this.state.numOfContestants > 2) {
-            const removeAlgorithmButtons = document.getElementsByClassName('remove');
+            const removeAlgorithmButtons = document.getElementsByClassName('sort-remove-button');
             for(let i = 0; i < removeAlgorithmButtons.length; ++i) {
                 removeAlgorithmButtons[i].disabled = false;
             }
