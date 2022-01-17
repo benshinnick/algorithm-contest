@@ -69,22 +69,22 @@
   animation: fadein 0.4s;
 }
 
-#remove-button {
+.sort-remove-button {
   background-color: #dc3545;
   border-radius: 4px;
   float: right;
   border: none;
   color: white;
-  padding-left: 10px;
-  padding-top: 4px;
-  padding-right: 10px;
-  padding-bottom: 4px;
+  padding-left: 9px;
+  padding-top: 2px;
+  padding-right: 9px;
+  padding-bottom: 2px;
   text-align: center;
   text-decoration: none;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 15px;
+  font-size: 17px;
   transition-duration: 0.2s;
-  margin: 0px 15px;
+  margin: 2px 15px;
   animation: fadein 0.4s;
 }
 

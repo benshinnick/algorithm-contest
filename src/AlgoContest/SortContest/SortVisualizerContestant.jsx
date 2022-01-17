@@ -582,7 +582,7 @@ export default class SortVisualizerContestant extends React.Component {
                             }}></div>
                         ))}
                     </div>
-                    <button id='remove-button' className='remove' onClick={() => this.props.removeMe(this.state.contestantNumber)}>-</button>
+                    <button className='sort-remove-button' onClick={() => this.props.removeMe(this.state.contestantNumber)}>-</button>
             </div>
         );
     }

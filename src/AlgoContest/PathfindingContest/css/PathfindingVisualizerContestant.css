@@ -27,6 +27,25 @@
     flex-direction: row;
 }
 
+.path-remove-button {
+    background-color: #dc3545;
+    border-radius: 4px;
+    float: right;
+    border: none;
+    color: white;
+    padding-left: 9px;
+    padding-top: 2px;
+    padding-right: 9px;
+    padding-bottom: 2px;
+    text-align: center;
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 17px;
+    transition-duration: 0.2s;
+    margin: 2px 15px;
+    animation: fadein 0.4s;
+}
+
 .path-place-label {
     background-color: #636363;
     z-index: 2;
