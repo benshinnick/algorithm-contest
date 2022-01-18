@@ -9,7 +9,7 @@ import './css/PathfindingContest.css';
 const GRID_NUM_ROWS = 15;
 const COUNTDOWN_DURATION_MS = PathfindingVisualizerContestant.ANIMATION_DELAY_MS;
 
-const INITIAL_NUM_OF_CONTESTANTS = 5;
+const INITIAL_NUM_OF_CONTESTANTS = 4;
 const MAX_NUM_OF_CONTESTANTS = 5;
 
 const EMPTY_GRID_START_NODE_ROW = 5;
@@ -62,6 +62,7 @@ export default class PathfindingContest extends React.Component {
     };
 
     componentDidMount() {
+        this.removeExtraContestants();
         this.setEmptyGrid();
         this.resetPathfindingContestPage();
         window.addEventListener('resize', this.handlePageResize);
@@ -357,6 +358,12 @@ export default class PathfindingContest extends React.Component {
         }
     }
 
+    removeExtraContestants() {
+        for(let i = INITIAL_NUM_OF_CONTESTANTS; i < MAX_NUM_OF_CONTESTANTS; ++i) {
+            this.algoContestantRefs[i].removeComponent();
+        }
+    }
+
     removeContestant(contestantNum) {
         //shift all algorithm types over then removes the last one
         for(let i = contestantNum - 1; i < this.state.numOfContestants - 1; ++i) {
@@ -368,29 +375,30 @@ export default class PathfindingContest extends React.Component {
             this.resetPathfindingContestPage()
         });
 
-        let animationStandIn = document.createElement("DIV");
-        animationStandIn.setAttribute("class", 'path-remove-element-animation-stand-in');
-        let pathVisualizerContestants = document.getElementById('pathfinding-visualizers');
-        let nextPathVisualizerContestant = document.getElementById(`pathfinding-visualizer-${contestantNum}`);
-        pathVisualizerContestants.insertBefore(animationStandIn, nextPathVisualizerContestant);
-        setTimeout(() => {
-            animationStandIn.remove();
-        }, 800);
+        if(window.innerWidth <= 1525) {
+            // do remove animation - performance is choppy when the grid size is very large and a lot of components have to be shifted
+            let animationStandIn = document.createElement("DIV");
+            animationStandIn.setAttribute("class", 'path-remove-element-animation-stand-in');
+            let pathVisualizerContestants = document.getElementById('pathfinding-visualizers');
+            let nextPathVisualizerContestant = document.getElementById(`pathfinding-visualizer-${contestantNum}`);
+            pathVisualizerContestants.insertBefore(animationStandIn, nextPathVisualizerContestant);
+            setTimeout(() => {
+                animationStandIn.remove();
+            }, 800);
+        }
         
         if(newNumOfContestants === 2) {
             this.disableRemoveContestantButtons();
         }
 
-        // do remove animation
-
-        // //renable the remove contestant since we know we do not have the maximum number of contestants
-        // document.getElementById('sort-add-contestant-button').disabled = false;
-        // if(window.innerWidth <= 1195) {
-        //     document.getElementById('sort-add-contestant-button').innerText = 'Add';
-        // }
-        // else {
-        //     document.getElementById('sort-add-contestant-button').innerText = 'Add Contestant';
-        // }
+        //renable the remove contestant since we know we do not have the maximum number of contestants
+        document.getElementById('path-add-contestant-button').disabled = false;
+        if(window.innerWidth <= 1195) {
+            document.getElementById('path-add-contestant-button').innerText = 'Add';
+        }
+        else {
+            document.getElementById('path-add-contestant-button').innerText = 'Add Contestant';
+        }
     }
 
     startContestButtonOnClick() {
@@ -575,8 +583,31 @@ export default class PathfindingContest extends React.Component {
     }
 
     addContestantOnClick() {
-        console.log('add contestant button has been clicked');
         this.resetPathfindingContestPage();
+        this.addContestant();
+    }
+
+    addContestant() {
+        const newNumOfContestants = this.state.numOfContestants + 1;
+        this.algoContestantRefs[this.state.numOfContestants].addComponent();
+        this.algoContestantRefs[this.state.numOfContestants].updateAlgorithmType(ALGORITHM_TYPES[(randomIntFromInterval(0,4)) % ALGORITHM_TYPES.length]);
+        this.setState({...this.state, numOfContestants: newNumOfContestants}, () => {
+            this.resetPathfindingContestPage();
+            this.enableRemoveContestantButtons();
+        });
+        if(newNumOfContestants === MAX_NUM_OF_CONTESTANTS) {
+            document.getElementById('path-add-contestant-button').innerText = 'MAX';
+            document.getElementById('path-add-contestant-button').disabled = true;
+        }
+        else {
+            document.getElementById('path-add-contestant-button').disabled = false;
+            if(window.innerWidth <= 1195) {
+                document.getElementById('path-add-contestant-button').innerText = 'Add';
+            }
+            else {
+                document.getElementById('path-add-contestant-button').innerText = 'Add Contestant';
+            }
+        }
     }
 
     // Function used to print all grid node weights in a 2D array format.
@@ -748,7 +779,9 @@ export default class PathfindingContest extends React.Component {
         document.getElementById("reset-grid-button").disabled = false;
         document.getElementById("mazes-and-maps-button").disabled = false;
         document.getElementById('select-node-type-dropdown-button').disabled = false;
-        document.getElementById('path-add-contestant-button').disabled = false;
+        if(this.state.numOfContestants !== MAX_NUM_OF_CONTESTANTS) {
+            document.getElementById('path-add-contestant-button').disabled = false;
+        }
 
         const algorithmDropDownButtons = document.getElementsByClassName('path-algorithm-dropdown-button');
         for(let i = 0; i < algorithmDropDownButtons.length; ++i) {
@@ -1017,4 +1050,8 @@ const getResizedGridWithUpdatedNodesCopied = (grid) => {
     }
 
     return resizedGrid;
+}
+
+function randomIntFromInterval(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
 }
