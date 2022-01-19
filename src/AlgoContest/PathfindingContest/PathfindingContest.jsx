@@ -73,10 +73,12 @@ export default class PathfindingContest extends React.Component {
         this.setEmptyGrid();
         this.resetPathfindingContestPage();
         window.addEventListener('resize', this.handlePageResize);
+        window.addEventListener('scroll', this.addOrRemoveStickyEffectOnSortContestHeader);
     }
     
     componentWillUnmount() {
         window.removeEventListener('resize', this.handlePageResize);
+        window.removeEventListener('scroll', this.addOrRemoveStickyEffectOnSortContestHeader);
     }
 
     startContest() {
@@ -718,6 +720,21 @@ export default class PathfindingContest extends React.Component {
                 </div>
             </div>
         );
+    }
+
+    // Referenced https://www.w3schools.com/howto/howto_js_sticky_header.asp
+    addOrRemoveStickyEffectOnSortContestHeader = () => {
+        let header = document.getElementById("pathfinding-contest-header");
+        let sticky = 45; //initial header.offsetTop();
+        if(window.innerWidth <= 480) {
+            sticky = 40; //initial header.offsetTop()
+        }
+    
+        if (window.pageYOffset > sticky) {
+            header.classList.add("sticky");
+        } else {
+            header.classList.remove("sticky");
+        }
     }
 
     resetPathfindingContestPage() {
