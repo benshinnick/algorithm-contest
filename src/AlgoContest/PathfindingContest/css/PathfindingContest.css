@@ -494,3 +494,21 @@
     background-color: #e2e6ea;
 }
 /* End Of Node Selection Button Dropdown Styling */
+
+.path-remove-element-animation-stand-in {
+    white-space: nowrap;
+    background-color: white;
+    border-style: solid hidden hidden hidden;
+    border-width: 2px;
+    border-color: white;
+    height: 205px;
+    margin-left: 2px;
+    cursor: default;
+    z-index: -1;
+    animation: path-remove-element-slide 0.8s;
+}
+
+@keyframes path-remove-element-slide {
+    from { height: 205px; }
+    to   { height: 0px; }
+}

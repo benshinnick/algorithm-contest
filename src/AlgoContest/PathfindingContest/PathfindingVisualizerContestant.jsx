@@ -489,7 +489,7 @@ export default class PathfindingVisualizerContestant extends React.Component {
                         );
                     })}
                 </div>
-                {/* <button id='remove-button' className='remove' onClick={() => this.props.removeMe(this.state.contestantNumber)}>-</button> */}
+                <button className='path-remove-button' onClick={() => this.props.removeMe(this.state.contestantNumber)}>-</button>
                 </div>
             </>
         );
@@ -503,6 +503,14 @@ export default class PathfindingVisualizerContestant extends React.Component {
             lengthOfShortestPath: lengthOfShortestPath,
             numOfAnimationSteps: numOfAnimationSteps
         });
+    }
+
+    setAlgorithmType(algorithmType) {
+        this.setState({...this.state, algorithmType: algorithmType});
+    }
+
+    getAlgorithmType() {
+        return this.state.algorithmType;
     }
 
     getNumOfAnimationsSteps() {

@@ -53,12 +53,21 @@ export default class PathfindingContest extends React.Component {
         this.setNewGridWithStartNodeUpdated = this.setNewGridWithStartNodeUpdated.bind(this);
         this.setNewGridWithFinishNodeUpdated = this.setNewGridWithFinishNodeUpdated.bind(this);
         this.setNewGridWithMultipleWeightNodesUpdated = this.setNewGridWithMultipleWeightNodesUpdated.bind(this);
+        this.removeContestant = this.removeContestant.bind(this);
         this.algoContestantRefs = [];
     }
 
     setRef = (ref) => {
         this.algoContestantRefs.push(ref);
     };
+
+    removeLastAlgoContestantRef() {
+        const newAlgoContestantRefs = [];
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            newAlgoContestantRefs.push(this.algoContestantRefs[i]);
+        }
+        this.algoContestantRefs = newAlgoContestantRefs;
+    }
 
     componentDidMount() {
         this.setEmptyGrid();
@@ -174,7 +183,6 @@ export default class PathfindingContest extends React.Component {
                     else {
                         this.algoContestantRefs[i].scheduleAlgorithmIsNowFinishedCommands(stepCounter, placeNumber);
                     }
-                    console.log('contestant finished');
                     continue;
                 }
                 else {
@@ -353,6 +361,41 @@ export default class PathfindingContest extends React.Component {
         const shortestPathLines = document.querySelectorAll('.shortest-path');
         for(let i = 0; i < shortestPathLines.length; ++i) {
             shortestPathLines[i].remove();
+        }
+    }
+
+    removeContestant(contestantNum) {
+        //shift all algorithm types over then removes the last one
+        for(let i = contestantNum - 1; i < this.state.numOfContestants - 1; ++i) {
+            this.algoContestantRefs[i].updateAlgorithmType(this.algoContestantRefs[i+1].getAlgorithmType());
+        }
+        const newNumOfContestants = this.state.numOfContestants - 1;
+        // this.algoContestantRefs[this.state.numOfContestants - 1].removeComponent();
+        this.setState({...this.state, numOfContestants: newNumOfContestants}, () => {
+            this.resetPathfindingContestPage();
+            this.removeLastAlgoContestantRef();
+        });
+
+        let animationStandIn = document.createElement("DIV");
+        animationStandIn.setAttribute("class", 'path-remove-element-animation-stand-in');
+        let pathVisualizerContestants = document.getElementById('pathfinding-visualizers');
+        let nextPathVisualizerContestant = document.getElementById(`pathfinding-visualizer-${contestantNum}`);
+        pathVisualizerContestants.insertBefore(animationStandIn, nextPathVisualizerContestant);
+        setTimeout(() => {
+            animationStandIn.remove();
+        }, 800);
+        
+        if(newNumOfContestants === 2) {
+            this.disableRemoveContestantButtons();
+        }
+
+        //renable the remove contestant since we know we do not have the maximum number of contestants
+        document.getElementById('path-add-contestant-button').disabled = false;
+        if(window.innerWidth <= 1195) {
+            document.getElementById('path-add-contestant-button').innerText = 'Add';
+        }
+        else {
+            document.getElementById('path-add-contestant-button').innerText = 'Add Contestant';
         }
     }
 
@@ -538,12 +581,33 @@ export default class PathfindingContest extends React.Component {
     }
 
     addContestantOnClick() {
-        console.log('add contestant button has been clicked');
         this.resetPathfindingContestPage();
+        this.addContestant();
+    }
+
+    addContestant() {
+        const newNumOfContestants = this.state.numOfContestants + 1;
+        this.setState({...this.state, numOfContestants: newNumOfContestants}, () => {
+            this.resetPathfindingContestPage();
+            this.enableRemoveContestantButtons();
+        });
+        if(newNumOfContestants === MAX_NUM_OF_CONTESTANTS) {
+            document.getElementById('path-add-contestant-button').innerText = 'MAX';
+            document.getElementById('path-add-contestant-button').disabled = true;
+        }
+        else {
+            document.getElementById('path-add-contestant-button').disabled = false;
+            if(window.innerWidth <= 1195) {
+                document.getElementById('path-add-contestant-button').innerText = 'Add';
+            }
+            else {
+                document.getElementById('path-add-contestant-button').innerText = 'Add Contestant';
+            }
+        }
     }
 
     // Function used to print all grid node weights in a 2D array format.
-    //  Used to save custom maps for later retreival.
+    //  Used to save the three custom maps I used in this project.
     printGridWeights() {
         let gridWeightString = "[";
 
@@ -564,10 +628,11 @@ export default class PathfindingContest extends React.Component {
     }
 
     render() {
-        const ContestantNumbers = [];
-        for(let i = 0; i < MAX_NUM_OF_CONTESTANTS; ++i) {
-            ContestantNumbers.push(i+1);
+        const contestantNumbers = [];
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            contestantNumbers.push(i+1);
         }
+        console.log(contestantNumbers);
 
         return (
             <div className='pathfinding-contest'>
@@ -624,20 +689,21 @@ export default class PathfindingContest extends React.Component {
                     <div id="path-num-of-contestants-label">{this.state.numOfContestants}</div>
                     <button id="path-skip-to-finish-button" onClick={() => this.skipToFinishButtonOnClick()}>Skip To Finish</button>
                 </div>
-                <div className='pathfinding-visualizers'>
-                    {ContestantNumbers.map(contestantNum => (
+                <div id= 'pathfinding-visualizers'>
+                    {contestantNumbers.map(contestantNumber => (
                         <PathfindingVisualizerContestant
-                            key={contestantNum}
+                            key={contestantNumber - 1}
                             ref={this.setRef}
                             grid={this.state.grid}
                             selectedNodeWeight={this.state.selectedNodeWeight}
-                            algorithmType={ALGORITHM_TYPES[(contestantNum - 1) % ALGORITHM_TYPES.length]}
+                            algorithmType={ALGORITHM_TYPES[(contestantNumber - 1) % ALGORITHM_TYPES.length]}
                             algorithmTypes={ALGORITHM_TYPES}
-                            contestantNumber={contestantNum}
+                            contestantNumber={contestantNumber}
                             updateGridNodeWeight={this.setNewGridWithNodeWeightUpdated}
                             updateMultipleNodeWeights={this.setNewGridWithMultipleWeightNodesUpdated}
                             updateStartNode={this.setNewGridWithStartNodeUpdated}
                             updateFinishNode={this.setNewGridWithFinishNodeUpdated}
+                            removeMe={this.removeContestant}
                         />
                     ))}
                 </div>
@@ -647,6 +713,7 @@ export default class PathfindingContest extends React.Component {
 
     resetPathfindingContestPage() {
         this.enablePreContestSetupButtons();
+        this.enableRemoveContestantButtons();
         this.disableDuringContestControlButtons();
         this.clearAllAlgorithmStatsAndPlaceLabels();
         this.clearPathAndVisitedNodes();
@@ -693,6 +760,7 @@ export default class PathfindingContest extends React.Component {
         document.getElementById("mazes-and-maps-button").disabled = true;
         document.getElementById('select-node-type-dropdown-button').disabled = true;
         document.getElementById('path-add-contestant-button').disabled = true;
+        this.disableRemoveContestantButtons();
 
         const algorithmDropDownButtons = document.getElementsByClassName('path-algorithm-dropdown-button');
         for(let i = 0; i < algorithmDropDownButtons.length; ++i) {
@@ -710,7 +778,14 @@ export default class PathfindingContest extends React.Component {
         document.getElementById("reset-grid-button").disabled = false;
         document.getElementById("mazes-and-maps-button").disabled = false;
         document.getElementById('select-node-type-dropdown-button').disabled = false;
-        document.getElementById('path-add-contestant-button').disabled = false;
+
+        if(this.state.numOfContestants < MAX_NUM_OF_CONTESTANTS) {
+            document.getElementById('path-add-contestant-button').disabled = false;
+        }
+        else {
+            document.getElementById('path-add-contestant-button').disabled = true;
+            document.getElementById('path-add-contestant-button').innerText = 'MAX';
+        }
 
         const algorithmDropDownButtons = document.getElementsByClassName('path-algorithm-dropdown-button');
         for(let i = 0; i < algorithmDropDownButtons.length; ++i) {
@@ -728,6 +803,22 @@ export default class PathfindingContest extends React.Component {
 
     enableDuringContestControlButtons() {
         document.getElementById('path-skip-to-finish-button').disabled = false
+    }
+
+    disableRemoveContestantButtons() {
+        const removeAlgorithmButtons = document.getElementsByClassName('path-remove-button');
+        for(let i = 0; i < removeAlgorithmButtons.length; ++i) {
+            removeAlgorithmButtons[i].disabled = true;
+        }
+    }
+
+    enableRemoveContestantButtons() {
+        if(this.state.numOfContestants > 2) {
+            const removeAlgorithmButtons = document.getElementsByClassName('path-remove-button');
+            for(let i = 0; i < removeAlgorithmButtons.length; ++i) {
+                removeAlgorithmButtons[i].disabled = false;
+            }
+        }
     }
 }
 
