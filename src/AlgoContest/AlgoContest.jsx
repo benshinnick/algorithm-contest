@@ -33,11 +33,6 @@ export default class AlgoContest extends React.Component {
         document.querySelector('#pathfinding-contest-button').style.backgroundColor = '#6c757d';
         
         ReactDOM.render(<PathfindingContest />, document.getElementById('main-content'));
-
-        //Github pages early deploy message
-        setTimeout(() => {
-            alert("The pathfinding page is still incomplete, but all essential functionality is implemented. The add contestant and skip buttons do not work yet, but everything else should. I am still working on the page and a lot of improvements will be made in the next few weeks.");
-        }, 200);
     }
 
     render() {
