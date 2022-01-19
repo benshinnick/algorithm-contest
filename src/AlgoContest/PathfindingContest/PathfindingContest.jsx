@@ -61,7 +61,7 @@ export default class PathfindingContest extends React.Component {
         this.algoContestantRefs.push(ref);
     };
 
-    removeLastRef() {
+    removeLastAlgoContestantRef() {
         const newAlgoContestantRefs = [];
         for(let i = 0; i < this.state.numOfContestants; ++i) {
             newAlgoContestantRefs.push(this.algoContestantRefs[i]);
@@ -373,7 +373,7 @@ export default class PathfindingContest extends React.Component {
         // this.algoContestantRefs[this.state.numOfContestants - 1].removeComponent();
         this.setState({...this.state, numOfContestants: newNumOfContestants}, () => {
             this.resetPathfindingContestPage();
-            this.removeLastRef();
+            this.removeLastAlgoContestantRef();
         });
 
         let animationStandIn = document.createElement("DIV");
@@ -604,7 +604,6 @@ export default class PathfindingContest extends React.Component {
                 document.getElementById('path-add-contestant-button').innerText = 'Add Contestant';
             }
         }
-        this.forceUpdate();
     }
 
     // Function used to print all grid node weights in a 2D array format.
@@ -714,6 +713,7 @@ export default class PathfindingContest extends React.Component {
 
     resetPathfindingContestPage() {
         this.enablePreContestSetupButtons();
+        this.enableRemoveContestantButtons();
         this.disableDuringContestControlButtons();
         this.clearAllAlgorithmStatsAndPlaceLabels();
         this.clearPathAndVisitedNodes();
@@ -760,6 +760,7 @@ export default class PathfindingContest extends React.Component {
         document.getElementById("mazes-and-maps-button").disabled = true;
         document.getElementById('select-node-type-dropdown-button').disabled = true;
         document.getElementById('path-add-contestant-button').disabled = true;
+        this.disableRemoveContestantButtons();
 
         const algorithmDropDownButtons = document.getElementsByClassName('path-algorithm-dropdown-button');
         for(let i = 0; i < algorithmDropDownButtons.length; ++i) {
@@ -777,6 +778,7 @@ export default class PathfindingContest extends React.Component {
         document.getElementById("reset-grid-button").disabled = false;
         document.getElementById("mazes-and-maps-button").disabled = false;
         document.getElementById('select-node-type-dropdown-button').disabled = false;
+
         if(this.state.numOfContestants < MAX_NUM_OF_CONTESTANTS) {
             document.getElementById('path-add-contestant-button').disabled = false;
         }
@@ -819,13 +821,6 @@ export default class PathfindingContest extends React.Component {
         }
     }
 }
-
-// class ContestantInfo {
-//     constructor(contestantNum, id) {
-//         this.contestantNum = contestantNum;
-//         this.id = id
-//     }
-// }
 
 const toggleSelectNodeTypeDropdownButtons = () => {
     const selectNodeTypeDropdownButtonContainer = document.getElementById('node-selection-dropdown-content');

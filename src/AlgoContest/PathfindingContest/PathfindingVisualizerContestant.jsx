@@ -37,14 +37,6 @@ export default class PathfindingVisualizerContestant extends React.Component {
         };
     }
 
-    componentDidMount() {
-        console.log('componentDidMount');
-    }
-    
-    componentWillUnmount() {
-        console.log('componentWillMount');
-    }
-
     static getDerivedStateFromProps(props, state) {
         if(props.grid !== state.grid){
             return{ grid: props.grid };
