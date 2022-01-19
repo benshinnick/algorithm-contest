@@ -5,8 +5,6 @@
     border-width: 2px;
     border-color: white;
     height: 205px;
-    /* height: 175px; */
-    /* height: 255px; */
     margin-left: 2px;
     cursor: default;
 }
@@ -25,6 +23,34 @@
     flex-grow: 1;
     height: auto;
     flex-direction: row;
+}
+
+.path-remove-button {
+    background-color: #dc3545;
+    border-radius: 4px;
+    float: right;
+    border: none;
+    color: white;
+    padding-left: 9px;
+    padding-top: 2px;
+    padding-right: 9px;
+    padding-bottom: 2px;
+    text-align: center;
+    text-decoration: none;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 17px;
+    transition-duration: 0.2s;
+    margin: 2px 15px;
+    animation: fadein 0.4s;
+}
+
+.path-remove-button:hover {
+    background-color: #c82333
+}
+  
+.path-remove-button:disabled,
+.path-remove-button[disabled] {
+    display: none;
 }
 
 .path-place-label {

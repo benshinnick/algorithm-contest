@@ -22,6 +22,7 @@ function depthFirstSearch(grid, startNode, finishNode, animations) {
     while(stack.length > 0) {
         currentNode = stack.pop();
         animations.push(['v', currentNode.getRow(), currentNode.getCol()]);
+        animations.push(['vf', currentNode.getRow(), currentNode.getCol()]);
         if (currentNode.getRow() === finishNode.row && 
             currentNode.getCol() === finishNode.col) return;
         const undiscoveredNeighbors = getUndiscoveredNeighbors(currentNode, grid);
@@ -30,7 +31,6 @@ function depthFirstSearch(grid, startNode, finishNode, animations) {
             neighbor.setIsDiscovered(true);
             stack.push(neighbor);
         }
-        animations.push(['vf', currentNode.getRow(), currentNode.getCol()]);
     }
 
     return;

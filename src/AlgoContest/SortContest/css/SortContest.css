@@ -186,7 +186,7 @@
     padding-top: 50px;
 }
 
-.remove-element-animation-stand-in {
+.sort-remove-element-animation-stand-in {
     white-space: nowrap;
     background-color: white;
     border-style: solid hidden hidden hidden;
@@ -201,7 +201,7 @@
 @keyframes remove-element-slide {
     from { height: 163px; }
     to   { height: 0px; }
-  }
+}
 
 @media only screen and (max-width: 752px) {
     #nearly-sorted-button {
