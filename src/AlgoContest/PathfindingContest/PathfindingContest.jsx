@@ -112,6 +112,7 @@ export default class PathfindingContest extends React.Component {
             this.algoContestantRefs[i].createAlgorithmStatsLabel();
             this.algoContestantRefs[i].setAllAlgorithmStatInfo(-1, -1, -1, -1);
         }
+        this.setState({...this.state, isPreContest: true});
     }
 
     startCountdown() {
@@ -287,7 +288,7 @@ export default class PathfindingContest extends React.Component {
             ...this.state,
             grid: newGrid,
             isEmptyGrid: false
-        });
+        }, this.resetPathfindingContestPage());
     }
 
     setNewGridWithMultipleWeightNodesUpdated(updatedNodesCoordinates, newWeight) {
@@ -301,6 +302,7 @@ export default class PathfindingContest extends React.Component {
 
 
     setNewGridWithStartNodeUpdated(row, col) {
+        this.resetPathfindingContestPage();
         const prevStartNodeRow = this.state.startNodeRow;
         const prevStartNodeCol = this.state.startNodeColumn;
         const newGrid = getNewGridWithStartNodeUpdated(this.state.grid, row, col, prevStartNodeRow, prevStartNodeCol);
@@ -314,6 +316,7 @@ export default class PathfindingContest extends React.Component {
     }
 
     setNewGridWithFinishNodeUpdated(row, col) {
+        this.resetPathfindingContestPage();
         const prevFinishNodeRow = this.state.finishNodeRow;
         const prevFinishNodeCol = this.state.finishNodeColumn;
         const newGrid = getNewGridWithFinishNodeUpdated(this.state.grid, row, col, prevFinishNodeRow, prevFinishNodeCol);
@@ -519,42 +522,46 @@ export default class PathfindingContest extends React.Component {
         this.resetPathfindingContestPage();
         const emptyGrid = getEmptyGrid();
         const totCols = getFullPageWidthGridNumCols();
-        const recursiveMazeWallCoordinates = getRecursiveDivisionMazeWallCoordinates(
-            this.state.gridNumRows,
-            this.state.gridNumCols,
-            this.state.grid[EMPTY_GRID_START_NODE_ROW][EMPTY_GRID_START_NODE_COL],
-            this.state.grid[GRID_NUM_ROWS - 6][totCols - 6]
-        );
-        const mazeGrid = getNewGridWithMultipleNodeWeightsUpdated(emptyGrid, recursiveMazeWallCoordinates, Infinity);
-        this.setState({
-            ...this.state,
-            grid: mazeGrid,
-            startNodeRow: EMPTY_GRID_START_NODE_ROW,
-            startNodeColumn: EMPTY_GRID_START_NODE_COL,
-            finishNodeRow: GRID_NUM_ROWS - 6,
-            finishNodeColumn: totCols - 6
+        this.setState({...this.state, grid: emptyGrid, gridNumCols: totCols}, () => {
+            const recursiveMazeWallCoordinates = getRecursiveDivisionMazeWallCoordinates(
+                this.state.gridNumRows,
+                totCols,
+                this.state.grid[EMPTY_GRID_START_NODE_ROW][EMPTY_GRID_START_NODE_COL],
+                this.state.grid[GRID_NUM_ROWS - 6][totCols - 6]
+            );
+            const mazeGrid = getNewGridWithMultipleNodeWeightsUpdated(emptyGrid, recursiveMazeWallCoordinates, Infinity);
+            this.setState({
+                ...this.state,
+                grid: mazeGrid,
+                startNodeRow: EMPTY_GRID_START_NODE_ROW,
+                startNodeColumn: EMPTY_GRID_START_NODE_COL,
+                finishNodeRow: GRID_NUM_ROWS - 6,
+                finishNodeColumn: totCols - 6
+            });
         });
     }
 
     setGridToPremadeMap(mapType) {
         toggleSelectMazesAndMapsDropdownButtons();
-        const prmadeMapGridWeights = getPremadeMap(this.state.gridNumRows, this.state.gridNumCols, mapType);
         this.resetPathfindingContestPage();
         const emptyGrid = getEmptyGrid();
         const totCols = getFullPageWidthGridNumCols();
-        const prmadeMapGrid = getNewGridWithAllNodeWeightsUpdated(
-            emptyGrid,
-            prmadeMapGridWeights,
-            this.state.grid[EMPTY_GRID_START_NODE_ROW][EMPTY_GRID_START_NODE_COL],
-            this.state.grid[GRID_NUM_ROWS - 6][totCols - 6],
-        );
-        this.setState({
-            ...this.state,
-            grid: prmadeMapGrid,
-            startNodeRow: EMPTY_GRID_START_NODE_ROW,
-            startNodeColumn: EMPTY_GRID_START_NODE_COL,
-            finishNodeRow: GRID_NUM_ROWS - 6,
-            finishNodeColumn: totCols - 6
+        const prmadeMapGridWeights = getPremadeMap(this.state.gridNumRows, totCols, mapType);
+        this.setState({...this.state, grid: emptyGrid, gridNumCols: totCols}, () => {
+            const prmadeMapGrid = getNewGridWithAllNodeWeightsUpdated(
+                emptyGrid,
+                prmadeMapGridWeights,
+                this.state.grid[EMPTY_GRID_START_NODE_ROW][EMPTY_GRID_START_NODE_COL],
+                this.state.grid[GRID_NUM_ROWS - 6][totCols - 6],
+            );
+            this.setState({
+                ...this.state,
+                grid: prmadeMapGrid,
+                startNodeRow: EMPTY_GRID_START_NODE_ROW,
+                startNodeColumn: EMPTY_GRID_START_NODE_COL,
+                finishNodeRow: GRID_NUM_ROWS - 6,
+                finishNodeColumn: totCols - 6
+            });
         });
     }
 
@@ -563,20 +570,22 @@ export default class PathfindingContest extends React.Component {
         this.resetPathfindingContestPage();
         const emptyGrid = getEmptyGrid();
         const totCols = getFullPageWidthGridNumCols();
-        const randomWallsCoordinates = getRandomWallsCoordinates(
-            this.state.gridNumRows,
-            this.state.gridNumCols,
-            this.state.grid[EMPTY_GRID_START_NODE_ROW][EMPTY_GRID_START_NODE_COL],
-            this.state.grid[GRID_NUM_ROWS - 6][totCols - 6]
-        );
-        const randomWallGrid = getNewGridWithMultipleNodeWeightsUpdated(emptyGrid, randomWallsCoordinates, Infinity);
-        this.setState({
-            ...this.state,
-            grid: randomWallGrid,
-            startNodeRow: EMPTY_GRID_START_NODE_ROW,
-            startNodeColumn: EMPTY_GRID_START_NODE_COL,
-            finishNodeRow: GRID_NUM_ROWS - 6,
-            finishNodeColumn: totCols - 6
+        this.setState({...this.state, grid: emptyGrid, gridNumCols: totCols}, () => {
+            const randomWallsCoordinates = getRandomWallsCoordinates(
+                this.state.gridNumRows,
+                totCols,
+                this.state.grid[EMPTY_GRID_START_NODE_ROW][EMPTY_GRID_START_NODE_COL],
+                this.state.grid[GRID_NUM_ROWS - 6][totCols - 6]
+            );
+            const randomWallGrid = getNewGridWithMultipleNodeWeightsUpdated(emptyGrid, randomWallsCoordinates, Infinity);
+            this.setState({
+                ...this.state,
+                grid: randomWallGrid,
+                startNodeRow: EMPTY_GRID_START_NODE_ROW,
+                startNodeColumn: EMPTY_GRID_START_NODE_COL,
+                finishNodeRow: GRID_NUM_ROWS - 6,
+                finishNodeColumn: totCols - 6
+            });
         });
     }
 
@@ -734,7 +743,7 @@ export default class PathfindingContest extends React.Component {
         for(let i = 0; i < shortestPathLabels.length; ++i) {
             shortestPathLabels[i].remove();
         }
-        let notShortestPathLabels = document.querySelectorAll(        '.shortest-path-not-found-label');
+        let notShortestPathLabels = document.querySelectorAll('.shortest-path-not-found-label');
         for(let i = 0; i < notShortestPathLabels.length; ++i) {
             notShortestPathLabels[i].remove();
         }
