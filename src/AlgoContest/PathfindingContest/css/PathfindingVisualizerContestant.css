@@ -103,7 +103,7 @@
     padding-top: 4px;
     padding-right: 0px;
     padding-bottom: 4px;
-    margin: 0px 12px;
+    margin: 0px 10px;
     margin-left: 0px;
     color: white;
     border-radius: 0px 4px 4px 0px;
@@ -122,7 +122,7 @@
     padding-top: 4px;
     padding-right: 0px;
     padding-bottom: 4px;
-    margin: 0px 12px;
+    margin: 0px 10px;
     margin-left: 0px;
     color: white;
     border-radius: 0px 4px 4px 0px;
@@ -218,4 +218,29 @@
     display: block;
 }
 
-  /* Algorithm Dropdown Styling */
+/* Algorithm Dropdown Styling */
+
+@media only screen and (max-width: 845px) {
+
+    .path-stats-label {
+        opacity: 0.9;
+        z-index: 1;
+        position: absolute;
+        border-style: hidden solid hidden hidden;
+        border-width: 10px;
+        padding-left: 2px;
+        padding-right: 2px;
+        border-radius: 3px;
+        margin-top: 4px;
+        margin-left: 9px;
+    }
+    
+    .shortest-path-found-label {
+        border-radius: 4px;
+    }
+    
+    .shortest-path-not-found-label {
+        border-radius: 4px;
+    }
+
+}

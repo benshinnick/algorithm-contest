@@ -265,9 +265,11 @@ export default class PathfindingVisualizerContestant extends React.Component {
         }
         else {
             if(this.state.grid[row][col].isStart) {
+                this.placeStartNode(row, col);
                 this.selectStartNode(row, col);
             }
             else {
+                this.placeFinishNode(row, col);
                 this.selectFinishNode(row, col);
             }
         }
@@ -422,6 +424,9 @@ export default class PathfindingVisualizerContestant extends React.Component {
 
     algorithmDropDownButtonOnClick(algorithmType) {
         this.updateAlgorithmType(algorithmType);
+        this.destructAlgorithmPlaceLabel();
+        this.destructAlgorithmStatsLabel();
+        this.resetVisualizationStyling();
     }
 
     resetMouseEvents() {
