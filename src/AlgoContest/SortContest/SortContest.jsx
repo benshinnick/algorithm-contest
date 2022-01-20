@@ -460,12 +460,16 @@ export default class SortContest extends React.Component {
         if(windowWidthSize <= 1195) {
             document.querySelector('#randomize-button').textContent = 'Randomize';
             document.querySelector('#nearly-sorted-button').textContent = 'Nearly Sorted';
-            document.querySelector('#sort-add-contestant-button').textContent = 'Add';
+            if(this.state.numOfContestants < MAX_NUM_OF_CONTESTANTS) {
+                document.querySelector('#sort-add-contestant-button').textContent = 'Add';
+            }
         }
         else {
             document.querySelector('#randomize-button').textContent = 'Generate Random Array';
             document.querySelector('#nearly-sorted-button').textContent = 'Generate Nearly Sorted Array';
-            document.querySelector('#sort-add-contestant-button').textContent = 'Add Contestant';
+            if(this.state.numOfContestants < MAX_NUM_OF_CONTESTANTS) {
+                document.querySelector('#sort-add-contestant-button').textContent = 'Add Contestant';
+            }
         }
         
         if(windowWidthSize <= 700) {

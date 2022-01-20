@@ -72,6 +72,7 @@ export default class PathfindingContest extends React.Component {
     componentDidMount() {
         this.setEmptyGrid();
         this.resetPathfindingContestPage();
+        this.handlePageResize();
         window.addEventListener('resize', this.handlePageResize);
         window.addEventListener('scroll', this.addOrRemoveStickyEffectOnSortContestHeader);
     }
@@ -352,6 +353,22 @@ export default class PathfindingContest extends React.Component {
         else {
             document.querySelector('#algo-contest-header-link').textContent = 'AlgorithmContest';
         }
+
+        if(windowWidthSize <= 650) {
+            document.querySelector('#select-node-type-button-text').textContent = 'Select Node';
+        }
+        else {
+            document.querySelector('#select-node-type-button-text').textContent = 'Select Node Type';
+        }
+
+        if(this.state.numOfContestants < MAX_NUM_OF_CONTESTANTS) {
+            if(windowWidthSize <= 975) {
+                document.querySelector('#path-add-contestant-button').textContent = 'Add';
+            }
+            else {
+                document.querySelector('#path-add-contestant-button').textContent = 'Add Contestant';
+            }
+        }
     }
 
     clearPathAndVisitedNodes() {
@@ -396,7 +413,7 @@ export default class PathfindingContest extends React.Component {
 
         //renable the remove contestant since we know we do not have the maximum number of contestants
         document.getElementById('path-add-contestant-button').disabled = false;
-        if(window.innerWidth <= 1195) {
+        if(window.innerWidth <=975) {
             document.getElementById('path-add-contestant-button').innerText = 'Add';
         }
         else {
@@ -608,7 +625,7 @@ export default class PathfindingContest extends React.Component {
         }
         else {
             document.getElementById('path-add-contestant-button').disabled = false;
-            if(window.innerWidth <= 1195) {
+            if(window.innerWidth <= 975) {
                 document.getElementById('path-add-contestant-button').innerText = 'Add';
             }
             else {

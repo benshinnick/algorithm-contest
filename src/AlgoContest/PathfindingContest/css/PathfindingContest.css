@@ -73,11 +73,11 @@
     background-color: #5a6268;
     border: none;
     color: white;
-    width: 2%;
+    width: 1%;
     padding-top: 9px;
     padding-bottom: 9px;
-    padding-left: 8px;
-    padding-right: 8px;
+    padding-left: 1%;
+    padding-right: 1%;
     text-align: center;
     text-decoration: none;
     font-family: Arial, Helvetica, sans-serif;
@@ -96,7 +96,7 @@
     display: inline-block;
     border: none;
     color: white;
-    width: 15%;
+    width: 15.5%;
     margin-left: 0px;
     padding-top: 9px;
     padding-bottom: 9px;
@@ -521,4 +521,159 @@
 
 .sticky + #pathfinding-visualizers {
     padding-top: 49px;
+}
+
+@media only screen and (max-width: 1000px) {
+    #reset-grid-dropdown-arrow {
+        padding: 9px 4px;
+    }
+
+    #mazes-and-maps-dropdown-arrow {
+        padding: 9px 4px;
+    }
+
+    #node-selection-dropdown-arrow {
+        padding: 9px 4px;
+    }
+}
+
+@media only screen and (max-width: 900px) {
+    #pathfinding-contest-header {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    #reset-grid-dropdown-arrow {
+        padding: 9px 9px;
+    }
+
+    #mazes-and-maps-dropdown-arrow {
+        padding: 9px 9px;
+    }
+
+    #node-selection-dropdown-arrow {
+        padding: 9px 9px;
+    }
+
+    #path-start-contest-button {
+        order: 1;
+        margin: 0 0.665%;
+        width: 29%;
+    }
+
+    #path-add-contestant-button {
+        order: 3;
+        margin-top: 0;
+        margin-bottom: 0;
+        margin-left: 0.665%;
+        width: 29%;
+    }
+
+    #path-num-of-contestants-label {
+        order: 4;
+        width: 4%;
+        margin-top: 0;
+        margin-bottom: 0;
+        padding-left: 1%;
+        padding-right: 1%;
+    }
+
+    #path-skip-to-finish-button {
+        order: 2;
+        margin: 0 0.665%;
+        width: 32%;
+        float: none;
+    }
+
+    #reset-grid-dropdown {
+        order: 5;
+        margin: 0 0.665%;
+        width: 29%;
+        padding-top: 2px;
+    }
+
+    #reset-grid-dropdown-content {
+        width: 29%;
+    }
+
+    #mazes-and-maps-dropdown {
+        order: 6;
+        margin: 0 0.665%;
+        width: 32%;
+        padding-top: 2px;
+    }
+
+    #mazes-and-maps-dropdown-content {
+        width: 32%;
+    }
+
+    #select-node-type-dropdown {
+        order: 7;
+        margin: 0 0.665%;
+        margin-top: 4px;
+        width: 35%;
+    }
+
+    #node-selection-dropdown-content {
+        width: 35%;
+    }
+
+    .sticky + #pathfinding-visualizers {
+        padding-top: 84px;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    #reset-grid-dropdown-arrow {
+        padding: 9px 5px;
+    }
+
+    #mazes-and-maps-dropdown-arrow {
+        padding: 9px 5px;
+    }
+
+    #node-selection-dropdown-arrow {
+        padding: 9px 5px;
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    #path-start-contest-button {
+        margin: 0 0.665%;
+        width: 24%;
+    }
+
+    #path-skip-to-finish-button {
+        order: 2;
+        width: 34%;
+    }
+
+    #path-add-contestant-button {
+        width: 32%;
+    }
+
+    #reset-grid-dropdown {
+        width: 24%;
+    }
+
+    #reset-grid-dropdown-content {
+        width: 24%;
+    }
+
+    #mazes-and-maps-dropdown {
+        width: 34%;
+    }
+
+    #mazes-and-maps-dropdown-content {
+        width: 34%;
+    }
+
+    #select-node-type-dropdown {
+        width: 38%;
+    }
+
+    #node-selection-dropdown-content {
+        width: 38%;
+    }
+
 }
