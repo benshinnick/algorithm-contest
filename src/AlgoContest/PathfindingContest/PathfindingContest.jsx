@@ -334,7 +334,7 @@ export default class PathfindingContest extends React.Component {
     }
 
     handlePageResize = () => {
-        if(getFullPageWidthGridNumCols() !== this.state.numCols) {
+        if(getFullPageWidthGridNumCols() !== this.state.gridNumCols) {
             if(this.state.isPreContest) {
                 if(this.state.isEmptyGrid) {
                     this.resetPathfindingContestPage();
