@@ -37,6 +37,7 @@ export default class SortContest extends React.Component {
     };
 
     componentDidMount() {
+        document.title = "Sorting Contest";
         this.removeExtraContestants();
         this.handlePageResize();
         this.disableDuringContestControlButtons();

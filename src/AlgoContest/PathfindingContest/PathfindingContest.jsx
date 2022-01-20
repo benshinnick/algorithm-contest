@@ -70,6 +70,7 @@ export default class PathfindingContest extends React.Component {
     }
 
     componentDidMount() {
+        document.title = "Pathfinding Contest";
         this.setEmptyGrid();
         this.resetPathfindingContestPage();
         this.handlePageResize();
