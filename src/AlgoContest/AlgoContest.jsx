@@ -20,7 +20,7 @@ export default class AlgoContest extends React.Component {
     changePageContentToSortContest() {
         this.setState({ algorithmType: 'sort' });
 
-        document.querySelector('#sort-contest-button').style.backgroundColor = '#6c757d';
+        document.querySelector('#sort-contest-button').style.backgroundColor = '#5a6268';
         document.querySelector('#pathfinding-contest-button').style.backgroundColor = 'transparent';
 
         ReactDOM.render(<SortContest />, document.getElementById('main-content'));
@@ -30,7 +30,7 @@ export default class AlgoContest extends React.Component {
         this.setState({ algorithmType: 'pathfinding' });
 
         document.querySelector('#sort-contest-button').style.backgroundColor = 'transparent';
-        document.querySelector('#pathfinding-contest-button').style.backgroundColor = '#6c757d';
+        document.querySelector('#pathfinding-contest-button').style.backgroundColor = '#5a6268';
         
         ReactDOM.render(<PathfindingContest />, document.getElementById('main-content'));
     }
