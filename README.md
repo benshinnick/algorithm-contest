@@ -3,8 +3,6 @@
 React application for visualizing sorting and pathfinding algorithms competing agianst each other in real time.
 
 ## Implemented Sorting Algorithms
-
-### Time / Space Complexities
 | Algorithm | Best | Average | Worst | Space |
 | :---: | :---: | :---: | :---:| :---: |
 | Merge | Ω(nlog(n)) | θ(nlog(n)) |	O(nlog(n)) | O(n) |
@@ -16,9 +14,7 @@ React application for visualizing sorting and pathfinding algorithms competing a
 | Selection | Ω(n^2) | θ(n^2) | O(n^2) | O(1) |
 
 ## Implemented Pathfinding Algorithms
-
-### Algorithm Information
-| Algorithm | Is Weighted | Information |
+| Algorithm | Is Weighted | Shortest Path |
 | :---: | :---: | :--- |
 | Dijkstra's Algorithm | weighted | gaurentees the shortest path |
 | A* Search | weighted | guarentees the shortest path |
