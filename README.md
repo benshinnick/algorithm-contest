@@ -5,6 +5,12 @@ React application for visualizing sorting and pathfinding algorithms competing a
 ## Motivation
 I built this project because all algorithm visualization tools I could find online made it difficult to compare different algorithms, especially for algorithms with similar time complexites. My goal with this project is to give the user a good sense of which sorting and pathfinding algorithms perform better (or worse) on average.
 
+## Accessing The Project
+
+https://benshinnick.github.io/algorithm-contest/
+
+Google Chrome is probably the most reliable browser to run this project in. However, other browsers should have little to no issues.
+
 ## Implemented Sorting Algorithms
 | Algorithm | Best | Average | Worst | Space |
 | :---: | :---: | :---: | :---:| :---: |
