@@ -3,7 +3,7 @@
 React application for visualizing sorting and pathfinding algorithms competing agianst each other in real time.
 
 ## Motivation
-I built this project because all algorithm visualization tools I could find online made it difficult to compare different algorithms, especially for algorithms with similar time complexites. My goal with this project is to give the user a good sense of which sorting and pathfinding algorithms perform better (or worse) on average.
+I built this project because all algorithm visualization tools I could find online made it difficult to compare different algorithms, especially for algorithms with similar time complexites. My goal with this project is to give the user a good sense of which sorting and pathfinding algorithms perform better (or worse) than other related algorithms.
 
 ## Accessing The Project
 
