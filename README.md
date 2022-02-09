@@ -9,7 +9,7 @@ I built this project because all algorithm visualization tools I could find onli
 
 https://benshinnick.github.io/algorithm-contest/
 
-Google Chrome is probably the most reliable browser to run this project in. However, other browsers should have little to no issues.
+Google Chrome is the recommended browser to run this project in. However, other browsers should have little to no issues.
 
 ## Implemented Sorting Algorithms
 | Algorithm | Best | Average | Worst | Space |
