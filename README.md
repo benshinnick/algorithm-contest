@@ -31,10 +31,6 @@ Google Chrome is the recommended browser to run this project in. However, other 
 | Depth-first Search | unweighted | does not gaurentee the shortest path |
 | Breadth-first-search | unweighted | gaurantees the shortest path for unweighted graphs |
 
-## Quick Note On Algorithm Implementations
+<!-- ## Quick Note On Algorithm Implementations -->
 
-Not all algorithm implementations are fully optimized. For example, insertion sort swaps elements to insert a value into its correct index instead of shifting and then inserting the value. I tried to maximize efficiency wherever posssible, but I also tried to implement the most visually responsive approach for each algorithm.
-
-## Functionality Reference
-
-TODO
+<!-- Not all algorithm implementations are fully optimized. For example, insertion sort swaps elements to insert a value into its correct index instead of shifting and then inserting the value. I tried to maximize efficiency wherever posssible, but I also tried to implement the most visually responsive approach for each algorithm. -->
