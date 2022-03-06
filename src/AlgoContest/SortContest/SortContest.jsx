@@ -9,13 +9,13 @@ const MAX_NUM_OF_CONTESTANTS = 10;
 const COUNTDOWN_DURATION_MS = SortVisualizerContestant.ANIMATION_DELAY_MS;
 
 const ALGORITHM_TYPES = [
-    'merge',
-    'quick',
-    'heap',
-    'shell',
-    'insertion',
-    'bubble',
-    'selection'
+    'Merge',
+    'Quick',
+    'Heap',
+    'Shell',
+    'Insertion',
+    'Bubble',
+    'Selection'
 ]
 
 export default class SortContest extends React.Component {

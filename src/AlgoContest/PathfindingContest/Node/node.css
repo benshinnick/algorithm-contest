@@ -165,8 +165,8 @@
   }
 }
 
-@media only screen and (min-width: 1500px) {
-  /* Cancel all node visited animations at 1300px just to support better performance for much larger grids */
+@media only screen and (min-width: 2000px) {
+  /* Cancel all node visited animations at 2000px to support better performance for huge grids */
   .visited {
     animation: none;
   }
