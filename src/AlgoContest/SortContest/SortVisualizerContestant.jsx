@@ -47,19 +47,19 @@ export default class SortVisualizerContestant extends React.Component {
         let arrayCopy = this.state.array.map((value) => value);
 
         switch(this.state.algorithmType) {
-            case 'merge':
+            case 'Merge':
                 return getMergeSortAnimations(arrayCopy);
-            case 'quick':
+            case 'Quick':
                 return getQuicksortAnimations(arrayCopy);
-            case 'shell':
+            case 'Shell':
                 return getShellSortAnimations(arrayCopy);
-            case 'insertion':
+            case 'Insertion':
                 return getInsertionSortAnimations(arrayCopy);
-            case 'heap':
+            case 'Heap':
                 return getHeapSortAnimations(arrayCopy);
-            case 'selection':
+            case 'Selection':
                 return getSelectionSortAnimations(arrayCopy);
-            case 'bubble':
+            case 'Bubble':
                 return getBubbleSortAnimations(arrayCopy);
             default:
                 console.log("Error: Unexpected Algorithm Type");
@@ -69,25 +69,25 @@ export default class SortVisualizerContestant extends React.Component {
 
     doAnimationNextStep(animationStepInfo, currentStepNumber) {
         switch(this.state.algorithmType) {
-            case 'merge':
+            case 'Merge':
                 this.doNextMergeSortAnimationStep(animationStepInfo, currentStepNumber);
                 break;
-            case 'quick':
+            case 'Quick':
                 this.doNextQuicksortAnimationStep(animationStepInfo, currentStepNumber);
                 break;
-            case 'shell':
+            case 'Shell':
                 this.doNextShellSortAnimationStep(animationStepInfo, currentStepNumber);
                 break;
-            case 'insertion':
+            case 'Insertion':
                 this.doNextInsertionSortAnimationStep(animationStepInfo, currentStepNumber);
                 break;
-            case 'heap':
+            case 'Heap':
                 this.doNextHeapSortAnimationStep(animationStepInfo, currentStepNumber);
                 break;
-            case 'selection':
+            case 'Selection':
                 this.doNextSelectionSortAnimationStep(animationStepInfo, currentStepNumber);
                 break;
-            case 'bubble':
+            case 'Bubble':
                 this.doNextBubbleSortAnimationStep(animationStepInfo, currentStepNumber);
                 break;
             default:
@@ -461,7 +461,7 @@ export default class SortVisualizerContestant extends React.Component {
 
         let statsLabelText;
         let swapsOrOverwrites;
-        if(this.state.algorithmType !== 'merge') {
+        if(this.state.algorithmType !== 'Merge') {
             swapsOrOverwrites = 'swaps';
         }
         else {

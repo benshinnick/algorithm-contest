@@ -14,7 +14,7 @@ export default class AlgoContest extends React.Component {
     }
 
     componentDidMount() {
-        this.changePageContentToPathfindingContest();
+        this.changePageContentToSortContest();
     }
 
     changePageContentToSortContest() {
