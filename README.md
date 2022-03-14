@@ -3,7 +3,7 @@
 React application for visualizing sorting and pathfinding algorithms competing agianst each other in real time.
 
 ## Motivation
-I built this project because all algorithm visualization tools I could find online made it difficult to compare different algorithms, especially for algorithms with similar time complexites. My goal with this project was to give people a good sense of which popular sorting and pathfinding algorithms perform better (or worse) than other related algorithms.
+I built this project because all algorithm visualization tools I could find online made it difficult to compare different algorithms, especially for algorithms with similar time complexites. My goal with this project was to give people a good sense of which popular sorting and pathfinding algorithms perform better than other related algorithms.
 
 ## Accessing The Project
 
@@ -30,6 +30,8 @@ https://benshinnick.github.io/algorithm-contest/
 | Greedy Best-first Search | weighted | does not guarentee the shortest path |
 | Depth-first Search | unweighted | does not gaurentee the shortest path |
 | Breadth-first-search | unweighted | gaurantees the shortest path for unweighted graphs |
+
+<!-- ## Controls -->
 
 <!-- ## Quick Note On Algorithm Implementations -->
 
