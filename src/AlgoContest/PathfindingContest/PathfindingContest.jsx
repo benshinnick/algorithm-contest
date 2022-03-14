@@ -661,7 +661,6 @@ export default class PathfindingContest extends React.Component {
         for(let i = 0; i < this.state.numOfContestants; ++i) {
             contestantNumbers.push(i+1);
         }
-        console.log(contestantNumbers);
 
         return (
             <div className='pathfinding-contest'>

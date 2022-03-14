@@ -36,9 +36,16 @@ export default class SortContest extends React.Component {
         this.algoContestantRefs.push(ref);
     };
 
+    removeLastAlgoContestantRef() {
+        const newAlgoContestantRefs = [];
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            newAlgoContestantRefs.push(this.algoContestantRefs[i]);
+        }
+        this.algoContestantRefs = newAlgoContestantRefs;
+    }
+
     componentDidMount() {
         document.title = "Sorting Contest";
-        this.removeExtraContestants();
         this.handlePageResize();
         this.disableDuringContestControlButtons();
         this.randomizeArray();
@@ -53,11 +60,10 @@ export default class SortContest extends React.Component {
 
     addContestant() {
         const newNumOfContestants = this.state.numOfContestants + 1;
-        this.algoContestantRefs[this.state.numOfContestants].addComponent();
-        this.algoContestantRefs[this.state.numOfContestants].updateAlgorithmType(ALGORITHM_TYPES[randomIntFromInterval(0,4)]);
         this.setState({...this.state, numOfContestants: newNumOfContestants}, () => {
             this.resetSortContestPage();
             this.enableRemoveContestantButtons();
+            this.handlePageResize();
         });
         if(newNumOfContestants === MAX_NUM_OF_CONTESTANTS) {
             document.getElementById('sort-add-contestant-button').disabled = true;
@@ -80,8 +86,11 @@ export default class SortContest extends React.Component {
             this.algoContestantRefs[i].updateAlgorithmType(this.algoContestantRefs[i+1].getAlgorithmType());
         }
         const newNumOfContestants = this.state.numOfContestants - 1;
-        this.algoContestantRefs[this.state.numOfContestants - 1].removeComponent();
-        this.setState({...this.state, numOfContestants: newNumOfContestants}, this.resetSortContestPage());
+        // this.algoContestantRefs[this.state.numOfContestants - 1].removeComponent();
+        this.setState({...this.state, numOfContestants: newNumOfContestants}, () => {
+            this.resetSortContestPage();
+            this.removeLastAlgoContestantRef();
+        });
         // do remove animation
         let animationStandIn = document.createElement("DIV");
         animationStandIn.setAttribute("class", 'sort-remove-element-animation-stand-in');
@@ -102,7 +111,6 @@ export default class SortContest extends React.Component {
         else {
             document.getElementById('sort-add-contestant-button').innerText = 'Add Contestant';
         }
-        
     }
 
     startContest() {
@@ -337,12 +345,6 @@ export default class SortContest extends React.Component {
         this.handleContestIsNowFinished();
     }
 
-    removeExtraContestants() {
-        for(let i = INITIAL_NUM_OF_CONTESTANTS; i < MAX_NUM_OF_CONTESTANTS; ++i) {
-            this.algoContestantRefs[i].removeComponent();
-        }
-    }
-
     findAllPlaceInformation() {
 
         const allContestantPlaceInfo = [];
@@ -496,7 +498,7 @@ export default class SortContest extends React.Component {
         else {
             animationSpeedMS = 1;
         }
-        for(let i = 0; i < MAX_NUM_OF_CONTESTANTS; ++i) {
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
             this.algoContestantRefs[i].setAnimationSpeed(animationSpeedMS);
         }
     }
@@ -517,9 +519,9 @@ export default class SortContest extends React.Component {
     }
 
     render() {
-        const ContestantNumbers = [];
-        for(let i = 0; i < MAX_NUM_OF_CONTESTANTS; ++i) {
-            ContestantNumbers.push(i+1);
+        const contestantNumbers = [];
+        for(let i = 0; i < this.state.numOfContestants; ++i) {
+            contestantNumbers.push(i+1);
         }
 
         return (
@@ -539,7 +541,7 @@ export default class SortContest extends React.Component {
                     <button id="sort-skip-to-finish-button" onClick={() => this.skipToFinishButtonOnClick()}>Skip To Finish</button>
                 </div>
                 <div className='sort-visualizers' id='sort-visualizers'>
-                    {ContestantNumbers.map(contestantNum => (
+                    {contestantNumbers.map(contestantNum => (
                         <SortVisualizerContestant 
                             key={contestantNum}
                             ref={this.setRef}
