@@ -540,14 +540,6 @@ export default class SortVisualizerContestant extends React.Component {
         }
     }
 
-    removeComponent() {
-        document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.display = 'none';
-    }
-
-    addComponent() {
-        document.getElementById(`sort-visualizer-${this.state.contestantNumber}`).style.display = 'block';
-    }
-
     algorithmDropDownButtonOnClick(algorithmType) {
         this.destructAlgorithmPlaceLabel();
         this.destructAlgorithmStatsLabel();
