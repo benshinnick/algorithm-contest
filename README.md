@@ -39,4 +39,4 @@ The project has performed very well in my testing. However, I am aware that sche
 <!-- Not all algorithm implementations are fully optimized. For example, insertion sort swaps elements to insert a value into its correct index instead of shifting and then inserting the value. I tried to maximize efficiency wherever posssible, but I also tried to implement the most visually responsive approach for each algorithm. -->
 
 
-> _project by **Ben Shinnick**_
+> _a project by **Ben Shinnick**_
