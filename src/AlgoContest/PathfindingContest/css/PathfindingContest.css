@@ -25,9 +25,8 @@
     transition-duration: 0.2s;
     border-radius: 2px;
     margin-right: 0.25%;
-    margin-top: 2px;
+    margin-top: 4px;
     margin-left: 0.5%;
-    margin-bottom: 2px;
 }
 
 #path-start-contest-button:hover {
@@ -108,7 +107,6 @@
     border-radius: 2px;
     margin-right: 0px;
     margin-top: 2px;
-    margin-bottom: 2px;
 }
 
 #path-skip-to-finish-button:hover {
@@ -402,8 +400,7 @@
 #select-node-type-dropdown {
     display: inline-block;
     margin: 0px;
-    padding: 0px;
-    height: 35px;
+    padding-top: 2px;
     width: 20%;
     margin-left: 0.25%;
     margin-right: 0.25%;
@@ -420,6 +417,7 @@
     border: none;
     color: white;
     padding: 0px;
+    margin-top: 2px;
     margin-bottom: 0px;
     transition-duration: 0.4s;
     border-radius: 0px 2px 2px 0px;
@@ -615,7 +613,6 @@
     #select-node-type-dropdown {
         order: 7;
         margin: 0 0.665%;
-        margin-top: 4px;
         width: 35%;
     }
 
