@@ -10,7 +10,7 @@ https://benshinnick.github.io/algorithm-contest/
 
 ## Implemented Sorting Algorithms
 <!-- | Algorithm | Best | Average | Worst | Space | -->
-| &emsp; Algorithm &emsp; | &emsp;&emsp; Best &emsp;&emsp; | &emsp; Average &emsp; | &ensp; Worst &ensp; | &ensp;&nbsp; Space &nbsp;&ensp; |
+| &emsp;&nbsp;Algorithm&nbsp;&emsp; | &emsp;&emsp;&nbsp;Best&nbsp;&emsp;&emsp; | &emsp;&nbsp;Average&nbsp;&emsp; | &emsp;&emsp;Worst&emsp;&emsp; | &ensp;&nbsp;&nbsp;Space&nbsp;&nbsp;&ensp; |
 | :---: | :---: | :---: | :---:| :---: |
 | Merge | Ω(nlog(n)) | θ(nlog(n)) |	O(nlog(n)) | O(n) |
 | Quick | Ω(nlog(n))	| θ(nlog(n)) |	O(n^2) | O(log(n)) |
@@ -23,11 +23,11 @@ https://benshinnick.github.io/algorithm-contest/
 ## Implemented Pathfinding Algorithms
 | Algorithm | Is Weighted | Shortest Path |
 | :---: | :---: | :--- |
-| Dijkstra's Algorithm | weighted | gaurentees the shortest path&nbsp; |
-| A* Search | weighted | gaurentees the shortest path&nbsp; |
-| Greedy Best-first Search | weighted | does not gaurentee the shortest path&nbsp; |
-| Depth-first Search | unweighted | does not gaurentee the shortest path&nbsp; |
-| Breadth-first-search | unweighted | gaurentees the shortest path&nbsp; |
+| Dijkstra's Algorithm | weighted | gaurentees the shortest path &emsp; |
+| A* Search | weighted | gaurentees the shortest path &emsp; |
+| Greedy Best-first Search | weighted | does not gaurentee the shortest path &emsp; |
+| Depth-first Search | unweighted | does not gaurentee the shortest path &emsp; |
+| Breadth-first-search | unweighted | gaurentees the shortest path &emsp; |
 
 ## Performance Improvements
 The project has performed very well in my testing. However, if you ever notice a drop in performance there are a couple things you can do to limit the number of scheduled animations:
