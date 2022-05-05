@@ -6,10 +6,11 @@ I built this project because all algorithm visualization tools I could find onli
 
 ## Accessing The Project
 https://benshinnick.github.io/algorithm-contest/
-> Note: Google Chrome is the recommended browser to run this project in. However, other browsers should have little to no issues.
+> Note: I recommended using Google Chrome. However, other browsers should have little to no issues.
 
 ## Implemented Sorting Algorithms
-| Algorithm | Best | Average | Worst | Space |
+<!-- | Algorithm | Best | Average | Worst | Space | -->
+| &emsp; Algorithm &emsp; | &emsp;&emsp; Best &emsp;&emsp; | &ensp; Average &ensp; | &ensp; Worst &ensp; | &ensp;&nbsp; Space &nbsp;&ensp; |
 | :---: | :---: | :---: | :---:| :---: |
 | Merge | Ω(nlog(n)) | θ(nlog(n)) |	O(nlog(n)) | O(n) |
 | Quick | Ω(nlog(n))	| θ(nlog(n)) |	O(n^2) | O(log(n)) |
@@ -23,13 +24,13 @@ https://benshinnick.github.io/algorithm-contest/
 | Algorithm | Is Weighted | Shortest Path |
 | :---: | :---: | :--- |
 | Dijkstra's Algorithm | weighted | gaurentees the shortest path |
-| A* Search | weighted | guarentees the shortest path |
-| Greedy Best-first Search | weighted | does not guarentee the shortest path |
+| A* Search | weighted | gaurentees the shortest path |
+| Greedy Best-first Search | weighted | does not gaurentee the shortest path |
 | Depth-first Search | unweighted | does not gaurentee the shortest path |
-| Breadth-first-search | unweighted | gaurantees the shortest path for unweighted graphs |
+| Breadth-first-search | unweighted | gaurentees the shortest path |
 
 ## Performance Improvements
-The project has performed very well in my testing. However, I am aware that scheduling up to hundreds of thousands of synchrounous animations might cause performance issues. If you ever notice a drop in performance, there are a couple things you can do to limit the number of scheduled animations:
+The project has performed very well in my testing. However, if you ever notice a drop in performance there are a couple things you can do to limit the number of scheduled animations:
 - Decreasing your browser window width so that the algorithms are working with a smaller array/graph
 - Decreasing the number of contestants<br></br>
 <!-- - Removing the most inefficient sorting algorithms like bubble sort from the sorting contest -->
